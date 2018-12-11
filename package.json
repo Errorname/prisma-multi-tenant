@@ -1,0 +1,29 @@
+{
+  "name": "prisma-multi-tenant",
+  "version": "0.0.1",
+  "description": "🧭 Use Prisma as a multi-tenant provider with Apollo Server or Yoga",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Errorname/prisma-multi-tenant.git"
+  },
+  "keywords": [
+    "prisma",
+    "multi-tenant",
+    "apollo",
+    "yoga"
+  ],
+  "author": {
+    "name": "Thibaud Courtoison",
+    "email": "do.not.press.enter@gmail.com",
+    "url": "https://errorna.me"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Errorname/prisma-multi-tenant/issues"
+  },
+  "homepage": "https://github.com/Errorname/prisma-multi-tenant#readme"
+}
