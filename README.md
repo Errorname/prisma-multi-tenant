@@ -2,6 +2,24 @@
 
 🧭 Use Prisma as a multi-tenant provider with Apollo Server or Yoga
 
+**What's a multi-tenant application?**
+
+A [multi-tenant](https://en.wikipedia.org/wiki/Multitenancy) application is when a single instance runs on a server and serves multiple tenants.
+
+> With a multitenant architecture, a software application is designed to provide every tenant a dedicated share of the instance - including its data, configuration, user management, tenant individual functionality and non-functional properties.
+
+For example, you could run a social-network for companies, where each company would have it's own data and users.
+
+**Why is Prisma great for multi-tenancy?**
+
+Prisma handles **services** mapped to individual databases. You can use services to have multiple different applications, or your could create **a service for each of your tenant**.
+
+A service is a composed of a name and a stage. (e.g. `company_a/dev`, `company_a/prod`, `company_b/pre-prod`, `company_b/prod`)
+
+**Why do I need `prisma-multi-tenant`?**
+
+Because Prisma Client handles only a single service. If you want your GraphQL Server (Apollo or Yoga) to handle multiple services seamlessly, you should use `prisma-multi-tenant`!
+
 ## Installation
 
 ```bash
@@ -63,3 +81,7 @@ const multiTenant = new MultiTenant({
 
 /* ... */
 ```
+
+## Credits
+
+🙌 Thanks to [@antoinecarat](https://github.com/antoinecarat) for the reviews of this library
