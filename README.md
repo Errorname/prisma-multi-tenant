@@ -4,9 +4,9 @@
 
 **What's a multi-tenant application?**
 
-A [multi-tenant](https://en.wikipedia.org/wiki/Multitenancy) application is when a single instance runs on a server and serves multiple tenants.
+A [multi-tenant](https://en.wikipedia.org/wiki/Multitenancy) application is when a single instance of your application runs on a server and serves multiple tenants.
 
-> With a multitenant architecture, a software application is designed to provide every tenant a dedicated share of the instance - including its data, configuration, user management, tenant individual functionality and non-functional properties.
+> With a multi-tenant architecture, a software application is designed to provide every tenant a dedicated share of the instance - including its data, configuration, user management, tenant individual functionality and non-functional properties.
 
 For example, you could run a social-network for companies, where each company would have it's own data and users.
 
@@ -14,11 +14,11 @@ For example, you could run a social-network for companies, where each company wo
 
 Prisma handles **services** mapped to individual databases. You can use services to have multiple different applications, or your could create **a service for each of your tenant**.
 
-A service is a composed of a name and a stage. (e.g. `company_a/dev`, `company_a/prod`, `company_b/pre-prod`, `company_b/prod`)
+A service is defined by a name and a stage. (e.g. `company_a/dev`, `company_a/prod`, `company_b/pre-prod`, `company_b/prod`)
 
 **Why do I need `prisma-multi-tenant`?**
 
-Because Prisma Client handles only a single service. If you want your GraphQL Server (Apollo or Yoga) to handle multiple services seamlessly, you should use `prisma-multi-tenant`!
+Because Prisma Client only handles a single service. If you want your GraphQL Server (Apollo or Yoga) to handle multiple services seamlessly, you should use `prisma-multi-tenant`!
 
 ## Installation
 
@@ -55,12 +55,12 @@ const server = new ApolloServer({
 /* In your resolvers */
 module.exports = {
   Query: {
-    users: (_, args, ctx, info) => ctx.prisma.query.users(args, info)
+    users: (_, args, ctx) => ctx.prisma.users(args)
   }
 }
 ```
 
-Then, from your backend, you can pass a `prisma-service` HTTP header with the `[name]/[stage]` to your GraphQL operations to choose which service to target.
+Then, from your backend, you can pass a `prisma-service` HTTP header with `[name]/[stage]` to your GraphQL operations to choose which service to target.
 
 ### With prisma-binding
 
