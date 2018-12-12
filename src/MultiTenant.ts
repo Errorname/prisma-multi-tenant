@@ -1,15 +1,16 @@
-const defaultOptions = {
-  instanciate: () => null,
-  nameStageFromReq: req => req.headers['prisma-service'].split('/')
-}
+import { MultiTenantOptions, PrismaInstances, PrismaInstance } from './types'
+import defaultOptions from './defaultOptions'
 
 class MultiTenant {
-  constructor(options) {
+  options: MultiTenantOptions
+  instances: PrismaInstances
+
+  constructor(options: MultiTenantOptions = defaultOptions) {
     this.options = Object.assign(defaultOptions, options)
     this.instances = {}
   }
 
-  current(req) {
+  current(req: Request): PrismaInstance {
     const [name, stage] = this.options.nameStageFromReq(req)
 
     if (!name || !stage) {
@@ -18,14 +19,14 @@ class MultiTenant {
 
     if (!this.getInstance(name, stage)) this.instanciate(name, stage)
 
-    return this.getInstance(name, stage)
+    return <PrismaInstance>this.getInstance(name, stage)
   }
 
-  getInstance(name, stage) {
+  getInstance(name: string, stage: string): PrismaInstance | null {
     return this.instances[name] ? this.instances[name][stage] : null
   }
 
-  instanciate(name, stage) {
+  instanciate(name: string, stage: string): PrismaInstance {
     const instance = this.options.instanciate(name, stage)
 
     instance._meta = {
@@ -43,4 +44,4 @@ class MultiTenant {
   }
 }
 
-module.exports = MultiTenant
+export default MultiTenant
