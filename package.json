@@ -7,7 +7,7 @@
   "scripts": {
     "prepare": "npm run build",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "files": [
     "lib"
@@ -33,6 +33,19 @@
   },
   "homepage": "https://github.com/Errorname/prisma-multi-tenant#readme",
   "devDependencies": {
+    "@types/jest": "^23.3.10",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.5",
     "typescript": "^3.2.2"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "testRegex": "^.+\\.spec\\.ts$"
   }
 }
