@@ -81,7 +81,7 @@ const multiTenant = new MultiTenant({
 /* ... */
 ```
 
-## Options
+## Constructor options
 
 ```ts
 interface MultiTenantOptions {
@@ -93,7 +93,7 @@ interface MultiTenantOptions {
 
 const defaultOptions: MultiTenantOptions = {
   instanciate: () => ({}),
-  nameStageFromReq: (req: any) => req.headers['prisma-service'].split('/')
+  nameStageFromReq: (req: Object) => req.headers['prisma-service'].split('/')
 }
 ```
 
