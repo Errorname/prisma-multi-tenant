@@ -6,11 +6,11 @@ class MultiTenant {
   instances: PrismaInstances
 
   constructor(options: MultiTenantOptions = defaultOptions) {
-    this.options = Object.assign(defaultOptions, options)
+    this.options = { ...defaultOptions, ...options }
     this.instances = {}
   }
 
-  current(req: Request): PrismaInstance {
+  current(req: Object): PrismaInstance {
     const [name, stage] = this.options.nameStageFromReq(req)
 
     if (!name || !stage) {

@@ -1,6 +1,6 @@
 export interface MultiTenantOptions {
   instanciate: (name: string, stage: string) => PrismaInstance
-  nameStageFromReq: (req: Request) => [string, string]
+  nameStageFromReq: (req: Object) => [string, string]
 }
 
 export interface PrismaInstances {
@@ -9,7 +9,7 @@ export interface PrismaInstances {
   }
 }
 
-export interface PrismaInstance {
+export interface PrismaInstance extends Object {
   _meta?: {
     service: {
       name: string
