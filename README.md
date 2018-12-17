@@ -32,16 +32,15 @@ The following example is using `Prisma Client`. You will find instructions for `
 
 ```js
 /* In your backend's main file */
-const MultiTenant = require('prisma-multi-tenant')
-const Prisma = require('./generated/prisma-client').Prisma
+const { MultiTenant } = require('prisma-multi-tenant')
+const { Prisma } = require('./generated/prisma-client')
 const { ApolloServer } = require('apollo-server')
 
 const multiTenant = new MultiTenant({
   instanciate: (name, stage) =>
     new Prisma({
       endpoint: `https://localhost:4000/${name}/${stage}`
-    }),
-  nameStageFromReq: req => req.headers['prisma-service'].split('/')
+    })
 })
 
 const server = new ApolloServer({
@@ -60,14 +59,14 @@ module.exports = {
 }
 ```
 
-Then, from your backend, you can pass a `prisma-service` HTTP header with `[name]/[stage]` to your GraphQL operations to choose which service to target.
+**Then, from your backend,** you can pass a `prisma-service` HTTP header with `[name]/[stage]` to your GraphQL operations to choose which service to target.
 
 ### With prisma-binding
 
 If you use `prisma-binding`, you need to slightly change the previous code:
 
 ```js
-const MultiTenant = require('prisma-multi-tenant')
+const { MultiTenant } = require('prisma-multi-tenant')
 const { Prisma } = require('prisma-binding')
 
 const multiTenant = new MultiTenant({
@@ -81,6 +80,26 @@ const multiTenant = new MultiTenant({
 
 /* ... */
 ```
+
+## Constructor options
+
+The constructor of MultiTenant accepts an option object argument with the following attributes:
+
+```ts
+interface MultiTenantOptions {
+  /* Returns a PrismaClient (or prisma-binding) instance given a name and a stage */
+  instanciate: (name: string, stage: string) => PrismaInstance
+  /* Extracts the name and stage from the Request object */
+  nameStageFromReq: (req: Object) => [string, string]
+}
+
+const defaultOptions: MultiTenantOptions = {
+  instanciate: () => ({}),
+  nameStageFromReq: (req: Object) => req.headers['prisma-service'].split('/')
+}
+```
+
+> By default, the `name/stage` of the service will be extracted from the `prisma-service` HTTP header, but you can extract it anyway you want from the Request (url, body, another header, ...)
 
 ## Credits
 
