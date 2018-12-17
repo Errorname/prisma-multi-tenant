@@ -83,6 +83,8 @@ const multiTenant = new MultiTenant({
 
 ## Constructor options
 
+The constructor of MultiTenant accepts an option object argument with the following attributes:
+
 ```ts
 interface MultiTenantOptions {
   /* Returns a PrismaClient (or prisma-binding) instance given a name and a stage */
