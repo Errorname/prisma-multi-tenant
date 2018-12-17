@@ -2,6 +2,9 @@
 
 🧭 Use Prisma as a multi-tenant provider with Apollo Server or Yoga
 
+[![](https://img.shields.io/npm/v/prisma-multi-tenant.svg)](https://www.npmjs.com/package/prisma-multi-tenant)
+[![](https://img.shields.io/github/license/Errorname/prisma-multi-tenant.svg)](https://github.com/Errorname/prisma-multi-tenant/blob/master/LICENSE)
+
 **What's a multi-tenant application?**
 
 A [multi-tenant](https://en.wikipedia.org/wiki/Multitenancy) application is when a single instance of your application runs on a server and serves multiple tenants.
