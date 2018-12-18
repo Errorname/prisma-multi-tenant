@@ -62,7 +62,7 @@ module.exports = {
 }
 ```
 
-**Then, from your backend,** you can pass a `prisma-service` HTTP header with `[name]/[stage]` to your GraphQL operations to choose which service to target.
+**Then, from your frontend,** you can use a `prisma-service` HTTP header with `[name]/[stage]` in your GraphQL operations to choose which service to target.
 
 ### With prisma-binding
 
