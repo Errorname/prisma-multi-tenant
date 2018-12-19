@@ -42,7 +42,7 @@ const { ApolloServer } = require('apollo-server')
 const multiTenant = new MultiTenant({
   instanciate: (name, stage) =>
     new Prisma({
-      endpoint: `https://localhost:4000/${name}/${stage}`
+      endpoint: `https://localhost:4466/${name}/${stage}`
     })
 })
 
@@ -76,7 +76,7 @@ const multiTenant = new MultiTenant({
   instanciate: (name, stage) =>
     new Prisma({
       typeDefs: './path/to/typedef.graphql',
-      endpoint: `https://localhost:4000/${name}/${stage}`
+      endpoint: `https://localhost:4466/${name}/${stage}`
     })
   /* ... */
 })

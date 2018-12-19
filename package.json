@@ -1,6 +1,6 @@
 {
   "name": "prisma-multi-tenant",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "🧭 Use Prisma as a multi-tenant provider with Apollo Server or Yoga",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
