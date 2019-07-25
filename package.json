@@ -1,26 +1,29 @@
 {
   "name": "prisma-multi-tenant",
-  "version": "1.0.3",
-  "description": "🧭 Use Prisma as a multi-tenant provider with Apollo Server or Yoga",
-  "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
-  "scripts": {
-    "prepare": "npm run build",
-    "build": "tsc",
-    "test": "jest"
+  "version": "2.0.0-alpha-1",
+  "description": "🧭 Use Prisma as a multi-tenant provider for your application",
+  "main": "build/lib/index.js",
+  "typings": "build/lib/index.d.ts",
+  "bin": {
+    "prisma-multi-tenant": "build/cli/index.js"
   },
-  "files": [
-    "lib"
-  ],
+  "scripts": {
+    "prepare": "npm run build && cp -R src/cli/management/prisma build/cli/management/prisma",
+    "build": "tsc",
+    "test": "jest --coverage --coverage-reporters=text",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "npm run lint -- --fix",
+    "prettier": "prettier \"src/**/*.ts\"",
+    "prettier:write": "npm run prettier -- --write",
+    "prettier:check": "npm run prettier -- --check"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Errorname/prisma-multi-tenant.git"
   },
   "keywords": [
     "prisma",
-    "multi-tenant",
-    "apollo",
-    "yoga"
+    "multi-tenant"
   ],
   "author": {
     "name": "Thibaud Courtoison",
@@ -33,19 +36,50 @@
   },
   "homepage": "https://github.com/Errorname/prisma-multi-tenant#readme",
   "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.1",
+    "@babel/preset-typescript": "^7.3.3",
     "@types/jest": "^23.3.10",
-    "jest": "^23.6.0",
+    "@typescript-eslint/eslint-plugin": "^1.4.2",
+    "@typescript-eslint/parser": "^1.4.2",
+    "babel-jest": "^24.5.0",
+    "eslint": "^5.15.3",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "jest": "^24.5.0",
+    "prettier": "^1.16.4",
     "ts-jest": "^23.10.5",
-    "typescript": "^3.2.2"
+    "typescript": "^3.5.3"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "semi": false,
+    "singleQuote": true
   },
   "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "moduleFileExtensions": [
-      "ts",
-      "js"
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
     ],
-    "testRegex": "^.+\\.spec\\.ts$"
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    }
+  },
+  "dependencies": {
+    "@prisma/lift": "^0.1.2",
+    "@prisma/photon": "^0.1.1",
+    "@types/graphql": "^14.2.3",
+    "@types/inquirer": "^6.0.3",
+    "@types/node": "^12.6.8",
+    "chalk": "^2.4.2",
+    "cli-table3": "^0.5.1",
+    "find-node-modules": "^2.0.0",
+    "inquirer": "^6.5.0",
+    "path": "^0.12.7",
+    "prepend-file": "^1.3.1"
   }
 }

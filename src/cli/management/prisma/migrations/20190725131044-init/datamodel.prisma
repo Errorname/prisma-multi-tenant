@@ -1,0 +1,16 @@
+datasource management {
+  provider = env("PMT-PROVIDER")
+  url      = env("PMT-URL")
+}
+
+generator photon {
+  provider = "photonjs"
+  output   = env("PMT-OUTPUT")
+}
+
+model Tenant {
+  id       String @default(cuid()) @id @unique
+  name     String @unique
+  provider String
+  url      String
+}
