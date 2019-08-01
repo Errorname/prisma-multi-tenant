@@ -1,7 +1,7 @@
-import { Command, Tenant } from '../types'
+import { Command, Tenant } from '../../shared/types'
 
 import management from '../management'
-import { errors, run } from '../utils'
+import { errors, run } from '../../shared'
 
 const liftActions = ['up', 'down']
 

@@ -1,7 +1,7 @@
-import { Command } from '../types'
+import { Command } from '../../shared/types'
 import chalk from 'chalk'
 
-import { prompt, errors, run } from '../utils'
+import { prompt, errors, run } from '../../shared'
 
 import management from '../management'
 
@@ -39,9 +39,7 @@ class Delete implements Command {
         console.log(chalk.red.bold('Note: You are still in charge of deleting the database!\n'))
         return
       }
-    }
-
-    if (await prompt.confirm(chalk.red(`Are you sure you want to delete all tenants?`))) {
+    } else if (await prompt.confirm(chalk.red(`Are you sure you want to delete all tenants?`))) {
       const tenants = await management.getAll()
 
       await Promise.all(tenants.map(tenant => run('prisma2 lift down', tenant)))

@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-import { help, errors } from './utils'
+import { help, errors } from '../shared'
 import management from './management'
 
 import * as commands from './commands'
-import { Command, Argument } from './types'
+import { Command, Argument } from '../shared/types'
 
 const [, , ...args] = process.argv
 

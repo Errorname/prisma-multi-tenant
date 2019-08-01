@@ -22,13 +22,13 @@ migration ..20190725131044-init
 +++ datamodel.dml
 @@ -1,0 +1,16 @@
 +datasource management {
-+  provider = env("PMT-PROVIDER")
-+  url      = env("PMT-URL")
++  provider = env("PMT_PROVIDER")
++  url      = env("PMT_URL")
 +}
 +
 +generator photon {
 +  provider = "photonjs"
-+  output   = env("PMT-OUTPUT")
++  output   = env("PMT_OUTPUT")
 +}
 +
 +model Tenant {
@@ -55,5 +55,4 @@ async function main() {
 }
 
 main()
-
 ```

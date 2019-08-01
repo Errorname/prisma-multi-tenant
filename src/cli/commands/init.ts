@@ -1,6 +1,6 @@
-import { Command } from '../types'
+import { Command } from '../../shared/types'
 
-import { prompt } from '../utils'
+import { prompt } from '../../shared'
 
 const prependFile = require('prepend-file')
 
@@ -19,7 +19,7 @@ class Init implements Command {
   ]
   description = 'Init multi-tenancy for your project'
 
-  useManagement = true
+  useManagement = false
 
   async execute(args: string[]) {
     console.log()
@@ -30,8 +30,8 @@ class Init implements Command {
 // PLEASE DO NOT REMOVE THEM
 
 datasource db {
-  provider = env("PMT-PROVIDER")
-  url      = env("PMT-URL")
+  provider = env("PMT_PROVIDER")
+  url      = env("PMT_URL")
 }
 
 datasource management {

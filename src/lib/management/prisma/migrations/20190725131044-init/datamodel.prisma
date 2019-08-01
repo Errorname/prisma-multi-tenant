@@ -1,11 +1,11 @@
 datasource management {
-  provider = env("PMT-PROVIDER")
-  url      = env("PMT-URL")
+  provider = env("PMT_PROVIDER")
+  url      = env("PMT_URL")
 }
 
 generator photon {
   provider = "photonjs"
-  output   = env("PMT-OUTPUT")
+  output   = env("PMT_OUTPUT")
 }
 
 model Tenant {

@@ -2,8 +2,8 @@ import { getDatamodel } from '@prisma/photon/dist/utils/getDatamodel'
 import { LiftEngine } from '@prisma/lift'
 import path from 'path'
 
-import { Tenant } from '../types'
-import { run, errors } from '../utils'
+import { Tenant } from '../../shared/types'
+import { run, errors } from '../../shared'
 
 class Management {
   photon: any
@@ -12,6 +12,8 @@ class Management {
     if (this.photon) {
       throw new Error('Already connected')
     }
+
+    const isVerbose = process.env.verbose == 'true'
 
     const [baseDS, managementDS] = await this.getDatasources()
 
@@ -31,15 +33,15 @@ class Management {
     // Check if the management DB is correctly set up
     try {
       photonManagement = new PhotonManagement({
-        debug: process.env.verbose == 'true',
+        debug: isVerbose,
         autoConnect: false
       })
       await photonManagement.connect()
 
       // Lift up potential new migrations
-      console.log('  Making sure the management DB is up-to-date...')
+      if (isVerbose) console.log('  Making sure the management DB is up-to-date...')
       await run('prisma2 lift up', managementDS, __dirname)
-      console.log('  Ok!')
+      if (isVerbose) console.log('  Ok!')
     } catch (error) {
       if (error.message.includes('data source must point to an existing file.')) {
         // No DB set up. Lift one up and retry
@@ -48,7 +50,7 @@ class Management {
         console.log('  Ok!')
 
         photonManagement = new PhotonManagement({
-          debug: process.env.verbose == 'true',
+          debug: isVerbose,
           autoConnect: false
         })
         await photonManagement.connect()
@@ -81,8 +83,8 @@ class Management {
     let datamodel = await getDatamodel(process.cwd() + '/prisma')
 
     datamodel = datamodel.replace(/env\("(.*)"\)/g, (_, env) => {
-      if (env == 'PMT-PROVIDER') return '"sqlite"'
-      if (env == 'PMT-URL') return '"PMT-URL-PLACEHOLDER"'
+      if (env == 'PMT_PROVIDER') return '"sqlite"'
+      if (env == 'PMT_URL') return '"PMT-URL-PLACEHOLDER"'
       return ''
     })
 
@@ -137,4 +139,4 @@ class Management {
   }
 }
 
-export default new Management()
+export default Management

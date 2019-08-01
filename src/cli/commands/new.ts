@@ -1,8 +1,7 @@
-import { Command, Tenant } from '../types'
-import inquirer from 'inquirer'
+import { Command, Tenant } from '../../shared/types'
 
 import management from '../management'
-import { prompt, run, errors } from '../utils'
+import { prompt, run, errors } from '../../shared'
 
 class New implements Command {
   name = 'new'
@@ -36,13 +35,24 @@ class New implements Command {
 
     const conf: Tenant = { name, provider, url }
 
-    await run('prisma2 lift up', conf)
+    try {
+      await run('prisma2 lift up', conf).catch((e: Error) => {
+        throw e
+      })
 
-    await management.photon.tenants.create({ data: conf })
+      await management.photon.tenants.create({ data: conf }).catch((e: Error) => {
+        throw e
+      })
 
-    await run('node prisma/seed.js', conf)
+      await run(`node prisma/seed.js '${name}'`, conf).catch((e: Error) => {
+        throw e
+      })
 
-    console.log(`\n✅  Added the new datasource into management!\n`)
+      console.log(`\n✅  Added the new datasource into management and seeded the database!\n`)
+    } catch (e) {
+      console.error(e)
+      process.exit(1)
+    }
   }
 }
 

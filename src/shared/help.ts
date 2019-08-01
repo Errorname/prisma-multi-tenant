@@ -2,12 +2,12 @@
 
 import chalk from 'chalk'
 
-import { Command } from '../types'
-import * as commands from '../commands'
+import { Command } from './types'
 
-const packageJson = require('../../../package.json')
+const packageJson = require('../../package.json')
 
-const printGlobalHelp = () => {
+const printGlobalHelp = (): void => {
+  const commands: { [name: string]: Command } = require('../cli/commands')
   console.log(chalk`
   {bold.cyan 🧭  prisma-multi-tenant} {grey v${packageJson.version}}
   
@@ -23,10 +23,10 @@ const printGlobalHelp = () => {
   {bold COMMANDS}
     
 ${Object.values(commands)
-  .map((command: Command) => {
+  .map((command: Command): string => {
     const args = command.args
-      .filter(arg => !arg.secondary)
-      .map(arg => `<${arg.name + (arg.optional ? '?' : '')}>`)
+      .filter((arg): boolean => !arg.secondary)
+      .map((arg): string => `<${arg.name + (arg.optional ? '?' : '')}>`)
       .join(' ')
     const strLength = command.name.length + args.length
     const spaceBetween = ''.padStart(23 - strLength)
@@ -44,7 +44,7 @@ ${Object.values(commands)
   process.exit(0)
 }
 
-const printCommandHelp = (command: Command) => {
+const printCommandHelp = (command: Command): void => {
   console.log(chalk`
   {bold.cyan 🧭  prisma-multi-tenant} {bold.yellow ${command.name}}
 
@@ -56,14 +56,16 @@ const printCommandHelp = (command: Command) => {
     command.args.length > 0 ? ' ' : ''
   }${command.args
     .map(
-      arg =>
+      (arg): string =>
         `${arg.secondary ? '<' : '['}${arg.name + (arg.optional ? '?' : '')}${
           arg.secondary ? '>' : ']'
         }`
     )
     .join(' ')}${
     command.options
-      ? ' (' + command.options.map(option => `--${option.name}=[${option.name}]`).join(' ') + ')'
+      ? ' (' +
+        command.options.map((option): string => `--${option.name}=[${option.name}]`).join(' ') +
+        ')'
       : ''
   }
   `)
@@ -73,7 +75,7 @@ const printCommandHelp = (command: Command) => {
   {bold ARGS}
 
 ${command.args
-  .map(arg => {
+  .map((arg): string => {
     const argStr = arg.name.replace(/\|/g, ', ')
     const strLength = argStr.length
     const spaceBetween = ''.padStart(13 - strLength)
@@ -93,7 +95,7 @@ ${command.args
   if (command.options && command.options.length > 0) {
     console.log(
       command.options
-        .map(option => {
+        .map((option): string => {
           const strLength = option.name.length
           const spaceBetween = ''.padStart(11 - strLength)
 
@@ -109,7 +111,7 @@ ${command.args
   `)
 }
 
-const printGlobalVersion = () => {
+const printGlobalVersion = (): void => {
   console.log(packageJson.version)
   process.exit(0)
 }

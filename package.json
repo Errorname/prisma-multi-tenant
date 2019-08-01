@@ -8,7 +8,7 @@
     "prisma-multi-tenant": "build/cli/index.js"
   },
   "scripts": {
-    "prepare": "npm run build && cp -R src/cli/management/prisma build/cli/management/prisma",
+    "prepare": "npm run build && cp -R src/lib/management/prisma build/lib/management/prisma",
     "build": "tsc",
     "test": "jest --coverage --coverage-reporters=text",
     "lint": "eslint src/**/*.ts",

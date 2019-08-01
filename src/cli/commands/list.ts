@@ -1,4 +1,4 @@
-import { Command } from '../types'
+import { Command } from '../../shared/types'
 
 import chalk from 'chalk'
 import Table from 'cli-table3'

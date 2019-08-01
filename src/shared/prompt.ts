@@ -4,9 +4,9 @@ import chalk from 'chalk'
 import args from './args'
 import errors from './errors'
 
-import { Tenant } from '../types'
+import { Tenant } from './types'
 
-const confirm = async (message: string) => {
+const confirm = async (message: string): Promise<boolean> => {
   const { confirm } = await inquirer.prompt([
     {
       name: 'confirm',
@@ -51,7 +51,7 @@ const tenantConf = async (_args: string[]): Promise<Tenant> => {
     }
   }
 
-  return <Tenant>(<unknown>options)
+  return (options as unknown) as Tenant
 }
 
 const managementConf = async (_args: string[]): Promise<Tenant> => {
@@ -82,7 +82,7 @@ const managementConf = async (_args: string[]): Promise<Tenant> => {
     }
   }
 
-  return <Tenant>(<unknown>options)
+  return (options as unknown) as Tenant
 }
 
 export default { confirm, tenantConf, managementConf }

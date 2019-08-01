@@ -1,4 +1,4 @@
-import { Command } from '../types'
+import { Command } from '../../shared/types'
 
 class Export implements Command {
   name = 'export'

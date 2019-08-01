@@ -1,34 +1,38 @@
 import { exec } from 'child_process'
 
-import { Tenant } from '../types'
+import { Tenant } from './types'
 
 const findNodeModules = require('find-node-modules')
 
-export default (cmd: string, { url, provider, connectorType }: Tenant, cwd?: string) => {
+export default (
+  cmd: string,
+  { url, provider, connectorType }: Tenant,
+  cwd?: string
+): Promise<string | Buffer> => {
   if (process.env.verbose == 'true') {
     console.log('  $> ' + cmd)
   }
   const nodeModules = findNodeModules({ cwd: process.cwd(), relative: false })[0]
 
-  return new Promise((resolve, reject) =>
+  return new Promise((resolve, reject): void => {
     exec(
       cmd,
       {
         cwd: cwd || process.cwd(),
         env: {
           ...process.env,
-          'PMT-PROVIDER': provider || connectorType,
-          'PMT-URL': url,
-          'PMT-OUTPUT': nodeModules + '/@generated/photon-multi-tenant'
+          PMT_PROVIDER: provider || connectorType,
+          PMT_URL: url,
+          PMT_OUTPUT: nodeModules + '/@generated/photon-multi-tenant'
         }
       },
-      (error: Error | null, stdout: string | Buffer, stderr: string | Buffer) => {
+      (error: Error | null, stdout: string | Buffer, stderr: string | Buffer): void => {
         if (process.env.verbose == 'true') {
           console.log(stderr || stdout)
         }
-        if (error) throw error
+        if (error) reject(error)
         resolve(stdout)
       }
     )
-  )
+  })
 }
