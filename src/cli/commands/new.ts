@@ -44,7 +44,7 @@ class New implements Command {
         throw e
       })
 
-      await run(`node prisma/seed.js '${name}'`, conf).catch((e: Error) => {
+      await run(`node prisma/tenant-seed.js '${name}'`, conf).catch((e: Error) => {
         throw e
       })
 

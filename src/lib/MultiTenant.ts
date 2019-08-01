@@ -1,19 +1,22 @@
 import path from 'path'
 import { PhotonTenants, PhotonTenant, Tenant } from '../shared/types'
 
-const PhotonManagement = require(require.resolve(`@generated/photon-multi-tenant`, {
-  paths: [process.cwd()]
-}))
-const PhotonTenant = require(require.resolve(`@generated/photon`, {
-  paths: [process.cwd()]
-}))
-
 class MultiTenant {
+  private PhotonManagement: any
+  private PhotonTenant: any
+
   private management: any
   private tenants: PhotonTenants = {}
 
   public constructor() {
-    this.management = new PhotonManagement()
+    this.PhotonManagement = require(require.resolve(`@generated/photon-multi-tenant`, {
+      paths: [process.cwd()]
+    }))
+    this.PhotonTenant = require(require.resolve(`@generated/photon`, {
+      paths: [process.cwd()]
+    }))
+
+    this.management = new this.PhotonManagement()
   }
 
   public async get<PhotonGenerated extends Record<string, any>>(
@@ -48,7 +51,7 @@ class MultiTenant {
     conf: Tenant,
     options?: Record<string, any>
   ): Promise<PhotonGenerated & PhotonTenant> {
-    const tenant = new PhotonTenant({
+    const tenant = new this.PhotonTenant({
       ...(options || {}),
       datasources: {
         db: {
