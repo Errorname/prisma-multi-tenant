@@ -4,15 +4,21 @@ import { Tenant } from './types'
 
 const findNodeModules = require('find-node-modules')
 
-export default (
-  cmd: string,
-  { url, provider, connectorType }: Tenant,
-  cwd?: string
-): Promise<string | Buffer> => {
+export default (cmd: string, tenant?: Tenant, cwd?: string): Promise<string | Buffer> => {
   if (process.env.verbose == 'true') {
     console.log('  $> ' + cmd)
   }
   const nodeModules = findNodeModules({ cwd: process.cwd(), relative: false })[0]
+
+  let env = {}
+
+  if (tenant) {
+    env = {
+      PMT_PROVIDER: tenant.provider || tenant.connectorType,
+      PMT_URL: tenant.url,
+      PMT_OUTPUT: nodeModules + '/@generated/photon-multi-tenant'
+    }
+  }
 
   return new Promise((resolve, reject): void => {
     exec(
@@ -21,9 +27,7 @@ export default (
         cwd: cwd || process.cwd(),
         env: {
           ...process.env,
-          PMT_PROVIDER: provider || connectorType,
-          PMT_URL: url,
-          PMT_OUTPUT: nodeModules + '/@generated/photon-multi-tenant'
+          ...env
         }
       },
       (error: Error | null, stdout: string | Buffer, stderr: string | Buffer): void => {

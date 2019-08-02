@@ -1,6 +1,6 @@
 import { Command } from '../../shared/types'
 
-import { prompt } from '../../shared'
+import { prompt, run } from '../../shared'
 
 const prependFile = require('prepend-file')
 
@@ -24,6 +24,10 @@ class Init implements Command {
   async execute(args: string[]) {
     console.log()
 
+    console.log('  Installing `prisma-multi-tenant` in your app...')
+    await run('npm i prisma-multi-tenant')
+
+    console.log('\n  We will now configure the management database:\n')
     const { provider, url } = await prompt.managementConf(args)
 
     const datasourceStr = `// The two following datasources (db and management) are REQUIRED for prisma-multi-tenant.
