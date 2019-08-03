@@ -79,7 +79,7 @@ class Management {
     return !!tenant
   }
 
-  private async getDatasources() {
+  async getDatasources() {
     let datamodel = await getDatamodel(process.cwd() + '/prisma')
 
     datamodel = datamodel.replace(/env\("(.*)"\)/g, (_, env) => {
@@ -119,7 +119,7 @@ class Management {
     return datasources
   }
 
-  private async requireGenerated(name: string, conf: Tenant, cwd?: string) {
+  async requireGenerated(name: string, conf: Tenant, cwd?: string) {
     let Generated = null
     try {
       Generated = require(require.resolve(`@generated/${name}`, {

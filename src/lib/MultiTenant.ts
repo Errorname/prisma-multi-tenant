@@ -38,7 +38,7 @@ class MultiTenant {
         tenantConf.url = 'file:' + path.resolve(process.cwd(), 'prisma/' + filePath)
       }
 
-      return this.directGet(tenantConf, options)
+      return this.directGet<PhotonGenerated>(tenantConf, options)
     } catch (error) {
       if (error.message.includes('RecordDoesNotExist')) {
         throw new Error(`The tenant with the name "${name}" does not exist`)
