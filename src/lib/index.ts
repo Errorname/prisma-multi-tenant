@@ -26,24 +26,31 @@ class MultiTenant<Photon extends { disconnect: () => Promise<void> }> {
   constructor(options?: MultiTenantOptions) {
     this.options = { ...defaultMultiTenantOptions, ...options }
 
-    this.PhotonManagement = require(require.resolve(
-      `@prisma/photon/prisma-multi-tenant/management`,
-      {
-        paths: [process.cwd()]
-      }
-    )).Photon
-    this.PhotonTenant = require(require.resolve(`@prisma/photon`, {
-      paths: [process.cwd()]
-    })).Photon
+    this.PhotonTenant = this.requireTenant()
 
     if (this.options.useManagement) {
+      this.PhotonManagement = this.requireManagement()
+
       const managementUrl = new this.PhotonTenant().engine.datasources.find(
         (d: { name: string }) => d.name === 'management'
       ).url
       process.env.PMT_MANAGEMENT_URL = managementUrl
       this.management = new this.PhotonManagement()
     }
+
     this.tenants = {}
+  }
+
+  private requireManagement() {
+    return require(require.resolve(`@prisma/photon/prisma-multi-tenant/management`, {
+      paths: [process.cwd()]
+    })).Photon
+  }
+
+  private requireTenant() {
+    return require(require.resolve(`@prisma/photon`, {
+      paths: [process.cwd()]
+    })).Photon
   }
 
   async get(name: string, options?: any) {
