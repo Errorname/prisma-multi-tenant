@@ -1,28 +1,31 @@
-import { Command } from '../../shared/types'
-
 import chalk from 'chalk'
-import Table from 'cli-table3'
 
-import management from '../management'
+import { Command, CommandArguments } from '../../shared/types'
+import { runLocal, runDistant } from '../helpers/shell'
 
-class List implements Command {
+class Generate implements Command {
   name = 'generate'
   args = []
   description = 'Generate Photon for the tenants and management'
 
-  useManagement = false
+  async execute(args: CommandArguments) {
+    console.log('\n  Generating photon for both management and tenants...')
+    // 1. Generate Tenants Photon
+    await this.generateTenants(args.secondary)
 
-  async execute() {
-    const [baseDS, managementDS] = await management.getDatasources()
+    // 2. Generate Management Photon
+    await this.generateManagement(args.secondary)
 
-    await management.requireGenerated('photon', baseDS)
+    console.log(chalk`\n✅  {green Photons have been generated!}\n`)
+  }
 
-    await management.requireGenerated(
-      'photon-multi-tenant',
-      managementDS,
-      __dirname + '/../../lib/management'
-    )
+  async generateTenants(prismaArgs: string = '') {
+    await runDistant(`prisma2 generate ${prismaArgs}`)
+  }
+
+  async generateManagement(prismaArgs: string = '') {
+    await runLocal(`prisma2 generate ${prismaArgs}`)
   }
 }
 
-export default new List()
+export default new Generate()

@@ -1,33 +1,47 @@
-import { Command } from '../../shared/types'
-
-import chalk from 'chalk'
 import Table from 'cli-table3'
+import chalk from 'chalk'
 
+import { Command, CommandArguments } from '../../shared/types'
 import management from '../management'
 
 class List implements Command {
   name = 'list'
   args = []
+  options = [
+    {
+      name: 'json',
+      description: 'Print using JSON format'
+    }
+  ]
   description = 'List all tenants'
 
-  useManagement = true
+  async execute(args: CommandArguments) {
+    console.log('\n  Fetching available tenants...')
 
-  async execute() {
-    const tenants = await management.getAll()
+    const tenants = await management.getTenants()
+
+    if (args.options['json']) {
+      console.log(JSON.stringify(tenants, null, 2))
+      return
+    }
 
     const table = new Table({
       head: [chalk.green.bold('Name'), chalk.green.bold('Provider'), chalk.green('URL')]
     }) as Table.HorizontalTable
 
-    tenants.forEach(({ name, provider, url }: { name: string; provider?: string; url: string }) => {
-      table.push([name, provider, url])
-    })
+    for (let tenant of tenants) {
+      table.push([
+        tenant.name,
+        tenant.provider,
+        tenant.url.length > 21
+          ? tenant.url.substr(0, 9) + '...' + tenant.url.substr(-9)
+          : tenant.url
+      ])
+    }
 
-    console.log(chalk`
-  {green.bold List of available tenants}
-
-${table.toString()}
-  `)
+    console.log(chalk`\n  {green.bold List of available tenants}
+      ${'\n' + table.toString()}
+    `)
   }
 }
 

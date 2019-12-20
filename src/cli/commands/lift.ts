@@ -1,7 +1,9 @@
-import { Command, Tenant } from '../../shared/types'
-
+import { Command, CommandArguments, Datasource } from '../../shared/types'
+import { runLocal, runDistant } from '../helpers/shell'
+import { getManagementDatasource, getSchemaDir } from '../helpers/schema'
 import management from '../management'
-import { errors, run } from '../../shared'
+import { CliError } from '../helpers/errors'
+import chalk = require('chalk')
 
 const liftActions = ['up', 'down']
 
@@ -17,56 +19,76 @@ class Lift implements Command {
       name: liftActions.join('|'),
       optional: false,
       description: 'Either lift up or down the tenant'
-    },
-    {
-      name: '...',
-      optional: true,
-      secondary: true,
-      description: 'Any args you want to pass to `prisma2 lift`'
     }
   ]
-  description = 'Lift up or down all tenants'
+  description = 'Lift up or down tenants'
 
-  useManagement = true
-
-  async execute(args: string[]) {
-    let name
-    if (!liftActions.includes(args[0])) {
-      name = args.shift()
-    }
-    const [action, ...liftArgs] = args
-
-    if (!liftActions.includes(action)) {
-      errors.wrongLiftAction(action)
-    }
-
-    let tenants
+  async execute(args: CommandArguments) {
+    const { name, action, liftArgs, prismaArgs } = this.parseArgs(args)
 
     if (name) {
-      const tenant: Tenant = await management.get(name)
-      if (!tenant) {
-        errors.tenantDoesNotExists(name)
-      }
+      console.log(`\n  Lifting "${name}" ${action}...`)
 
-      tenants = [tenant]
-    } else {
-      tenants = await management.getAll()
+      await this.liftOneTenant(action, name, liftArgs, prismaArgs)
+
+      console.log(chalk`\n✅  {green Successfuly lifted ${action} "${name}"}\n`)
+      return
     }
 
-    const tenantsCountStr = `${tenants.length} tenant${tenants.length > 1 ? 's' : ''}`
+    console.log(`\n  Lifting ${action} all tenants...\n`)
 
-    console.log(`\nStarting lifting ${action} ${tenantsCountStr}\n`)
+    await this.liftAllTenants(action, liftArgs, prismaArgs)
+
+    console.log(chalk`\n✅  {green Successfuly lifted ${action} all tenants}\n`)
+  }
+
+  parseArgs(args: CommandArguments) {
+    const [arg1, arg2, ...restArgs] = args.args
+
+    let name
+    let action
+    let liftArgs
+
+    if (liftActions.includes(arg2)) {
+      name = arg1
+      action = arg2
+      liftArgs = restArgs.join(' ')
+    } else if (liftActions.includes(arg1)) {
+      action = arg1
+      liftArgs = [arg2, ...restArgs].join(' ')
+    } else {
+      throw new CliError('unrecognized-lift-action', args)
+    }
+
+    return { name, action, liftArgs, prismaArgs: args.secondary }
+  }
+
+  async liftOneTenant(
+    action: string,
+    name: string,
+    liftArgs: string = '',
+    prismaArgs: string = ''
+  ) {
+    const tenant = await management.getTenant(name)
+
+    return this.liftTenant(action, tenant, liftArgs, prismaArgs)
+  }
+
+  async liftAllTenants(action: string, liftArgs: string = '', prismaArgs: string = '') {
+    const tenants = await management.getTenants()
 
     for (let tenant of tenants) {
-      console.log(
-        `> Lifting ${action} tenant "${tenant.name}" ` +
-          (liftArgs.length > 0 ? `with the following args: "${liftArgs.join(' ')}"` : '')
-      )
-      await run(`prisma2 lift ${action} ${liftArgs.join(' ')}`, tenant)
-      console.log('Done!\n')
+      console.log(`    > Lifting "${tenant.name}" ${action}`)
+      await this.liftTenant(action, tenant, liftArgs, prismaArgs)
     }
+  }
 
-    console.log(`✅  Successfully lifted ${action} ${tenantsCountStr}\n`)
+  liftTenant(action: string, tenant: Datasource, liftArgs: string = '', prismaArgs: string = '') {
+    return runDistant(`prisma2 lift ${action} ${liftArgs} ${prismaArgs}`, tenant)
+  }
+
+  liftManagement(action: string) {
+    return runLocal(`prisma2 lift ${action} --create-db`)
   }
 }
 

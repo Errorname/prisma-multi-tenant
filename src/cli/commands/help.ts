@@ -1,15 +1,13 @@
 import { Command } from '../../shared/types'
 
-class Export implements Command {
+class Help implements Command {
   name = 'help'
   args = []
   description = 'Display this help'
-
-  useManagement = false
 
   async execute() {
     // Do nothing, printing global help is handled by src/cli/index.ts
   }
 }
 
-export default new Export()
+export default new Help()

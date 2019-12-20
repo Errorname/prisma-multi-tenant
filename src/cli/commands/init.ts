@@ -1,8 +1,13 @@
-import { Command } from '../../shared/types'
+import chalk from 'chalk'
 
-import { prompt, run } from '../../shared'
-
-const prependFile = require('prepend-file')
+import { Command, CommandArguments, Datasource } from '../../shared/types'
+import { runShell, useYarn, requireDistant, writeFile } from '../helpers/shell'
+import prompt from '../helpers/prompt'
+import { writeSchema, readSchema, parseSchema, prismaSchemaFragment } from '../helpers/schema'
+import generate from './generate'
+import lift from './lift'
+import { CliError } from '../helpers/errors'
+import management from '../management'
 
 class Init implements Command {
   name = 'init'
@@ -19,80 +24,131 @@ class Init implements Command {
   ]
   description = 'Init multi-tenancy for your project'
 
-  useManagement = false
+  async execute(args: CommandArguments) {
+    // 1. Install prisma-multi-tenant to the project
+    await this.installPMT()
 
-  async execute(args: string[]) {
-    console.log()
+    // 2. Prompt provider & url
+    const managementDS = await this.getManagementDatasource(args)
 
-    console.log('  Installing `prisma-multi-tenant` in your app...')
-    await run('npm i prisma-multi-tenant')
+    // 3. Update schema.prisma
+    const firstTenant = await this.updatePrismaSchema(managementDS)
 
-    console.log('\n  We will now configure the management database:\n')
-    const { provider, url } = await prompt.managementConf(args)
+    // 4. Generating photons
+    await this.generatingPhotons()
 
-    const datasourceStr = `// The two following datasources (db and management) are REQUIRED for prisma-multi-tenant.
-// PLEASE DO NOT REMOVE THEM
+    // 5. Set up management
+    await this.setUpManagement()
 
-datasource db {
-  provider = env("PMT_PROVIDER")
-  url      = env("PMT_URL")
-}
+    // 6. Create first tenant from initial schema
+    await this.createFirstTenant(firstTenant)
 
-datasource management {
-  provider = "${provider}"
-  url      = "${url}"
-}
+    // 7. Create multi-tenancy-example.js
+    await this.createExample(firstTenant)
 
-// If there is datasources below this line, they will not be used by prisma2
+    console.log(chalk`\n✅  {green Your app is now ready for multi-tenancy!}\n`)
+  }
 
-`
+  async installPMT() {
+    console.log('\n  Installing `prisma-multi-tenant` in your app...')
 
-    await new Promise((resolve, reject) => {
-      prependFile(process.cwd() + '/prisma/schema.prisma', datasourceStr, (err: Error) => {
-        if (err) reject(err)
-        resolve()
-      })
-    })
+    const yarnOrNpm = (await useYarn()) ? 'yarn add' : 'npm install'
 
-    const seedStr = `const { MultiTenant } = require('prisma-multi-tenant')
+    return runShell(`${yarnOrNpm} prisma-multi-tenant`)
+  }
 
-const name = process.argv[2]
-if (!name) {
-  console.error('No tenant name given as argument')
-  process.exit(0)
-}
+  getManagementDatasource(args: CommandArguments) {
+    console.log(chalk`\n  {yellow We will now configure the management database:}\n`)
 
-const multiTenant = new MultiTenant()
+    return prompt.managementConf(args)
+  }
 
-async function main() {
-  const photon = await multiTenant.get(name)
+  async updatePrismaSchema(managementDS: Datasource) {
+    console.log('\n  Updating your schema.prisma file...')
 
-  // This will create an user on your new tenant
-  await photon.users.create({
-    data: {
-      name: 'Jane Doe',
-      email: 'jane.doe@errorna.me'
+    const schema = await readSchema()
+
+    const previousDatasources = (await parseSchema(schema)).datasources
+
+    if (previousDatasources.length == 0) {
+      throw new CliError('no-existing-datasource')
     }
-  })
 
-  console.log('Seeding done!')
-}
+    const previous = {
+      name: previousDatasources[0].name,
+      provider: previousDatasources[0].connectorType,
+      url: previousDatasources[0].url.value
+    }
 
-main()
-  .catch(e => console.error(e))
-  .finally(async () => {
-    await multiTenant.disconnect()
-  })
-`
+    const strToPrepend = prismaSchemaFragment(previous, managementDS)
+    const newSchema = strToPrepend + schema.replace(/datasource[^\{]*{[^\}]*}\n\n/g, '')
 
-    await new Promise((resolve, reject) => {
-      prependFile(process.cwd() + '/prisma/tenant-seed.js', seedStr, (err: Error) => {
-        if (err) reject(err)
-        resolve()
-      })
-    })
+    await writeSchema(newSchema)
 
-    console.log(`\n✅  Added the datasources definitions into your schema.prisma file!\n`)
+    return previous
+  }
+
+  async generatingPhotons() {
+    console.log('\n  Generating photon for both management and tenants...')
+
+    await generate.generateTenants()
+    await generate.generateManagement()
+  }
+
+  setUpManagement() {
+    console.log('\n  Setting up management database...')
+
+    return lift.liftManagement('up')
+  }
+
+  async createFirstTenant(firstTenant: Datasource) {
+    console.log('\n  Creating first tenant from your initial schema...')
+
+    await management.createTenant(firstTenant)
+  }
+
+  async createExample(firstTenant: Datasource) {
+    console.log('\n  Creating example script...')
+
+    const { Photon } = requireDistant('@prisma/photon')
+
+    const tenant = new Photon()
+
+    const firstModelMapping = tenant.dmmf.mappings[0]
+    const modelName = firstModelMapping.plural
+
+    const script = `
+      // const { Photon } = require('@prisma/photon) // Uncomment for TypeScript support
+      const { MultiTenant } = require('prisma-multi-tenant')
+
+      // This is the name of your first tenant, try with another one
+      const name = "${firstTenant.name}"
+
+      // If you are using Typescript, you can do "new MultiTenant<Photon>()" for autocompletion
+      const multiTenant = new MultiTenant()
+      
+      async function main() {
+        // Prisma-multi-tenant will connect to the correct tenant
+        const photon = await multiTenant.get(name)
+      
+        // You keep the same interface as before
+        const ${modelName} = await photon.${modelName}.findMany()
+      
+        console.log(${modelName})
+      }
+
+      main()
+        .catch(e => console.error(e))
+        .finally(async () => {
+          await multiTenant.disconnect()
+        })
+    `
+      .split('\n')
+      .map(x => x.substr(6))
+      .join('\n')
+      .substr(1)
+
+    await writeFile(process.cwd() + '/multi-tenancy-example.js', script)
   }
 }
 

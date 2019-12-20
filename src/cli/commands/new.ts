@@ -1,7 +1,8 @@
-import { Command, Tenant } from '../../shared/types'
-
+import { Command, CommandArguments } from '../../shared/types'
+import prompt from '../helpers/prompt'
 import management from '../management'
-import { prompt, run, errors } from '../../shared'
+import lift from './lift'
+import chalk = require('chalk')
 
 class New implements Command {
   name = 'new'
@@ -11,48 +12,42 @@ class New implements Command {
       name: 'name',
       description: 'Name of the tenant'
     },
+    /*
+    Uncomment when we can have multiple providers for tenants
     {
       name: 'provider',
       description: 'Type of the provider'
-    },
+    },*/
     {
       name: 'url',
       description: 'URL of the database'
+    },
+    {
+      name: 'no-management',
+      description: 'The new tenant will not be registered in the management database',
+      boolean: true
     }
   ]
-  description = 'Create, deploy and seed a new tenant'
+  description = 'Create a new tenant'
 
-  useManagement = true
-
-  async execute(args: string[]) {
+  async execute(args: CommandArguments) {
     console.log()
+    const tenant = await prompt.tenantConf(args)
 
-    const { name, provider, url } = await prompt.tenantConf(args)
+    await lift.liftTenant('up', tenant, '--create-db')
 
-    if (await management.exists(name)) {
-      errors.tenantAlreadyExists(name)
+    if (args.options['no-management']) {
+      console.log(
+        chalk`\n✅  {green Created the new tenant (without management) and lifted up the database}\n`
+      )
+      return
     }
 
-    const conf: Tenant = { name, provider, url }
+    await management.createTenant(tenant)
 
-    try {
-      await run('prisma2 lift up', conf).catch((e: Error) => {
-        throw e
-      })
-
-      await management.photon.tenants.create({ data: conf }).catch((e: Error) => {
-        throw e
-      })
-
-      await run(`node prisma/tenant-seed.js '${name}'`, conf).catch((e: Error) => {
-        throw e
-      })
-
-      console.log(`\n✅  Added the new datasource into management and seeded the database!\n`)
-    } catch (e) {
-      console.error(e)
-      process.exit(1)
-    }
+    console.log(
+      chalk`\n✅  {green Registered the new tenant into management and lifted up the database!}\n`
+    )
   }
 }
 

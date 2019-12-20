@@ -1,64 +1,61 @@
 #!/usr/bin/env node
 
-import { help, errors } from '../shared'
+import * as commands from './commands'
+import {
+  parseArgs,
+  convertToCommandArgs,
+  shouldPrintHelp,
+  shouldPrintVersion,
+  shouldSetVerbose
+} from './helpers/arguments'
+
+import { CliError, printError } from './helpers/errors'
+
+import help from './helpers/help'
 import management from './management'
 
-import * as commands from './commands'
-import { Command, Argument } from '../shared/types'
-
-const [, , ...args] = process.argv
+const args = parseArgs()
 
 const run = async (): Promise<void> => {
-  if (args.length == 0) {
-    return errors.missingCommandOrOption()
+  // Printing help
+  if (shouldPrintHelp(args)) {
+    return help.printGlobalHelp()
   }
 
-  switch (args[0]) {
-    case '-h':
-    case '--help':
-    case 'help':
-      return help.printGlobalHelp()
-
-    case '-V':
-    case '--version':
-      return help.printGlobalVersion()
+  // Printing version
+  if (shouldPrintVersion(args)) {
+    return help.printGlobalVersion()
   }
 
-  process.env.verbose = `${args.includes('--verbose')}`
+  // Setting verbosity
+  if (shouldSetVerbose(args)) {
+    process.env.verbose = 'true'
+  }
 
-  const command: Command | undefined = Object.values(commands).find(
-    (c: Command): boolean => c.name == args[0]
-  )
+  const { parsedPrimaryArgs, commandName } = args
+
+  // Finding command
+  const command = Object.values(commands).find(c => c.name == commandName)
 
   if (!command) {
-    return errors.unrecognizedCommandOrOption(args)
+    throw new CliError('unrecognized-command', commandName)
   }
 
-  if (args.includes('-h') || args.includes('--help')) {
-    return help.printCommandHelp(command)
+  if (parsedPrimaryArgs['--help']) {
+    help.printCommandHelp(command)
+    return
   }
 
-  if (command.args.filter((a: Argument): boolean => !a.optional).length > 0 && args.length == 1) {
-    return errors.missingArgs(command)
-  }
-
-  if (command.useManagement) {
-    await management.connect()
-  }
-
-  await command.execute(args.slice(1))
-
-  if (command.useManagement) {
-    await management.disconnect()
-  }
+  // Executing command
+  await command.execute(convertToCommandArgs(command, args))
 }
 
 run()
-  .catch((e: Error): void => console.error(e))
-  .finally(
-    async (): Promise<void> => {
-      if (management.photon) {
-        await management.disconnect()
-      }
-    }
-  )
+  .then(async () => {
+    await management.disconnect()
+  })
+  .catch(async err => {
+    printError(err, args)
+    await management.disconnect()
+    process.exit(1)
+  })

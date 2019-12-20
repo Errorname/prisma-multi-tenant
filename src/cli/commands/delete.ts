@@ -1,9 +1,8 @@
-import { Command } from '../../shared/types'
-import chalk from 'chalk'
-
-import { prompt, errors, run } from '../../shared'
-
+import { Command, CommandArguments } from '../../shared/types'
+import prompt from '../helpers/prompt'
+import chalk = require('chalk')
 import management from '../management'
+import lift from './lift'
 
 class Delete implements Command {
   name = 'delete'
@@ -14,44 +13,44 @@ class Delete implements Command {
       description: 'Name of the tenant you want to delete'
     }
   ]
-  description = 'Delete one or all tenants'
+  description = 'Delete one or more tenants'
 
-  useManagement = true
-
-  async execute([name]: string[]) {
-    // Feature request: Delete databases as well
-
+  async execute(args: CommandArguments) {
     console.log()
+
+    const [name] = args.args
+
     if (name) {
-      if (
-        await prompt.confirm(chalk.red(`Are you sure you want to delete the "${name}" tenant?`))
-      ) {
-        const tenant = await management.get(name)
-        if (!tenant) {
-          errors.tenantDoesNotExists(name)
-        }
+      return this.deleteOne(name)
+    }
 
-        await run('prisma2 lift down', tenant)
+    return this.deleteAll()
+  }
 
-        await management.photon.tenants.delete({ where: { name } })
-
-        console.log('\n✅  Lifted down the datasource and deleted it from management!\n')
-        console.log(chalk.red.bold('Note: You are still in charge of deleting the database!\n'))
-        return
-      }
-    } else if (await prompt.confirm(chalk.red(`Are you sure you want to delete all tenants?`))) {
-      const tenants = await management.getAll()
-
-      await Promise.all(tenants.map(tenant => run('prisma2 lift down', tenant)))
-
-      await management.photon.tenants.deleteMany({})
-
-      console.log(
-        `\n✅  Lifted down all (${tenants.length}) datasources and deleted them from management!\n`
-      )
-      console.log(chalk.red.bold('Note: You are still in charge of deleting the databases!\n'))
+  async deleteOne(name: string) {
+    if (
+      !(await prompt.confirm(chalk`{red Are you sure you want to delete the tenant "${name}"?}`))
+    ) {
       return
     }
+
+    await lift.liftOneTenant('down', name)
+    await management.deleteTenant(name)
+
+    console.log(chalk`\n✅  {green Lifted down "${name}" and deleted it from management!}\n`)
+    console.log(chalk`  {blue Note: You are still in charge of deleting the database!}\n`)
+  }
+
+  async deleteAll() {
+    if (!(await prompt.confirm(chalk`{red Are you sure you want to delete *all* tenants?}`))) {
+      return
+    }
+
+    await lift.liftAllTenants('down')
+    await management.deleteTenants()
+
+    console.log(chalk`\n✅  {green Lifted down all tenants and deleted them from management!}\n`)
+    console.log(chalk`  {blue Note: You are still in charge of deleting the databases!}\n`)
   }
 }
 

@@ -1,6 +1,7 @@
-datasource management {
-  provider = env("PMT_PROVIDER")
-  url      = env("PMT_URL")
+datasource management_sqlite {
+  provider = "sqlite"
+  url = "***"
+  enabled  = env("PMT_MANAGEMENT_PROVIDER_SQLITE")
 }
 
 generator photon {
@@ -9,7 +10,7 @@ generator photon {
 }
 
 model Tenant {
-  id       String @default(cuid()) @id @unique
+  id       String @default(cuid()) @id
   name     String @unique
   provider String
   url      String

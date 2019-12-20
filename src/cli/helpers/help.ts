@@ -1,13 +1,12 @@
-#!/usr/bin/env node
-
 import chalk from 'chalk'
 
-import { Command } from './types'
+import { Command } from '../../shared/types'
 
-const packageJson = require('../../package.json')
+import * as commands from '../commands'
+
+const packageJson = require('../../../package.json')
 
 const printGlobalHelp = (): void => {
-  const commands: { [name: string]: Command } = require('../cli/commands')
   console.log(chalk`
   {bold.cyan 🧭  prisma-multi-tenant} {grey v${packageJson.version}}
   
@@ -17,7 +16,8 @@ const printGlobalHelp = (): void => {
     
     {grey Examples:}
         {grey prisma-multi-tenant new}
-        {grey prisma-multi-tenant lift up}
+        {grey prisma-multi-tenant lift my_tenant up}
+        {grey prisma-multi-tenant env my_tenant -- prisma2 dev}
         {grey ...}
 
   {bold COMMANDS}
@@ -64,7 +64,9 @@ const printCommandHelp = (command: Command): void => {
     .join(' ')}${
     command.options
       ? ' (' +
-        command.options.map((option): string => `--${option.name}=[${option.name}]`).join(' ') +
+        command.options
+          .map((option): string => `--${option.name}` + (option.boolean ? '' : `=[${option.name}]`))
+          .join(' ') +
         ')'
       : ''
   }
@@ -78,7 +80,7 @@ ${command.args
   .map((arg): string => {
     const argStr = arg.name.replace(/\|/g, ', ')
     const strLength = argStr.length
-    const spaceBetween = ''.padStart(13 - strLength)
+    const spaceBetween = ''.padStart(15 - strLength)
 
     return chalk`    {bold ${argStr}} ${spaceBetween} ${arg.description} ${
       arg.optional ? chalk`{italic.grey (optional)}` : ''
@@ -88,26 +90,25 @@ ${command.args
     `)
   }
 
-  console.log(chalk`
-  {bold OPTIONS}
-  `)
+  console.log(chalk`\n  {bold OPTIONS}`)
 
   if (command.options && command.options.length > 0) {
     console.log(
-      command.options
-        .map((option): string => {
-          const strLength = option.name.length
-          const spaceBetween = ''.padStart(11 - strLength)
+      '\n' +
+        command.options
+          .map((option): string => {
+            const strLength = option.name.length
+            const spaceBetween = ''.padStart(13 - strLength)
 
-          return chalk`    {bold --${option.name}} ${spaceBetween} ${option.description}`
-        })
-        .join('\n')
+            return chalk`    {bold --${option.name}} ${spaceBetween} ${option.description}`
+          })
+          .join('\n')
     )
   }
 
   console.log(chalk`
-    {bold -h, --help}     Display this help
-    {bold --verbose}      Print additional logs
+    {bold -h, --help}       Display this help
+    {bold --verbose}        Print additional logs
   `)
 }
 
