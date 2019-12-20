@@ -99,6 +99,7 @@ Read more on how `prisma-multi-tenant` can help you achieve multi-tenancy for yo
 
 - Twitter: [@Errorname\_](https://twitter.com/Errorname_)
 - Github: [@Errorname](https://github.com/Errorname)
+- Prisma's Slack: [@Errorname](https://app.slack.com/client/T0MQBS8JG/DBNJ479FU)
 
 ## 🤝 Contributors
 
