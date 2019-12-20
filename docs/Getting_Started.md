@@ -19,7 +19,7 @@ In this documentation, we will follow a step-by-step tutorial on how to add mult
 
 Prisma-multi-tenant uses a "**management**" datasource in order to keep track of all the tenants of your application.
 
-Thanks to this management datasource, prisma-multi-tenant is able to lift all your tenants, as will as providing you with a simple way to access your data, whichever tenant you want.
+Thanks to this management datasource, prisma-multi-tenant is able to lift all your tenants, as well as providing you with a simple way to access your data.
 
 Prisma-multi-tenant is a two-part project:
 
@@ -77,13 +77,13 @@ prisma-multi-tenant list
 
 Now that you have two tenants, we want to access them and put some data in it.
 
-We will do that by running Studio and using **the name of one of your tenant**:
+We will do that by running Studio using **the name of one of your tenant**:
 
 ```sh
 prisma-multi-tenant studio your_tenant_name
 ```
 
-If you want more to open another Studio for your other tenant, you can specify the port:
+If you want to open another studio instance for your other tenant, you can specify the port:
 
 ```sh
 prisma-multi-tenant studio your_other_tenant --port=5556
@@ -121,7 +121,7 @@ You can access any tenant you want, simply by using their name!
 
 ## 6. Execute any prisma2 command on a given tenant
 
-Prisma-multi-tenant can used a wrapper to the `prisma2` CLI.
+Prisma-multi-tenant can be used as a wrapper to the `Prisma2` CLI.
 
 For example, if you want to run `prisma2 dev` on a specific tenant, you can do the following:
 
@@ -131,9 +131,7 @@ prisma-multi-tenant env your_tenant_name -- prisma2 dev
 
 ## 7. Deploy your schema on all tenants at once
 
-Want making changes to your schema, you want to lift all your tenants at the same time.
-
-You can do it using the following command:
+If you want to make changes to your schema and lift all your tenants at the same time, you can do it using the following command:
 
 ```sh
 prisma-multi-tenant lift up

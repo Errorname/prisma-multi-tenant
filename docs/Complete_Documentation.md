@@ -2,7 +2,7 @@
 
 Prisma-multi-tenant uses a "**management**" datasource in order to keep track of all the tenants of your application.
 
-Thanks to this management datasource, prisma-multi-tenant is able to lift all your tenants, as will as providing you with a simple way to access your data, whichever tenant you want.
+Thanks to this management datasource, prisma-multi-tenant is able to lift all your tenants, as well as providing you with a simple way to access your data of whichever tenant you want.
 
 Prisma-multi-tenant is a two-part project:
 
@@ -104,7 +104,7 @@ prisma-multi-tenant new --no-management
 
 The `new` command create a new database using your schema. It will use a name and a url (that you can provide as options).
 
-If you want to create a tenant without tracking it in the management datasource, you can use `--no-management`. Be careful however, because you will need to manually lift up and down this tenant after that.
+If you want to create a tenant without tracking it in the management datasource, you can use `--no-management`. However be careful, because you will need to manually lift up and down this tenant after that.
 
 ### `studio`
 
@@ -131,7 +131,7 @@ prisma-multi-tenant studio your_other_tenant --port=5556
 
 **Explanations**
 
-The `studio` command will connect to the management datasource to retrieve the url of the tenant given in argument. If you want to run multiple studios, you can pass a specific `--port` option.
+The `studio` command will connect to the management datasource to retrieve the url of the tenant given as an argument. If you want to run multiple studios, you can pass a specific `--port` option.
 
 ### `lift`
 
@@ -264,7 +264,7 @@ const multiTenant = new MultiTenant({
 
 Returns the Photon of your tenant. Any options passed as second argument will be given to the Photon constructor.
 
-This method connects to management, and will throw an error if the tenant is not in the local cache and the useManagement constructor's option is false.
+This method connects to management, and will throw an error if the tenant is not in the local cache and the useManagement constructor's option is set to false.
 
 **Usage**
 
