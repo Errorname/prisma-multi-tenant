@@ -131,7 +131,7 @@ prisma-multi-tenant env your_tenant_name -- prisma2 dev
 
 ## 7. Deploy your schema on all tenants at once
 
-If you want to make changes to your schema, and lift all your tenants at the same time you can do it using the following command:
+If you want to make changes to your schema and lift all your tenants at the same time, you can do it using the following command:
 
 ```sh
 prisma-multi-tenant lift up
