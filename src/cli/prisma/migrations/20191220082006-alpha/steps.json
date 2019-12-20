@@ -1,0 +1,177 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateSource",
+      "source": "management_sqlite"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Source",
+        "source": "management_sqlite"
+      },
+      "argument": "provider",
+      "value": "\"sqlite\""
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Source",
+        "source": "management_sqlite"
+      },
+      "argument": "url",
+      "value": "env(\"PMT_MANAGEMENT_URL\")"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Source",
+        "source": "management_sqlite"
+      },
+      "argument": "enabled",
+      "value": "env(\"PMT_MANAGEMENT_PROVIDER_SQLITE\")"
+    },
+    {
+      "tag": "CreateSource",
+      "source": "management_mysql"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Source",
+        "source": "management_mysql"
+      },
+      "argument": "provider",
+      "value": "\"mysql\""
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Source",
+        "source": "management_mysql"
+      },
+      "argument": "url",
+      "value": "env(\"PMT_MANAGEMENT_URL\")"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Source",
+        "source": "management_mysql"
+      },
+      "argument": "enabled",
+      "value": "env(\"PMT_MANAGEMENT_PROVIDER_MYSQL\")"
+    },
+    {
+      "tag": "CreateSource",
+      "source": "management_postgresql"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Source",
+        "source": "management_postgresql"
+      },
+      "argument": "provider",
+      "value": "\"postgresql\""
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Source",
+        "source": "management_postgresql"
+      },
+      "argument": "url",
+      "value": "env(\"PMT_MANAGEMENT_URL\")"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Source",
+        "source": "management_postgresql"
+      },
+      "argument": "enabled",
+      "value": "env(\"PMT_MANAGEMENT_PROVIDER_POSTGRESQL\")"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "Tenant"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Tenant",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Tenant",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Tenant",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Tenant",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "Tenant",
+      "field": "name",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Tenant",
+          "field": "name"
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "Tenant",
+      "field": "provider",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Tenant",
+      "field": "url",
+      "type": "String",
+      "arity": "Required"
+    }
+  ]
+}
