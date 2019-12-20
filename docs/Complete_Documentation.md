@@ -264,7 +264,7 @@ const multiTenant = new MultiTenant({
 
 Returns the Photon of your tenant. Any options passed as second argument will be given to the Photon constructor.
 
-This method connects to management, and will throw an error if the tenant is not in the local cache and the useManagement constructor's option is set two false.
+This method connects to management, and will throw an error if the tenant is not in the local cache and the useManagement constructor's option is set to false.
 
 **Usage**
 
