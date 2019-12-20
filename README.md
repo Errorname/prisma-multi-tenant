@@ -40,7 +40,7 @@ Because `prisma-multi-tenant` does not only allow you to access multiple databas
 ## Install
 
 ```sh
-npm i -g prisma-multi-tenant
+npm i -g prisma-multi-tenant@alpha
 ```
 
 ## Usage
