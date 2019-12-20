@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 
 import { Command, CommandArguments } from '../../shared/types'
-import { runLocal, runDistant } from '../helpers/shell'
+import { runLocal, runDistant } from '../../shared/shell'
 
 class Generate implements Command {
   name = 'generate'

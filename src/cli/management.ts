@@ -1,8 +1,8 @@
-import { requireDistant, getManagementEnv } from './helpers/shell'
+import { requireDistant } from '../shared/shell'
+import { setManagementEnv } from '../shared/schema'
 import { Datasource, Tenant } from '../shared/types'
-import { setProcessEnv } from '../shared/utils'
 import { photonManagementPath } from '../shared/constants'
-import { CliError } from './helpers/errors'
+import { CliError } from '../shared/errors'
 
 class Management {
   photon: any
@@ -10,9 +10,7 @@ class Management {
   async getPhoton() {
     if (this.photon) return this.photon
 
-    const managementEnv = await getManagementEnv()
-
-    setProcessEnv(managementEnv)
+    await setManagementEnv()
 
     const { Photon } = requireDistant(photonManagementPath)
 

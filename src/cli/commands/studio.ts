@@ -1,6 +1,6 @@
 import { Command, CommandArguments } from '../../shared/types'
 import management from '../management'
-import { runDistant } from '../helpers/shell'
+import { runDistant } from '../../shared/shell'
 
 class Studio implements Command {
   name = 'studio'

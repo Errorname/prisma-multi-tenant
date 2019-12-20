@@ -1,7 +1,7 @@
 import arg from 'arg'
 
 import { CliArguments, Command } from '../../shared/types'
-import { CliError } from './errors'
+import { CliError } from '../../shared/errors'
 
 export const parseArgs = (): CliArguments => {
   const argv = process.argv.slice(2)

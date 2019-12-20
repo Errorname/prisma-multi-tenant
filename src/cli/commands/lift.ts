@@ -1,8 +1,7 @@
 import { Command, CommandArguments, Datasource } from '../../shared/types'
-import { runLocal, runDistant } from '../helpers/shell'
-import { getManagementDatasource, getSchemaDir } from '../helpers/schema'
+import { runLocal, runDistant } from '../../shared/shell'
 import management from '../management'
-import { CliError } from '../helpers/errors'
+import { CliError } from '../../shared/errors'
 import chalk = require('chalk')
 
 const liftActions = ['up', 'down']

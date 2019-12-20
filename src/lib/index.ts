@@ -1,6 +1,5 @@
 import { Tenant } from '../shared/types'
-import { datasourceProviders } from '../shared/constants'
-import { getProviderFromUrl, setProcessEnv } from '../shared/utils'
+import { setManagementEnv } from '../shared/schema'
 
 interface MultiTenantOptions {
   useManagement: boolean
@@ -25,33 +24,26 @@ class MultiTenant<Photon extends { disconnect: () => Promise<void> }> {
 
   options: MultiTenantOptions
 
+  managementReady?: Promise<void>
+
   constructor(options?: MultiTenantOptions) {
     this.options = { ...defaultMultiTenantOptions, ...options }
 
     this.PhotonTenant = this.requireTenant()
 
     if (this.options.useManagement) {
-      this.PhotonManagement = this.requireManagement()
-
-      // Set management envs
-      const managementUrl = new this.PhotonTenant().engine.datasources.find(
-        (d: { name: string }) => d.name === 'management'
-      ).url
-      const managementProvider = getProviderFromUrl(managementUrl)
-      setProcessEnv(
-        {
-          PMT_MANAGEMENT_URL: managementUrl
-        },
-        datasourceProviders.map(provider => [
-          'PMT_MANAGEMENT_PROVIDER_' + provider.toUpperCase(),
-          managementProvider == provider ? 'true' : 'false'
-        ])
-      )
-
-      this.management = new this.PhotonManagement()
+      this.managementReady = this.initManagement()
     }
 
     this.tenants = {}
+  }
+
+  private async initManagement() {
+    await setManagementEnv()
+
+    this.PhotonManagement = this.requireManagement()
+
+    this.management = new this.PhotonManagement()
   }
 
   private requireManagement() {
@@ -72,6 +64,8 @@ class MultiTenant<Photon extends { disconnect: () => Promise<void> }> {
     if (!this.options.useManagement) {
       throw new Error('Cannot use .get(name) on an unknown tenant with `useManagement: false`')
     }
+
+    await this.managementReady
 
     const tenant = await this.management.tenants.findOne({ where: { name } })
 

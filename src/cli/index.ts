@@ -8,11 +8,11 @@ import {
   shouldPrintVersion,
   shouldSetVerbose
 } from './helpers/arguments'
-
-import { CliError, printError } from './helpers/errors'
-
+import { printError } from './helpers/errors'
 import help from './helpers/help'
 import management from './management'
+
+import { CliError } from '../shared/errors'
 
 const args = parseArgs()
 

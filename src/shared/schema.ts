@@ -2,8 +2,9 @@ import { getConfig } from '@prisma/sdk'
 import { getSchema, getSchemaPath } from '@prisma/cli'
 
 import { writeFile } from './shell'
-import { Datasource } from '../../shared/types'
 import { CliError } from './errors'
+import { Datasource } from './types'
+import { datasourceProviders } from './constants'
 
 export { getSchemaDir } from '@prisma/cli'
 
@@ -47,6 +48,27 @@ export const translateDatasourceUrl = (url: { value: string }) => {
   }
 
   return url.value
+}
+
+export const getManagementEnv = async () => {
+  const managementDatasource = await getManagementDatasource()
+
+  const providersEnv = datasourceProviders.reduce((acc: { [name: string]: string }, provider) => {
+    acc['PMT_MANAGEMENT_PROVIDER_' + provider.toUpperCase()] =
+      managementDatasource.connectorType == provider ? 'true' : 'false'
+    return acc
+  }, {})
+
+  return {
+    ...providersEnv,
+    PMT_MANAGEMENT_URL: translateDatasourceUrl(managementDatasource.url)
+  }
+}
+
+export const setManagementEnv = async () => {
+  const managementEnv = await getManagementEnv()
+
+  Object.entries(managementEnv).forEach(([key, value]) => (process.env[key] = value))
 }
 
 export const prismaSchemaFragment = (

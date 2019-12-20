@@ -1,12 +1,12 @@
 import chalk from 'chalk'
 
 import { Command, CommandArguments, Datasource } from '../../shared/types'
-import { runShell, useYarn, requireDistant, writeFile } from '../helpers/shell'
+import { runShell, useYarn, requireDistant, writeFile } from '../../shared/shell'
 import prompt from '../helpers/prompt'
-import { writeSchema, readSchema, parseSchema, prismaSchemaFragment } from '../helpers/schema'
+import { writeSchema, readSchema, parseSchema, prismaSchemaFragment } from '../../shared/schema'
 import generate from './generate'
 import lift from './lift'
-import { CliError } from '../helpers/errors'
+import { CliError } from '../../shared/errors'
 import management from '../management'
 
 const packageJson = require('../../../package.json')

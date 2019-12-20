@@ -3,7 +3,7 @@ import chalk from 'chalk'
 
 import { CommandArguments, Datasource } from '../../shared/types'
 import { datasourceProviders } from '../../shared/constants'
-import { getTenantDatasource } from './schema'
+import { getTenantDatasource } from '../../shared/schema'
 
 const confirm = async (message: string) => {
   const { confirm } = await inquirer.prompt([

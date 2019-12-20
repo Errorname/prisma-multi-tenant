@@ -1,26 +1,11 @@
 import { exec } from 'child_process'
 import fs from 'fs'
 
-import { translateDatasourceUrl, getManagementDatasource } from '../helpers/schema'
-import { datasourceProviders, photonManagementPath } from '../../shared/constants'
-import { Datasource } from '../../shared/types'
+import { getManagementEnv } from './schema'
+import { photonManagementPath } from './constants'
+import { Datasource } from './types'
 
 const findNodeModules = require('find-node-modules')
-
-export const getManagementEnv = async () => {
-  const managementDatasource = await getManagementDatasource()
-
-  const providersEnv = datasourceProviders.reduce((acc: { [name: string]: string }, provider) => {
-    acc['PMT_MANAGEMENT_PROVIDER_' + provider.toUpperCase()] =
-      managementDatasource.connectorType == provider ? 'true' : 'false'
-    return acc
-  }, {})
-
-  return {
-    ...providersEnv,
-    PMT_MANAGEMENT_URL: translateDatasourceUrl(managementDatasource.url)
-  }
-}
 
 // Run in this directory
 export const runLocal = async (cmd: string) => {
