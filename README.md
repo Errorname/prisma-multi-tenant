@@ -45,7 +45,7 @@ npm i -g prisma-multi-tenant
 
 ## Usage
 
-> If this is your first time using `prisma-multi-tenant`, I **strongly suggest** that you follow the [Getting Started]() tutorial.
+> If this is your first time using `prisma-multi-tenant`, I **strongly suggest** that you follow the [Getting Started](/docs/Getting_Started.md) tutorial.
 
 ```
 $> prisma-multi-tenant help
@@ -85,10 +85,10 @@ $> prisma-multi-tenant help
 
 Read more on how `prisma-multi-tenant` can help you achieve multi-tenancy for your apps:
 
-- [Getting Started]() - For newcomers
-- [Complete documentation]() - For curious people
-- [Contributing guide]() - For great people
-- [Examples]() - For everyone
+- [Getting Started](/docs/Getting_Started.md) - For newcomers
+- [Complete documentation](/docs/Complete_Documentation.md) - For curious people
+- [Contributing guide](/docs/Contributing_Guide.md) - For great people
+- [Examples](/examples) - For everyone
   - [Basic (JS) example]()
   - [Basic (TS) example]()
   - [Nexus example]()
