@@ -1,0 +1,29 @@
+datasource management_sqlite {
+  provider = "sqlite"
+  url = "***"
+  enabled  = env("PMT_MANAGEMENT_PROVIDER_SQLITE")
+}
+
+datasource management_mysql {
+  provider = "mysql"
+  url = "***"
+  enabled  = env("PMT_MANAGEMENT_PROVIDER_MYSQL")
+}
+
+datasource management_postgresql {
+  provider = "postgresql"
+  url = "***"
+  enabled  = env("PMT_MANAGEMENT_PROVIDER_POSTGRESQL")
+}
+
+generator photon {
+  provider = "photonjs"
+  output   = env("PMT_OUTPUT")
+}
+
+model Tenant {
+  id       String @default(cuid()) @id
+  name     String @unique
+  provider String
+  url      String
+}

@@ -1,9 +1,25 @@
-# prisma-multi-tenant
+<h1 align="center">Prisma-multi-tenant 🧭</h1>
+<p align="center">
+  <a href="https://www.npmjs.com/package/prisma-multi-tenant">
+    <img alt="Version" src="https://img.shields.io/npm/v/prisma-multi-tenant.svg">
+  </a>
+  <a href="https://github.com/Errorname/prisma-multi-tenant#readme">
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" target="_blank" />
+  </a>
+  <a href="https://github.com/Errorname/prisma-multi-tenant/graphs/commit-activity">
+    <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" target="_blank" />
+  </a>
+  <a href="https://github.com/Errorname/prisma-multi-tenant/blob/master/LICENSE">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" target="_blank" />
+  </a>
+  <a href="https://twitter.com/Errorname_">
+    <img alt="Twitter: Errorname_" src="https://img.shields.io/twitter/follow/Errorname_.svg?style=social" target="_blank" />
+  </a>
+</p>
 
-🧭 Use Prisma as a multi-tenant provider with Apollo Server or Yoga
+> 🧭 Use Prisma as a multi-tenant provider for your application
 
-[![](https://img.shields.io/npm/v/prisma-multi-tenant.svg)](https://www.npmjs.com/package/prisma-multi-tenant)
-[![](https://img.shields.io/github/license/Errorname/prisma-multi-tenant.svg)](https://github.com/Errorname/prisma-multi-tenant/blob/master/LICENSE)
+> **Note:** This package works with `Prisma2`, if you want the `Prisma1` version, checkout [prisma-multi-tenant@1.0.3](https://github.com/Errorname/prisma-multi-tenant/tree/v1.0.3)
 
 **What's a multi-tenant application?**
 
@@ -15,95 +31,91 @@ For example, you could run a social-network for companies, where each company wo
 
 **Why is Prisma great for multi-tenancy?**
 
-Prisma handles **services** mapped to individual databases. You can use services to have multiple different applications, or your could create **a service for each of your tenant**.
-
-A service is defined by a name and a stage. (e.g. `company_a/dev`, `company_a/prod`, `company_b/pre-prod`, `company_b/prod`)
+Prisma gives you all the tools necessary to handle your database: data modeling, database schema migrations, type-safe database access, etc. Doing so, we can then automate those processes and help you make a multi-tenant application.
 
 **Why do I need `prisma-multi-tenant`?**
 
-Because Prisma Client only handles a single service. If you want your GraphQL Server (Apollo or Yoga) to handle multiple services seamlessly, you should use `prisma-multi-tenant`!
+Because `prisma-multi-tenant` does not only allow you to access multiple databases seamlessly with only a couple of lines of code in your server, but it also let you use the CLI to create new tenants and assure consistancy between all your databases as easily as possible.
 
-## Installation
+## Install
 
-```bash
-npm install prisma-multi-tenant
+```sh
+npm i -g prisma-multi-tenant@alpha
 ```
 
-## Basic usage
+## Usage
 
-The following example is using `Prisma Client`. You will find instructions for `prisma-binding` after this example.
+> If this is your first time using `prisma-multi-tenant`, I **strongly suggest** that you follow the [Getting Started](/docs/Getting_Started.md) tutorial.
 
-```js
-/* In your backend's main file */
-const { MultiTenant } = require('prisma-multi-tenant')
-const { Prisma } = require('./generated/prisma-client')
-const { ApolloServer } = require('apollo-server')
+```
+$> prisma-multi-tenant help
 
-const multiTenant = new MultiTenant({
-  instanciate: (name, stage) =>
-    new Prisma({
-      endpoint: `https://localhost:4466/${name}/${stage}`
-    })
-})
+  🧭  prisma-multi-tenant v2.0.0-alpha5
 
-const server = new ApolloServer({
-  /* ..., */
-  context: ctx => ({
-    ...ctx,
-    prisma: multiTenant.current(ctx.req) // or ctx.request if you use GraphQL-Yoga
-  })
-})
+  USAGE
 
-/* In your resolvers */
-module.exports = {
-  Query: {
-    users: (_, args, ctx) => ctx.prisma.users(args)
-  }
-}
+    prisma-multi-tenant [command] [args]
+
+    Examples:
+        prisma-multi-tenant new
+        prisma-multi-tenant lift my_tenant up
+        prisma-multi-tenant env my_tenant -- prisma2 dev
+        ...
+
+  COMMANDS
+
+    init                      Init multi-tenancy for your project
+    list                      List all tenants
+    new                       Create a new tenant
+    studio <name>             Use Studio to access a tenant
+    lift <name?> <up|down>    Lift up or down tenants
+    delete <name?>            Delete one or more tenants
+    generate                  Generate Photon for the tenants and management
+    env <name>                Set env variables for a specific tenant
+    help                      Display this help
+
+  OPTIONS
+
+    -h, --help                Output usage information for a command
+    -V, --version             Output the version number
+    --verbose                 Print additional logs
 ```
 
-**Then, from your frontend,** you can use a `prisma-service` HTTP header with `[name]/[stage]` in your GraphQL operations to choose which service to target.
+## Documentation
 
-### With prisma-binding
+Read more on how `prisma-multi-tenant` can help you achieve multi-tenancy for your apps:
 
-If you use `prisma-binding`, you need to slightly change the previous code:
+- [Getting Started](/docs/Getting_Started.md) - For newcomers
+- [Complete documentation](/docs/Complete_Documentation.md) - For curious people
+- [Contributing guide](/docs/Contributing_Guide.md) - For great people
+- [Examples](/examples) - For everyone
+  - [Basic (JS) example]()
+  - [Basic (TS) example]()
+  - [Nexus example]()
 
-```js
-const { MultiTenant } = require('prisma-multi-tenant')
-const { Prisma } = require('prisma-binding')
+## Author
 
-const multiTenant = new MultiTenant({
-  instanciate: (name, stage) =>
-    new Prisma({
-      typeDefs: './path/to/typedef.graphql',
-      endpoint: `https://localhost:4466/${name}/${stage}`
-    })
-  /* ... */
-})
+👤 **Thibaud Courtoison**
 
-/* ... */
-```
+- Twitter: [@Errorname\_](https://twitter.com/Errorname_)
+- Github: [@Errorname](https://github.com/Errorname)
+- Prisma's Slack: [@Errorname](https://app.slack.com/client/T0MQBS8JG/DBNJ479FU)
 
-## Constructor options
-
-The constructor of MultiTenant accepts an option object argument with the following attributes:
-
-```ts
-interface MultiTenantOptions {
-  /* Returns a PrismaClient (or prisma-binding) instance given a name and a stage */
-  instanciate: (name: string, stage: string) => PrismaInstance
-  /* Extracts the name and stage from the Request object */
-  nameStageFromReq: (req: Object) => [string, string]
-}
-
-const defaultOptions: MultiTenantOptions = {
-  instanciate: () => ({}),
-  nameStageFromReq: (req: Object) => req.headers['prisma-service'].split('/')
-}
-```
-
-> By default, the `name/stage` of the service will be extracted from the `prisma-service` HTTP header, but you can extract it anyway you want from the Request (url, body, another header, ...)
-
-## Credits
+## 🤝 Contributors
 
 🙌 Thanks to [@antoinecarat](https://github.com/antoinecarat) for the reviews of this library
+
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/Errorname/prisma-multi-tenant/issues).
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+## 📝 License
+
+Copyright © 2019 [Thibaud Courtoison](https://github.com/Errorname).<br />
+This project is [MIT](https://github.com/Errorname/prisma-multi-tenant/blob/master/LICENSE) licensed.
+
+---
+
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_

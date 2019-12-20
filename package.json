@@ -1,51 +1,64 @@
 {
   "name": "prisma-multi-tenant",
-  "version": "1.0.3",
-  "description": "🧭 Use Prisma as a multi-tenant provider with Apollo Server or Yoga",
-  "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
-  "scripts": {
-    "prepare": "npm run build",
-    "build": "tsc",
-    "test": "jest"
-  },
-  "files": [
-    "lib"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Errorname/prisma-multi-tenant.git"
-  },
-  "keywords": [
-    "prisma",
-    "multi-tenant",
-    "apollo",
-    "yoga"
-  ],
+  "version": "2.0.0-alpha5",
+  "description": "🧭 Use Prisma as a multi-tenant provider for your application",
   "author": {
     "name": "Thibaud Courtoison",
     "email": "do.not.press.enter@gmail.com",
     "url": "https://errorna.me"
   },
   "license": "MIT",
+  "main": "build/lib/index.js",
+  "typings": "build/lib/index.d.ts",
+  "bin": {
+    "prisma-multi-tenant": "build/cli/index.js"
+  },
+  "scripts": {
+    "prepare": "npm run build && cp -R src/cli/prisma/ build/cli/prisma/",
+    "build": "tsc",
+    "lint": "eslint src/**/*.ts",
+    "prettier": "prettier \"src/**/*.ts\" --check"
+  },
+  "dependencies": {
+    "@prisma/cli": "^0.1.29",
+    "@prisma/photon": "^2.0.0-preview019",
+    "@prisma/sdk": "0.0.100",
+    "@types/inquirer": "^6.5.0",
+    "@types/node": "^12.12.21",
+    "arg": "^4.1.2",
+    "chalk": "^3.0.0",
+    "cli-table3": "^0.5.1",
+    "find-node-modules": "^2.0.0",
+    "inquirer": "^7.0.1",
+    "prisma2": "^2.0.0-preview019"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-typescript": "^7.7.7",
+    "@typescript-eslint/eslint-plugin": "^2.12.0",
+    "@typescript-eslint/parser": "^2.12.0",
+    "eslint": "^6.7.2",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "prettier": "^1.19.1",
+    "typescript": "^3.7.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Errorname/prisma-multi-tenant.git"
+  },
+  "keywords": [
+    "prisma",
+    "multi-tenant"
+  ],
   "bugs": {
     "url": "https://github.com/Errorname/prisma-multi-tenant/issues"
   },
   "homepage": "https://github.com/Errorname/prisma-multi-tenant#readme",
-  "devDependencies": {
-    "@types/jest": "^23.3.10",
-    "jest": "^23.6.0",
-    "ts-jest": "^23.10.5",
-    "typescript": "^3.2.2"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ],
-    "testRegex": "^.+\\.spec\\.ts$"
+  "prettier": {
+    "printWidth": 100,
+    "semi": false,
+    "singleQuote": true
   }
 }
