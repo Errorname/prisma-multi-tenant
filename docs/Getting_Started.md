@@ -62,7 +62,7 @@ Following the `init` command, you have a first tenant, your initial datasource.
 Let's add another one:
 
 ```sh
-prisma-multi-tenant add
+prisma-multi-tenant new
 ```
 
 You now have two tenants!
