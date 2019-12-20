@@ -43,6 +43,6 @@ export interface Datasource {
 }
 
 export interface Tenant extends Datasource {
-  id: string
+  id?: string
   name: string
 }

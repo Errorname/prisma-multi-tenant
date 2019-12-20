@@ -15,17 +15,17 @@ class Init implements Command {
   options = [
     {
       name: 'provider',
-      description: 'Type of the provider'
+      description: 'Type of the management provider'
     },
     {
       name: 'url',
-      description: 'URL of the database'
+      description: 'URL of the management database'
     }
   ]
-  description = 'Init multi-tenancy for your project'
+  description = 'Init multi-tenancy for your application'
 
   async execute(args: CommandArguments) {
-    // 1. Install prisma-multi-tenant to the project
+    // 1. Install prisma-multi-tenant to the application
     await this.installPMT()
 
     // 2. Prompt provider & url

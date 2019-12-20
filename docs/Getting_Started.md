@@ -19,7 +19,7 @@ In this documentation, we will follow a step-by-step tutorial on how to add mult
 
 Prisma-multi-tenant uses a "**management**" datasource in order to keep track of all the tenants of your application.
 
-Thanks to this management datasource, prisma-multi-tenant is able to lift all your tenants, as will as providing you will a simple way to access your data, whichever tenant you want.
+Thanks to this management datasource, prisma-multi-tenant is able to lift all your tenants, as will as providing you with a simple way to access your data, whichever tenant you want.
 
 Prisma-multi-tenant is a two-part project:
 

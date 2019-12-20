@@ -7,6 +7,7 @@ class Env implements Command {
   args = [
     {
       name: 'name',
+      optional: false,
       description: 'Name of the tenant you want in your env'
     }
   ]
