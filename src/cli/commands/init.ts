@@ -9,6 +9,8 @@ import lift from './lift'
 import { CliError } from '../helpers/errors'
 import management from '../management'
 
+const packageJson = require('../../../package.json')
+
 class Init implements Command {
   name = 'init'
   args = []
@@ -54,7 +56,7 @@ class Init implements Command {
 
     const yarnOrNpm = (await useYarn()) ? 'yarn add' : 'npm install'
 
-    return runShell(`${yarnOrNpm} prisma-multi-tenant`)
+    return runShell(`${yarnOrNpm} prisma-multi-tenant@${packageJson.version}`)
   }
 
   getManagementDatasource(args: CommandArguments) {

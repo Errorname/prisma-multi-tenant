@@ -7,10 +7,7 @@ import { Datasource } from '../../shared/types'
 
 const findNodeModules = require('find-node-modules')
 
-// Run in this directory
-export const runLocal = async (cmd: string) => {
-  const nodeModules = findNodeModules({ cwd: process.cwd(), relative: false })[0]
-
+export const getManagementEnv = async () => {
   const managementDatasource = await getManagementDatasource()
 
   const providersEnv = datasourceProviders.reduce((acc: { [name: string]: string }, provider) => {
@@ -19,12 +16,23 @@ export const runLocal = async (cmd: string) => {
     return acc
   }, {})
 
+  return {
+    ...providersEnv,
+    PMT_MANAGEMENT_URL: translateDatasourceUrl(managementDatasource.url)
+  }
+}
+
+// Run in this directory
+export const runLocal = async (cmd: string) => {
+  const nodeModules = findNodeModules({ cwd: process.cwd(), relative: false })[0]
+
+  const managementEnv = await getManagementEnv()
+
   await runShell(cmd, {
     cwd: __dirname + '/../',
     env: {
       ...process.env,
-      ...providersEnv,
-      PMT_MANAGEMENT_URL: translateDatasourceUrl(managementDatasource.url),
+      ...managementEnv,
       PMT_OUTPUT: nodeModules + '/' + photonManagementPath
     }
   })

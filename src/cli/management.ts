@@ -1,6 +1,6 @@
-import { requireDistant } from './helpers/shell'
-import { getManagementDatasource, translateDatasourceUrl } from './helpers/schema'
+import { requireDistant, getManagementEnv } from './helpers/shell'
 import { Datasource, Tenant } from '../shared/types'
+import { setProcessEnv } from '../shared/utils'
 import { photonManagementPath } from '../shared/constants'
 import { CliError } from './helpers/errors'
 
@@ -10,9 +10,9 @@ class Management {
   async getPhoton() {
     if (this.photon) return this.photon
 
-    const managementDatasource = await getManagementDatasource()
+    const managementEnv = await getManagementEnv()
 
-    process.env.PMT_MANAGEMENT_URL = translateDatasourceUrl(managementDatasource.url)
+    setProcessEnv(managementEnv)
 
     const { Photon } = requireDistant(photonManagementPath)
 

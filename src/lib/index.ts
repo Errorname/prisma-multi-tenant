@@ -1,4 +1,6 @@
 import { Tenant } from '../shared/types'
+import { datasourceProviders } from '../shared/constants'
+import { getProviderFromUrl, setProcessEnv } from '../shared/utils'
 
 interface MultiTenantOptions {
   useManagement: boolean
@@ -31,10 +33,21 @@ class MultiTenant<Photon extends { disconnect: () => Promise<void> }> {
     if (this.options.useManagement) {
       this.PhotonManagement = this.requireManagement()
 
+      // Set management envs
       const managementUrl = new this.PhotonTenant().engine.datasources.find(
         (d: { name: string }) => d.name === 'management'
       ).url
-      process.env.PMT_MANAGEMENT_URL = managementUrl
+      const managementProvider = getProviderFromUrl(managementUrl)
+      setProcessEnv(
+        {
+          PMT_MANAGEMENT_URL: managementUrl
+        },
+        datasourceProviders.map(provider => [
+          'PMT_MANAGEMENT_PROVIDER_' + provider.toUpperCase(),
+          managementProvider == provider ? 'true' : 'false'
+        ])
+      )
+
       this.management = new this.PhotonManagement()
     }
 
