@@ -1,6 +1,6 @@
 {
   "name": "prisma-multi-tenant",
-  "version": "2.0.0-alpha8",
+  "version": "2.0.0-alpha9",
   "description": "🧭 Use Prisma as a multi-tenant provider for your application",
   "author": {
     "name": "Thibaud Courtoison",
@@ -13,6 +13,9 @@
   "bin": {
     "prisma-multi-tenant": "build/cli/index.js"
   },
+  "files": [
+    "build"
+  ],
   "scripts": {
     "prepare": "npm run build && cp -R src/cli/prisma/ build/cli/prisma/",
     "build": "tsc",
