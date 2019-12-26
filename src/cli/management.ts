@@ -14,7 +14,9 @@ class Management {
 
     const { Photon } = requireDistant(photonManagementPath)
 
-    this.photon = new Photon()
+    this.photon = new Photon({
+      debug: process.env.verbose == 'true'
+    })
 
     return this.photon
   }
