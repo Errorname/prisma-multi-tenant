@@ -14,7 +14,7 @@ export const runLocal = async (cmd: string) => {
   const managementEnv = await getManagementEnv()
 
   await runShell(cmd, {
-    cwd: __dirname + '/../',
+    cwd: __dirname + '/../cli',
     env: {
       ...process.env,
       ...managementEnv,
