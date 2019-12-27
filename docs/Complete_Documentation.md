@@ -196,6 +196,26 @@ prisma-multi-tenant generate
 
 The `generate` command generates the Photon package for both Tenants and Management.
 
+### `dev`
+
+Run `prisma2 dev` on a specific tenant
+
+**Arguments**
+
+| Name | Optional | Description                           |
+| ---- | -------- | ------------------------------------- |
+| name | **No**   | Name of the tenant you want to dev on |
+
+**Examples**
+
+```sh
+prisma-multi-tenant dev your_tenant_name
+```
+
+**Explanations**
+
+The `dev` command is simple a wrapper of `prisma2 dev` using the tenants URL.
+
 ### `env`
 
 Set env variables for a specific tenant
@@ -209,8 +229,7 @@ Set env variables for a specific tenant
 **Examples**
 
 ```sh
-prisma-multi-tenant env your_tenant_name -- prisma2 dev
-prisma-multi-tenant env your_other_tenant -- prisma2 lift save
+prisma-multi-tenant env your_tenant_name -- prisma2 lift save
 ```
 
 **Explanations**

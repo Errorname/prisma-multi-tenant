@@ -45,12 +45,12 @@ npm i -g prisma-multi-tenant@alpha
 
 ## Usage
 
-> If this is your first time using `prisma-multi-tenant`, I **strongly suggest** that you follow the [Getting Started](/docs/Getting_Started.md) tutorial.
+> If this is your first time using `prisma-multi-tenant`, I **strongly suggest** that you follow the [**Getting Started**](/docs/Getting_Started.md) tutorial.
 
 ```
 $> prisma-multi-tenant help
 
-  🧭  prisma-multi-tenant v2.0.0-alpha10
+  🧭  prisma-multi-tenant v2.0.0-alpha11
 
   USAGE
 
@@ -71,6 +71,7 @@ $> prisma-multi-tenant help
     lift <name?> <up|down>    Lift up or down tenants
     delete <name?>            Delete one or more tenants
     generate                  Generate Photon for the tenants and management
+    dev <name>                Run `prisma2 dev` on a specific tenant
     env <name>                Set env variables for a specific tenant
     help                      Display this help
 

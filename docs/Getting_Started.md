@@ -12,7 +12,7 @@ In this documentation, we will follow a step-by-step tutorial on how to add mult
 - [3. Add a new tenant](#3-add-a-new-tenant)
 - [4. Open Studio for a tenant](#4-open-studio-for-a-tenant)
 - [5. Use the library to access your tenants](#5-use-the-library-to-access-your-tenants)
-- [6. Execute any prisma2 command on a given tenant](#6-execute-any-prisma2-command-on-a-given-tenant)
+- [6. Develop on a specific tenant](#6-develop-on-a-specific-tenant)
 - [7. Deploy your schema on all tenants at once](#7-deploy-your-schema-on-all-tenants-at-once)
 
 ## 0. How does Prisma-multi-tenant works
@@ -105,6 +105,8 @@ const multiTenant = new MultiTenant()
 
 **2. Get the tenant**
 
+The name can come from anywhere (headers, token, ...)
+
 ```js
 const photon = await multiTenant.get('your_tenant_name')
 ```
@@ -119,14 +121,12 @@ console.log(users)
 
 You can access any tenant you want, simply by using their name!
 
-## 6. Execute any prisma2 command on a given tenant
+## 6. Develop on a specific tenant
 
-Prisma-multi-tenant can be used as a wrapper to the `Prisma2` CLI.
-
-For example, if you want to run `prisma2 dev` on a specific tenant, you can do the following:
+To develop on a specific tenant, run the following command:
 
 ```sh
-prisma-multi-tenant env your_tenant_name -- prisma2 dev
+prisma-multi-tenant dev your_tenant_name
 ```
 
 ## 7. Deploy your schema on all tenants at once
