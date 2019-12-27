@@ -81,6 +81,20 @@ $> prisma-multi-tenant help
     --verbose                 Print additional logs
 ```
 
+```js
+const { MultiTenant } = require('prisma-multi-tenant')
+
+const multiTenant = new MultiTenant()
+
+// The name can come from anywhere (headers, token, ...)
+const photon = await multiTenant.get('my_tenant_A')
+
+// Use Photon the same way as before
+const users = await photon.users.findMany()
+
+console.log(users)
+```
+
 ## Documentation
 
 Read more on how `prisma-multi-tenant` can help you achieve multi-tenancy for your apps:
