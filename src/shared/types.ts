@@ -1,10 +1,12 @@
+import Management from './management'
+
 export interface Command {
   name: string
   args: Argument[]
   options?: Argument[]
   description: string
 
-  execute(args: CommandArguments): Promise<void>
+  execute(args: CommandArguments, management: Management): Promise<void>
 }
 
 export interface Argument {

@@ -7,13 +7,28 @@ import { Datasource } from './types'
 
 const findNodeModules = require('find-node-modules')
 
+let distantBin: string
+
+export const findBin = async () => {
+  if (distantBin) return distantBin
+
+  distantBin =
+    ((await runShell('npm bin', {
+      cwd: process.cwd()
+    })) as string).trim() + '/'
+
+  return distantBin
+}
+
 // Run in this directory
 export const runLocal = async (cmd: string) => {
   const nodeModules = findNodeModules({ cwd: process.cwd(), relative: false })[0]
 
   const managementEnv = await getManagementEnv()
 
-  await runShell(cmd, {
+  const baseFolder = await findBin()
+
+  await runShell(baseFolder + cmd, {
     cwd: __dirname + '/../cli',
     env: {
       ...process.env,
@@ -24,8 +39,10 @@ export const runLocal = async (cmd: string) => {
 }
 
 // Run from the place where the CLI was called
-export const runDistant = (cmd: string, tenant?: Datasource) => {
-  return runShell(cmd, {
+export const runDistant = async (cmd: string, tenant?: Datasource) => {
+  const baseFolder = await findBin()
+
+  return runShell(baseFolder + cmd, {
     cwd: process.cwd(),
     env: {
       ...process.env,
@@ -36,7 +53,7 @@ export const runDistant = (cmd: string, tenant?: Datasource) => {
 
 export const runShell = (
   cmd: string,
-  options?: { cwd: string; env: { [name: string]: string } }
+  options?: { cwd: string; env?: { [name: string]: string } }
 ): Promise<string | Buffer> => {
   if (process.env.verbose == 'true') {
     console.log('  $> ' + cmd)

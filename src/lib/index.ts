@@ -1,5 +1,7 @@
-import { Tenant } from '../shared/types'
-import { setManagementEnv } from '../shared/schema'
+import { datasourceProviders } from '../shared/constants'
+import { runDistant } from '../shared/shell'
+import { getManagementDatasource, getTenantDatasource } from '../shared/schema'
+import Management from '../shared/management'
 
 interface MultiTenantOptions {
   useManagement: boolean
@@ -16,10 +18,9 @@ const defaultMultiTenantOptions = {
 }
 
 class MultiTenant<Photon extends { disconnect: () => Promise<void> }> {
-  PhotonManagement: any
   PhotonTenant: any
 
-  management?: any
+  management?: Management
   tenants: { [name: string]: Photon & WithMeta }
 
   options: MultiTenantOptions
@@ -32,24 +33,10 @@ class MultiTenant<Photon extends { disconnect: () => Promise<void> }> {
     this.PhotonTenant = this.requireTenant()
 
     if (this.options.useManagement) {
-      this.managementReady = this.initManagement()
+      this.management = new Management()
     }
 
     this.tenants = {}
-  }
-
-  private async initManagement() {
-    await setManagementEnv()
-
-    this.PhotonManagement = this.requireManagement()
-
-    this.management = new this.PhotonManagement()
-  }
-
-  private requireManagement() {
-    return require(require.resolve(`@prisma/photon/prisma-multi-tenant/management`, {
-      paths: [process.cwd()]
-    })).Photon
   }
 
   private requireTenant() {
@@ -61,13 +48,11 @@ class MultiTenant<Photon extends { disconnect: () => Promise<void> }> {
   async get(name: string, options?: any) {
     if (this.tenants[name]) return this.tenants[name]
 
-    if (!this.options.useManagement) {
+    if (!this.management) {
       throw new Error('Cannot use .get(name) on an unknown tenant with `useManagement: false`')
     }
 
-    await this.managementReady
-
-    const tenant = await this.management.tenants.findOne({ where: { name } })
+    const tenant = await this.management.read(name)
 
     if (!tenant) {
       throw new Error(`The tenant with the name "${name}" does not exist`)
@@ -76,7 +61,7 @@ class MultiTenant<Photon extends { disconnect: () => Promise<void> }> {
     return this.directGet(tenant, options)
   }
 
-  async directGet(tenant: Tenant, options?: any) {
+  async directGet(tenant: { name: string; url: string }, options?: any) {
     process.env.PMT_URL = tenant.url
     const photon = new this.PhotonTenant(options)
 
@@ -87,6 +72,48 @@ class MultiTenant<Photon extends { disconnect: () => Promise<void> }> {
     this.tenants[tenant.name] = photon
 
     return photon as Photon & WithMeta
+  }
+
+  async createTenant(tenant: { name: string; provider: string; url: string }, options?: any) {
+    if (!this.management) {
+      throw new Error('Cannot use .createTenant(tenant, options) with `useManagement: false`')
+    }
+
+    if (!datasourceProviders.includes(tenant.provider)) {
+      throw new Error(
+        `Unrecognized "${tenant.provider}" provider. Known providers: ${datasourceProviders.join(
+          ', '
+        )}`
+      )
+    }
+
+    const tenantDS = await getTenantDatasource()
+
+    if (tenantDS.connectorType !== tenant.provider) {
+      throw new Error(
+        'You cannot have tenants from different providers (See https://github.com/Errorname/prisma-multi-tenant/issues/8)'
+      )
+    }
+
+    await this.management.create(tenant)
+
+    await runDistant('prisma2 lift up --create-db', tenant)
+
+    return this.directGet(tenant, options)
+  }
+
+  async deleteTenant(name: string) {
+    if (!this.management) {
+      throw new Error('Cannot use .deleteTenant(name) with `useManagement: false`')
+    }
+
+    if (this.tenants[name]) {
+      delete this.tenants[name]
+    }
+
+    const tenant = await this.management.delete(name)
+
+    await runDistant('prisma2 lift down --auto-approve', tenant)
   }
 
   disconnect() {

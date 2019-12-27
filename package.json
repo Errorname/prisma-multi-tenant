@@ -1,6 +1,6 @@
 {
   "name": "prisma-multi-tenant",
-  "version": "2.0.0-alpha9",
+  "version": "2.0.0-alpha10",
   "description": "🧭 Use Prisma as a multi-tenant provider for your application",
   "author": {
     "name": "Thibaud Courtoison",
@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@prisma/cli": "^0.1.29",
+    "@prisma/photon": "^2.0.0-preview019",
     "@prisma/sdk": "0.0.100",
     "@types/inquirer": "^6.5.0",
     "@types/node": "^12.12.21",

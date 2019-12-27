@@ -2,9 +2,9 @@ import chalk from 'chalk'
 
 import { CliArguments, Command } from '../../shared/types'
 import { photonManagementPath } from '../../shared/constants'
-import { CliError } from '../../shared/errors'
+import { PmtError } from '../../shared/errors'
 
-export const printError = (error: CliError, args: CliArguments) => {
+export const printError = (error: PmtError, args: CliArguments) => {
   if (error.message.match(`Cannot find module '${photonManagementPath}'`)) {
     error.type = 'missing-photon-management'
   }

@@ -10,11 +10,13 @@ import {
 } from './helpers/arguments'
 import { printError } from './helpers/errors'
 import help from './helpers/help'
-import management from './management'
+import Management from '../shared/management'
 
-import { CliError } from '../shared/errors'
+import { PmtError } from '../shared/errors'
+import { Command } from '../shared/types'
 
 const args = parseArgs()
+let management: Management
 
 const run = async (): Promise<void> => {
   // Printing help
@@ -35,10 +37,10 @@ const run = async (): Promise<void> => {
   const { parsedPrimaryArgs, commandName } = args
 
   // Finding command
-  const command = Object.values(commands).find(c => c.name == commandName)
+  const command: Command | undefined = Object.values(commands).find(c => c.name == commandName)
 
   if (!command) {
-    throw new CliError('unrecognized-command', commandName)
+    throw new PmtError('unrecognized-command', commandName)
   }
 
   if (parsedPrimaryArgs['--help']) {
@@ -46,16 +48,22 @@ const run = async (): Promise<void> => {
     return
   }
 
+  management = new Management()
+
   // Executing command
-  await command.execute(convertToCommandArgs(command, args))
+  await command.execute(convertToCommandArgs(command, args), management)
 }
 
 run()
   .then(async () => {
-    await management.disconnect()
+    if (management) {
+      await management.disconnect()
+    }
   })
   .catch(async err => {
     printError(err, args)
-    await management.disconnect()
+    if (management) {
+      await management.disconnect()
+    }
     process.exit(1)
   })

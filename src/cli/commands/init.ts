@@ -1,13 +1,13 @@
 import chalk from 'chalk'
 
-import { Command, CommandArguments, Datasource } from '../../shared/types'
+import { Command, CommandArguments, Datasource, Tenant } from '../../shared/types'
 import { runShell, useYarn, requireDistant, writeFile } from '../../shared/shell'
 import prompt from '../helpers/prompt'
 import { writeSchema, readSchema, parseSchema, prismaSchemaFragment } from '../../shared/schema'
 import generate from './generate'
 import lift from './lift'
-import { CliError } from '../../shared/errors'
-import management from '../management'
+import { PmtError } from '../../shared/errors'
+import Management from '../../shared/management'
 
 const packageJson = require('../../../package.json')
 
@@ -26,7 +26,7 @@ class Init implements Command {
   ]
   description = 'Init multi-tenancy for your application'
 
-  async execute(args: CommandArguments) {
+  async execute(args: CommandArguments, management: Management) {
     // 1. Install prisma-multi-tenant to the application
     await this.installPMT()
 
@@ -43,7 +43,7 @@ class Init implements Command {
     await this.setUpManagement()
 
     // 6. Create first tenant from initial schema
-    await this.createFirstTenant(firstTenant)
+    await this.createFirstTenant(firstTenant, management)
 
     // 7. Create multi-tenancy-example.js
     await this.createExample(firstTenant)
@@ -73,7 +73,7 @@ class Init implements Command {
     const previousDatasources = (await parseSchema(schema)).datasources
 
     if (previousDatasources.length == 0) {
-      throw new CliError('no-existing-datasource')
+      throw new PmtError('no-existing-datasource')
     }
 
     const previous = {
@@ -103,13 +103,13 @@ class Init implements Command {
     return lift.liftManagement('up')
   }
 
-  async createFirstTenant(firstTenant: Datasource) {
+  async createFirstTenant(firstTenant: Tenant, management: Management) {
     console.log('\n  Creating first tenant from your initial schema...')
 
-    await management.createTenant(firstTenant)
+    await management.create(firstTenant)
   }
 
-  async createExample(firstTenant: Datasource) {
+  async createExample(firstTenant: Tenant) {
     console.log('\n  Creating example script...')
 
     const { Photon } = requireDistant('@prisma/photon')
@@ -120,7 +120,7 @@ class Init implements Command {
     const modelName = firstModelMapping.plural
 
     const script = `
-      // const { Photon } = require('@prisma/photon) // Uncomment for TypeScript support
+      // const { Photon } = require('@prisma/photon') // Uncomment for TypeScript support
       const { MultiTenant } = require('prisma-multi-tenant')
 
       // This is the name of your first tenant, try with another one

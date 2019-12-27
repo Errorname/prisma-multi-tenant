@@ -1,7 +1,7 @@
 import arg from 'arg'
 
 import { CliArguments, Command } from '../../shared/types'
-import { CliError } from '../../shared/errors'
+import { PmtError } from '../../shared/errors'
 
 export const parseArgs = (): CliArguments => {
   const argv = process.argv.slice(2)
@@ -53,7 +53,7 @@ export const convertToCommandArgs = (
   const args = primaryArgs.filter(a => !a.startsWith('-')).slice(1)
 
   if (command.args.filter(a => !a.optional).length > args.length) {
-    throw new CliError('missing-args', command)
+    throw new PmtError('missing-args', command)
   }
 
   return {

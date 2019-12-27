@@ -1,7 +1,7 @@
 import { Command, CommandArguments, Datasource } from '../../shared/types'
 import { runLocal, runDistant } from '../../shared/shell'
-import management from '../management'
-import { CliError } from '../../shared/errors'
+import Management from '../../shared/management'
+import { PmtError } from '../../shared/errors'
 import chalk = require('chalk')
 
 const liftActions = ['up', 'down']
@@ -22,13 +22,13 @@ class Lift implements Command {
   ]
   description = 'Lift up or down tenants'
 
-  async execute(args: CommandArguments) {
+  async execute(args: CommandArguments, management: Management) {
     const { name, action, liftArgs, prismaArgs } = this.parseArgs(args)
 
     if (name) {
       console.log(`\n  Lifting "${name}" ${action}...`)
 
-      await this.liftOneTenant(action, name, liftArgs, prismaArgs)
+      await this.liftOneTenant(management, action, name, liftArgs, prismaArgs)
 
       console.log(chalk`\n✅  {green Successfuly lifted ${action} "${name}"}\n`)
       return
@@ -36,7 +36,7 @@ class Lift implements Command {
 
     console.log(`\n  Lifting ${action} all tenants...\n`)
 
-    await this.liftAllTenants(action, liftArgs, prismaArgs)
+    await this.liftAllTenants(management, action, liftArgs, prismaArgs)
 
     console.log(chalk`\n✅  {green Successfuly lifted ${action} all tenants}\n`)
   }
@@ -56,25 +56,31 @@ class Lift implements Command {
       action = arg1
       liftArgs = [arg2, ...restArgs].join(' ')
     } else {
-      throw new CliError('unrecognized-lift-action', args)
+      throw new PmtError('unrecognized-lift-action', args)
     }
 
     return { name, action, liftArgs, prismaArgs: args.secondary }
   }
 
   async liftOneTenant(
+    management: Management,
     action: string,
     name: string,
     liftArgs: string = '',
     prismaArgs: string = ''
   ) {
-    const tenant = await management.getTenant(name)
+    const tenant = await management.read(name)
 
     return this.liftTenant(action, tenant, liftArgs, prismaArgs)
   }
 
-  async liftAllTenants(action: string, liftArgs: string = '', prismaArgs: string = '') {
-    const tenants = await management.getTenants()
+  async liftAllTenants(
+    management: Management,
+    action: string,
+    liftArgs: string = '',
+    prismaArgs: string = ''
+  ) {
+    const tenants = await management.list()
 
     for (let tenant of tenants) {
       console.log(`    > Lifting "${tenant.name}" ${action}`)

@@ -1,6 +1,6 @@
 import { Command, CommandArguments } from '../../shared/types'
 import { spawn } from 'child_process'
-import management from '../management'
+import Management from '../../shared/management'
 
 class Env implements Command {
   name = 'env'
@@ -13,10 +13,10 @@ class Env implements Command {
   ]
   description = 'Set env variables for a specific tenant'
 
-  async execute(args: CommandArguments) {
+  async execute(args: CommandArguments, management: Management) {
     const [name] = args.args
 
-    const tenant = await management.getTenant(name)
+    const tenant = await management.read(name)
 
     process.env.PMT_URL = tenant.url
 

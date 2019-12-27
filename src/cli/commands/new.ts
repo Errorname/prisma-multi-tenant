@@ -1,6 +1,6 @@
 import { Command, CommandArguments } from '../../shared/types'
 import prompt from '../helpers/prompt'
-import management from '../management'
+import Management from '../../shared/management'
 import lift from './lift'
 import chalk = require('chalk')
 
@@ -13,7 +13,7 @@ class New implements Command {
       description: 'Name of the tenant'
     },
     /*
-    Uncomment when we can have multiple providers for tenants
+    Uncomment when we can have multiple providers for tenants (See #8)
     {
       name: 'provider',
       description: 'Type of the provider'
@@ -30,7 +30,7 @@ class New implements Command {
   ]
   description = 'Create a new tenant'
 
-  async execute(args: CommandArguments) {
+  async execute(args: CommandArguments, management: Management) {
     console.log()
     const tenant = await prompt.tenantConf(args)
 
@@ -43,7 +43,7 @@ class New implements Command {
       return
     }
 
-    await management.createTenant(tenant)
+    await management.create(tenant)
 
     console.log(
       chalk`\n✅  {green Registered the new tenant into management and lifted up the database!}\n`

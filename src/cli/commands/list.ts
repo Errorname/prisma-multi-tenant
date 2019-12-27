@@ -2,7 +2,7 @@ import Table from 'cli-table3'
 import chalk from 'chalk'
 
 import { Command, CommandArguments } from '../../shared/types'
-import management from '../management'
+import Management from '../../shared/management'
 
 class List implements Command {
   name = 'list'
@@ -15,10 +15,10 @@ class List implements Command {
   ]
   description = 'List all tenants'
 
-  async execute(args: CommandArguments) {
+  async execute(args: CommandArguments, management: Management) {
     console.log('\n  Fetching available tenants...')
 
-    const tenants = await management.getTenants()
+    const tenants = await management.list()
 
     if (args.options['json']) {
       console.log(JSON.stringify(tenants, null, 2))

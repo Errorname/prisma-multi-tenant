@@ -2,7 +2,7 @@ import { getConfig } from '@prisma/sdk'
 import { getSchema, getSchemaPath } from '@prisma/cli'
 
 import { writeFile } from './shell'
-import { CliError } from './errors'
+import { PmtError } from './errors'
 import { Datasource } from './types'
 import { datasourceProviders } from './constants'
 
@@ -19,7 +19,7 @@ export const parseSchema = (datamodel: string) => {
 
 export const writeSchema = async (schema: string) => {
   const path = await getSchemaPath()
-  if (!path) throw new CliError('no-schema-found')
+  if (!path) throw new PmtError('no-schema-found')
   return writeFile(path, schema)
 }
 
@@ -33,7 +33,7 @@ export const getDatasource = async (type: string) => {
 
   const managementDatasource = schema.datasources.find(d => d.name == type)
 
-  if (!managementDatasource) throw new CliError('no-' + type + '-datasource')
+  if (!managementDatasource) throw new PmtError('no-' + type + '-datasource')
 
   return managementDatasource
 }

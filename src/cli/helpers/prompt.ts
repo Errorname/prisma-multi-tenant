@@ -1,7 +1,7 @@
 import inquirer, { Question } from 'inquirer'
 import chalk from 'chalk'
 
-import { CommandArguments, Datasource } from '../../shared/types'
+import { CommandArguments, Datasource, Tenant } from '../../shared/types'
 import { datasourceProviders } from '../../shared/constants'
 import { getTenantDatasource } from '../../shared/schema'
 
@@ -39,12 +39,15 @@ const askQuestions = async (
     answers[question.name] = await askQuestion(question)
   }
 
-  console.log()
-  console.log(answers)
-  console.log()
+  // If we needed manual prompting, ask for confirmation
+  if (questions.filter(q => !q.value).length > 0) {
+    console.log()
+    console.log(answers)
+    console.log()
 
-  if (!(await confirm('Are you sure of your inputs?'))) {
-    process.exit(0)
+    if (!(await confirm('Are you sure of your inputs?'))) {
+      process.exit(0)
+    }
   }
 
   return (answers as unknown) as Datasource
@@ -83,16 +86,15 @@ const managementConf = async (args: CommandArguments): Promise<Datasource> => {
   return askQuestionsList(args, ['provider', 'url'])
 }
 
-const tenantConf = async (args: CommandArguments): Promise<Datasource> => {
-  // This is a fix until we can have a multi-provider photon
-  const answers = await askQuestionsList(args, ['name', /*'provider',*/ 'url'])
-
+const tenantConf = async (args: CommandArguments): Promise<Tenant> => {
+  // This is a fix until we can have a multi-provider photon (See #8)
   const tenantDS = await getTenantDatasource()
+  const answers = await askQuestionsList(
+    { ...args, options: { ...args.options, provider: tenantDS.connectorType } },
+    ['name', 'provider', 'url']
+  )
 
-  return {
-    ...answers,
-    provider: tenantDS.connectorType
-  }
+  return answers as Tenant
 }
 
 export default { confirm, managementConf, tenantConf }

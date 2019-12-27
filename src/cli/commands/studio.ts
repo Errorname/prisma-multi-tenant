@@ -1,6 +1,6 @@
 import { Command, CommandArguments } from '../../shared/types'
-import management from '../management'
 import { runDistant } from '../../shared/shell'
+import Management from '../../shared/management'
 
 class Studio implements Command {
   name = 'studio'
@@ -19,13 +19,13 @@ class Studio implements Command {
   ]
   description = 'Use Studio to access a tenant'
 
-  async execute(args: CommandArguments) {
+  async execute(args: CommandArguments, management: Management) {
     const [name] = args.args
     const port = args.options.port || '5555'
 
     console.log(`\n  Studio started for tenant "${name}" at http://localhost:${port}\n`)
 
-    const tenant = await management.getTenant(name)
+    const tenant = await management.read(name)
 
     await runDistant(`prisma2 studio --port ${port} ${args.secondary}`, tenant)
   }

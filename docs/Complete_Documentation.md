@@ -22,10 +22,12 @@ Prisma-multi-tenant is a two-part project:
   - [`env`](#-env-)
   - [`help`](#-help-)
 - [Library](#library)
-  - [`constructor(options?: MultiTenantOptions)`](#-constructor-options---multitenantoptions--)
-  - [`get(name: string, options?: any): Promise<Photon>`](#-get-name--string--options---any---promise-photon--)
-  - [`directGet(tenant: Tenant, options?: any): Promise<Photon>`](#-directget-tenant--tenant--options---any---promise-photon--)
-  - [`disconnect(): Promise<void[]>`](#-disconnect----promise-void----)
+  - [`constructor`](#-constructor-options---multitenantoptions--)
+  - [`get`](#-get-name--string--options---any---promise-photon--)
+  - [`directGet`](#-directget-tenant----name--string--url--string----options---any---promise-photon--)
+  - [`createTenant`](#-createtenant-tenant----name--string--provider--string--url--string----options---any---promise-photon--)
+  - [`deleteTenant`](#-deletetenant-name--string---promise-void--)
+  - [`disconnect`](#-disconnect----promise-void----)
 
 ## CLI
 
@@ -276,7 +278,7 @@ const users = await photon.users.findMany()
 console.log(users)
 ```
 
-### `directGet(tenant: Tenant, options?: any): Promise<Photon>`
+### `directGet(tenant: { name: string, url: string }, options?: any): Promise<Photon>`
 
 Returns the Photon of your tenant. Any options passed as second argument will be given to the Photon constructor.
 
@@ -287,13 +289,46 @@ This method does not connect to management.
 ```js
 const photon = await multiTenant.directGet({
   name: 'your_other_tenant',
-  provider: 'sqlite',
   url: 'file:something.db'
 })
 
 const users = await photon.users.findMany()
 
 console.log(users)
+```
+
+### `createTenant(tenant: { name: string, provider: string, url: string }, options?: any): Promise<Photon>`
+
+Creates a new tenant in management and returns the corresponding Photon. Any options passed as second argument will be given to the Photon constructor.
+
+This method will lift up the new database to be up-to-date with the migrations.
+
+> Note: You currently can't have tenants from multiple datasources. (See #8)
+
+**Usage**
+
+```js
+const photon = await multiTenant.createTenant({
+  name: 'a_new_tenant',
+  provider: 'postgresql',
+  url: 'postgresql://the_postgres_url'
+})
+
+const users = await photon.users.findMany()
+
+console.log(users)
+```
+
+### `deleteTenant(name: string): Promise<void>`
+
+Delete a tenant in management.
+
+This method will lift down the database.
+
+**Usage**
+
+```js
+await multiTenant.deleteTenant('my_tenant')
 ```
 
 ### `disconnect(): Promise<void[]>`
