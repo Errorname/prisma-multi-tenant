@@ -16,11 +16,13 @@ class List implements Command {
   description = 'List all tenants'
 
   async execute(args: CommandArguments, management: Management) {
-    console.log('\n  Fetching available tenants...')
+    if (!args.options.json) {
+      console.log('\n  Fetching available tenants...')
+    }
 
     const tenants = await management.list()
 
-    if (args.options['json']) {
+    if (args.options.json) {
       console.log(JSON.stringify(tenants, null, 2))
       return
     }

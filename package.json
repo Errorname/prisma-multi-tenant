@@ -1,6 +1,6 @@
 {
   "name": "prisma-multi-tenant",
-  "version": "2.0.0-alpha11",
+  "version": "2.0.0-alpha12",
   "description": "🧭 Use Prisma as a multi-tenant provider for your application",
   "author": {
     "name": "Thibaud Courtoison",
@@ -20,7 +20,11 @@
     "prepare": "npm run build && cp -R src/cli/prisma/ build/cli/prisma/",
     "build": "tsc",
     "lint": "eslint src/**/*.ts",
-    "prettier": "prettier \"src/**/*.ts\" --check"
+    "prettier": "prettier \"src/**/*.ts\" --check",
+    "test": "npm run test:prepare && npm run test:cli",
+    "test:prepare": "bash tests/playground/prepare.sh",
+    "test:cli": "jest tests/cli",
+    "test:lib": "jest tests/lib"
   },
   "dependencies": {
     "@prisma/cli": "^0.1.29",
@@ -38,16 +42,20 @@
     "@babel/core": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
     "@babel/preset-typescript": "^7.7.7",
+    "@types/jest": "^24.0.25",
+    "@types/node-fetch": "^2.5.4",
     "@typescript-eslint/eslint-plugin": "^2.12.0",
     "@typescript-eslint/parser": "^2.12.0",
+    "concat-stream": "^2.0.0",
+    "cross-spawn": "^7.0.1",
     "eslint": "^6.7.2",
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-prettier": "^3.1.2",
+    "jest": "^24.9.0",
+    "node-fetch": "^2.6.0",
     "prettier": "^1.19.1",
+    "ts-jest": "^24.2.0",
     "typescript": "^3.7.3"
-  },
-  "peerDependencies": {
-    "prisma2": "2.0.0-preview019"
   },
   "repository": {
     "type": "git",

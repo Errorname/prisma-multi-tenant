@@ -15,31 +15,37 @@ export const printError = (error: PmtError, args: CliArguments) => {
     return
   }
 
-  switch (error.type) {
-    case 'unrecognized-command':
-      if (!error.data[0]) {
-        return missingCommandOrOption()
-      }
-      return unrecognizedCommandOrOption(args.primaryArgs)
-    case 'missing-args':
-      return missingArgs(error.data[0])
-    case 'no-existing-datasource':
-      return noExistingDatasource()
-    case 'no-schema-found':
-      return noSchemaFound()
-    case 'no-management-datasource':
-      return noManagementDatasource()
-    case 'missing-photon-management':
-      return missingPhotonManagement()
-    case 'tenant-does-not-exists':
-      return tenantDoesNotExists(error.data[0])
-    case 'tenant-already-exists':
-      return tenantAlreadyExists(error.data[0])
-    case 'unrecognized-lift-action':
-      return unrecognizedLiftAction(error.data[0].args.join(' '))
-    default:
-      console.error(error)
-  }
+  ;(() => {
+    switch (error.type) {
+      case 'unrecognized-command':
+        if (!error.data[0]) {
+          return missingCommandOrOption()
+        }
+        return unrecognizedCommandOrOption(args.primaryArgs)
+      case 'missing-args':
+        return missingArgs(error.data[0])
+      case 'no-existing-datasource':
+        return noExistingDatasource()
+      case 'no-schema-found':
+        return noSchemaFound()
+      case 'no-management-datasource':
+        return noManagementDatasource()
+      case 'missing-photon-management':
+        return missingPhotonManagement()
+      case 'tenant-does-not-exist':
+        return tenantDoesNotExists(error.data[0])
+      case 'tenant-already-exists':
+        return tenantAlreadyExists(error.data[0])
+      case 'unrecognized-lift-action':
+        return unrecognizedLiftAction(error.data[0].args.join(' '))
+      case 'reserved-tenant-name':
+        return reservedTenantName(error.data[0])
+      default:
+        console.error(error)
+    }
+  })()
+
+  process.exit(1)
 }
 
 const messageHelp = 'Run `prisma-multi-tenant --help` to learn how to use this tool'
@@ -53,7 +59,6 @@ const missingCommandOrOption = (): void => {
 
   ${messageHelp}
   `)
-  process.exit(1)
 }
 
 const unrecognizedCommandOrOption = (args: string[]): void => {
@@ -62,7 +67,6 @@ const unrecognizedCommandOrOption = (args: string[]): void => {
 
   ${messageHelp}
   `)
-  process.exit(1)
 }
 
 const missingArgs = (command: Command): void => {
@@ -120,5 +124,11 @@ const unrecognizedLiftAction = (args: string): void => {
   {red Unrecognized lift action "${args}"}
 
   ${messageHelpCommand('lift')}
+  `)
+}
+
+const reservedTenantName = (name: string): void => {
+  console.log(chalk`
+  {red You cannot use "${name}" for the name of a tenant}
   `)
 }

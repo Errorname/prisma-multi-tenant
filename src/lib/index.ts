@@ -1,6 +1,6 @@
 import { datasourceProviders } from '../shared/constants'
 import { runDistant } from '../shared/shell'
-import { getManagementDatasource, getTenantDatasource } from '../shared/schema'
+import { getTenantDatasource } from '../shared/schema'
 import Management from '../shared/management'
 
 interface MultiTenantOptions {
@@ -24,8 +24,6 @@ class MultiTenant<Photon extends { disconnect: () => Promise<void> }> {
   tenants: { [name: string]: Photon & WithMeta }
 
   options: MultiTenantOptions
-
-  managementReady?: Promise<void>
 
   constructor(options?: MultiTenantOptions) {
     this.options = { ...defaultMultiTenantOptions, ...options }

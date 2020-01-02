@@ -25,20 +25,29 @@ class Lift implements Command {
   async execute(args: CommandArguments, management: Management) {
     const { name, action, liftArgs, prismaArgs } = this.parseArgs(args)
 
-    if (name) {
-      console.log(`\n  Lifting "${name}" ${action}...`)
+    if (!name) {
+      console.log(`\n  Lifting ${action} all tenants...\n`)
 
-      await this.liftOneTenant(management, action, name, liftArgs, prismaArgs)
+      await this.liftAllTenants(management, action, liftArgs, prismaArgs)
 
-      console.log(chalk`\n✅  {green Successfuly lifted ${action} "${name}"}\n`)
+      console.log(chalk`\n✅  {green Successfuly lifted ${action} all tenants}\n`)
       return
     }
 
-    console.log(`\n  Lifting ${action} all tenants...\n`)
+    if (name == 'management') {
+      console.log(`\n  Lifting management ${action}...`)
 
-    await this.liftAllTenants(management, action, liftArgs, prismaArgs)
+      await this.liftManagement(action, liftArgs, prismaArgs)
 
-    console.log(chalk`\n✅  {green Successfuly lifted ${action} all tenants}\n`)
+      console.log(chalk`\n✅  {green Successfuly lifted ${action} management}\n`)
+      return
+    }
+
+    console.log(`\n  Lifting "${name}" ${action}...`)
+
+    await this.liftOneTenant(management, action, name, liftArgs, prismaArgs)
+
+    console.log(chalk`\n✅  {green Successfuly lifted ${action} "${name}"}\n`)
   }
 
   parseArgs(args: CommandArguments) {
@@ -92,8 +101,8 @@ class Lift implements Command {
     return runDistant(`prisma2 lift ${action} ${liftArgs} ${prismaArgs}`, tenant)
   }
 
-  liftManagement(action: string) {
-    return runLocal(`prisma2 lift ${action} --create-db`)
+  liftManagement(action: string, liftArgs: string = '', prismaArgs: string = '') {
+    return runLocal(`prisma2 lift ${action} ${liftArgs} ${prismaArgs}`)
   }
 }
 

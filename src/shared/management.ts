@@ -46,7 +46,7 @@ export default class Management {
     const tenant = await photon.tenants.findOne({ where: { name } })
 
     if (!tenant) {
-      throw new PmtError('tenant-does-not-exists', name)
+      throw new PmtError('tenant-does-not-exist', name)
     }
 
     return this.sanitizeTenant(tenant)
@@ -69,7 +69,7 @@ export default class Management {
         data: update
       })
     } catch (err) {
-      if (err.message.includes('RecordNotFound')) throw new PmtError('tenant-does-not-exists', name)
+      if (err.message.includes('RecordNotFound')) throw new PmtError('tenant-does-not-exist', name)
       throw err
     }
   }
@@ -80,17 +80,15 @@ export default class Management {
     try {
       return await photon.tenants.delete({ where: { name } })
     } catch (err) {
-      if (err.message.includes('RecordNotFound')) throw new PmtError('tenant-does-not-exists', name)
+      if (err.message.includes('RecordNotFound')) throw new PmtError('tenant-does-not-exist', name)
       throw err
     }
   }
 
-  async disconnect() {
+  disconnect() {
     if (!this.photon) return
 
-    const photon = await this.getPhoton()
-
-    return photon.disconnect()
+    return this.photon.disconnect()
   }
 
   private sanitizeTenant(tenant: Tenant) {

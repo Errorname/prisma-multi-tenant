@@ -1,2 +1,4 @@
 node_modules
 build
+tests/playground/*
+!tests/playground/prepare.sh

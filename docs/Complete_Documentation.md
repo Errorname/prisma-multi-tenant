@@ -137,7 +137,9 @@ The `studio` command will connect to the management datasource to retrieve the u
 
 ### `lift`
 
-Lift up or down tenants
+Lift up or down tenants.
+
+> Note: You can also lift up the management datasource to deploy another management database: `prisma-multi-tenant lift management up`
 
 **Arguments**
 
@@ -152,6 +154,7 @@ Lift up or down tenants
 prisma-multi-tenant lift your_tenant_name down
 prisma-multi-tenant lift up
 prisma-multi-tenant lift your_other_tenant up -- --auto-approve
+prisma-mutlite-annt lift management up
 ```
 
 **Explanations**

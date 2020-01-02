@@ -100,7 +100,7 @@ class Init implements Command {
   setUpManagement() {
     console.log('\n  Setting up management database...')
 
-    return lift.liftManagement('up')
+    return lift.liftManagement('up', '--create-db')
   }
 
   async createFirstTenant(firstTenant: Tenant, management: Management) {

@@ -37,7 +37,9 @@ const run = async (): Promise<void> => {
   const { parsedPrimaryArgs, commandName } = args
 
   // Finding command
-  const command: Command | undefined = Object.values(commands).find(c => c.name == commandName)
+  const command: Command | undefined = Object.values(commands).find(
+    (c: Command) => c.name == commandName || (c.altNames || []).includes(commandName)
+  )
 
   if (!command) {
     throw new PmtError('unrecognized-command', commandName)

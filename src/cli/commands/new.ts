@@ -3,9 +3,11 @@ import prompt from '../helpers/prompt'
 import Management from '../../shared/management'
 import lift from './lift'
 import chalk = require('chalk')
+import { PmtError } from '../../shared/errors'
 
 class New implements Command {
   name = 'new'
+  altNames = ['add']
   args = []
   options = [
     {
@@ -33,6 +35,10 @@ class New implements Command {
   async execute(args: CommandArguments, management: Management) {
     console.log()
     const tenant = await prompt.tenantConf(args)
+
+    if (tenant.name == 'management') {
+      throw new PmtError('reserved-tenant-name', 'management')
+    }
 
     await lift.liftTenant('up', tenant, '--create-db')
 

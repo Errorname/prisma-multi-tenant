@@ -19,10 +19,12 @@ class Dev implements Command {
 
     const tenant = await management.read(name)
 
-    process.env.PMT_URL = tenant.url
-
     spawn('prisma2', ['dev'], {
-      stdio: 'inherit'
+      stdio: 'inherit',
+      env: {
+        ...process.env,
+        PMT_URL: tenant.url
+      }
     }).on('exit', (exitCode: number) => process.exit(exitCode))
   }
 }

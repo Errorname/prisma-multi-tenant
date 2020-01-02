@@ -2,6 +2,7 @@ import Management from './management'
 
 export interface Command {
   name: string
+  altNames?: string[]
   args: Argument[]
   options?: Argument[]
   description: string
