@@ -90,7 +90,7 @@ export const fileExists = (path: string): Promise<boolean> => {
 
 export const requireDistant = (name: string): any => {
   return require(require.resolve(name, {
-    paths: [process.cwd()]
+    paths: [process.cwd(), ...(require.main?.paths || [])]
   }))
 }
 

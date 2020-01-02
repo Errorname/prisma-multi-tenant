@@ -38,7 +38,7 @@ const run = async (): Promise<void> => {
 
   // Finding command
   const command: Command | undefined = Object.values(commands).find(
-    (c: Command) => c.name == commandName || (c.altNames || []).includes(commandName)
+    (c: Command) => c.name == commandName || c.altNames?.includes(commandName)
   )
 
   if (!command) {

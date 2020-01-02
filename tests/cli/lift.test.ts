@@ -5,9 +5,9 @@ import { runShell } from './helpers/shell'
 jest.setTimeout(300000)
 
 describe('lift', () => {
-  let project: Project
+  let project: Project = new Project({ type: 'javascript/script', name: 'lift', path: 'test-lift' })
 
-  beforeAll(async () => {
+  /*beforeAll(async () => {
     project = await initProject('javascript/script', 'lift')
 
     await project.run('init --provider=sqlite --url=file:management.db')
@@ -16,7 +16,7 @@ describe('lift', () => {
     await project.run('new --name=test2 --url=file:test2.db')
     await project.run('env test1 -- prisma2 lift save --name=test')
     await runShell(`cp helpers/seed.js ../playground/${project.path}/seed.js`, '../cli')
-  })
+  })*/
 
   test('lift up one tenant', async () => {
     await project.run('lift test1 up')

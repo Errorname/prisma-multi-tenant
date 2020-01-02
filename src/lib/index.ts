@@ -40,7 +40,7 @@ class MultiTenant<Photon extends { disconnect: () => Promise<void> }> {
 
   private requireTenant(): any {
     return require(require.resolve(`@prisma/photon`, {
-      paths: [process.cwd()]
+      paths: [process.cwd(), ...(require.main?.paths || [])]
     })).Photon
   }
 
