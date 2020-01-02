@@ -12,7 +12,7 @@ export default class Management {
     this.options = options
   }
 
-  private async getPhoton() {
+  private async getPhoton(): Promise<any> {
     if (this.photon) return this.photon
 
     await setManagementEnv()
@@ -85,13 +85,13 @@ export default class Management {
     }
   }
 
-  disconnect() {
-    if (!this.photon) return
+  disconnect(): Promise<void> {
+    if (!this.photon) return Promise.resolve()
 
     return this.photon.disconnect()
   }
 
-  private sanitizeTenant(tenant: Tenant) {
+  private sanitizeTenant(tenant: Tenant): Tenant {
     return {
       name: tenant.name,
       provider: tenant.provider,

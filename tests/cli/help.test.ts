@@ -11,7 +11,8 @@ describe('help', () => {
   test('command "help"', async () => {
     const ret = await runShell('prisma-multi-tenant help')
 
-    expect(ret).toEqual(expect.stringContaining(`prisma-multi-tenant v${packageJson.version}`))
+    expect(ret).toEqual(expect.stringContaining(`prisma-multi-tenant`))
+    expect(ret).toEqual(expect.stringContaining(`v${packageJson.version}`))
 
     // Test that it contains the name & description of all commands
     for (let command of commands) {

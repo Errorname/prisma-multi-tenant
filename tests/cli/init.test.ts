@@ -11,5 +11,6 @@ describe('init', () => {
 
     await project.expectFile('prisma/management.db').toExists()
     await project.expectFile('multi-tenancy-example.js').toExists()
+    await project.expectFile('multi-tenancy-example.js').toContain("require('prisma-multi-tenant')")
   })
 })

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { getConfig } from '@prisma/sdk'
 import { getSchema, getSchemaPath } from '@prisma/cli'
 
@@ -8,7 +9,7 @@ import { datasourceProviders } from './constants'
 
 export { getSchemaDir } from '@prisma/cli'
 
-export const readSchema = async () => {
+export const readSchema = () => {
   return getSchema()
 }
 

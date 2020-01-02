@@ -10,7 +10,7 @@
     "sourceType": "module"
   },
   "rules": {
-    "@typescript-eslint/no-explicit-any": 2,
+    "@typescript-eslint/no-explicit-any": 0,
     "@typescript-eslint/no-var-requires": 2
   }
 }

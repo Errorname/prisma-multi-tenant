@@ -2,6 +2,7 @@ import { datasourceProviders } from '../shared/constants'
 import { runDistant } from '../shared/shell'
 import { getTenantDatasource } from '../shared/schema'
 import Management from '../shared/management'
+import { Tenant } from '../shared/types'
 
 interface MultiTenantOptions {
   useManagement: boolean
@@ -37,13 +38,13 @@ class MultiTenant<Photon extends { disconnect: () => Promise<void> }> {
     this.tenants = {}
   }
 
-  private requireTenant() {
+  private requireTenant(): any {
     return require(require.resolve(`@prisma/photon`, {
       paths: [process.cwd()]
     })).Photon
   }
 
-  async get(name: string, options?: any) {
+  async get(name: string, options?: any): Promise<Photon & WithMeta> {
     if (this.tenants[name]) return this.tenants[name]
 
     if (!this.management) {
@@ -59,7 +60,10 @@ class MultiTenant<Photon extends { disconnect: () => Promise<void> }> {
     return this.directGet(tenant, options)
   }
 
-  async directGet(tenant: { name: string; url: string }, options?: any) {
+  async directGet(
+    tenant: { name: string; url: string },
+    options?: any
+  ): Promise<Photon & WithMeta> {
     process.env.PMT_URL = tenant.url
     const photon = new this.PhotonTenant(options)
 
@@ -72,7 +76,10 @@ class MultiTenant<Photon extends { disconnect: () => Promise<void> }> {
     return photon as Photon & WithMeta
   }
 
-  async createTenant(tenant: { name: string; provider: string; url: string }, options?: any) {
+  async createTenant(
+    tenant: { name: string; provider: string; url: string },
+    options?: any
+  ): Promise<Photon & WithMeta> {
     if (!this.management) {
       throw new Error('Cannot use .createTenant(tenant, options) with `useManagement: false`')
     }
@@ -100,7 +107,7 @@ class MultiTenant<Photon extends { disconnect: () => Promise<void> }> {
     return this.directGet(tenant, options)
   }
 
-  async deleteTenant(name: string) {
+  async deleteTenant(name: string): Promise<Tenant> {
     if (!this.management) {
       throw new Error('Cannot use .deleteTenant(name) with `useManagement: false`')
     }
@@ -112,9 +119,11 @@ class MultiTenant<Photon extends { disconnect: () => Promise<void> }> {
     const tenant = await this.management.delete(name)
 
     await runDistant('prisma2 lift down --auto-approve', tenant)
+
+    return tenant
   }
 
-  disconnect() {
+  disconnect(): Promise<void[]> {
     return Promise.all([
       ...(this.management ? [this.management.disconnect()] : []),
       ...Object.values(this.tenants).map(t => t.disconnect())
