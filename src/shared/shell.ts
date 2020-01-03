@@ -30,12 +30,18 @@ export const runShell = (
 }
 
 export const findBin = async (): Promise<string> => {
-  if (distantBin) return distantBin
+  if (distantBin !== undefined) return distantBin
 
-  distantBin =
+  let binFolder =
     ((await runShell('npm bin', {
       cwd: process.cwd()
     })) as string).trim() + '/'
+
+  if (await fileExists(binFolder + 'prisma2')) {
+    distantBin = binFolder
+  } else {
+    distantBin = ''
+  }
 
   return distantBin
 }
@@ -71,6 +77,15 @@ export const runDistant = async (cmd: string, tenant?: Datasource): Promise<stri
   })
 }
 
+export const readFile = (path: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(path, 'utf8', (err, data) => {
+      if (err) reject(err)
+      resolve(data)
+    })
+  })
+}
+
 export const writeFile = (path: string, content: string): Promise<void> => {
   return new Promise((resolve, reject) => {
     fs.writeFile(path, content, err => {
@@ -90,7 +105,12 @@ export const fileExists = (path: string): Promise<boolean> => {
 
 export const requireDistant = (name: string): any => {
   return require(require.resolve(name, {
-    paths: [process.cwd(), ...(require.main?.paths || [])]
+    paths: [
+      process.cwd() + '/node_modules/',
+      process.cwd(),
+      ...(require.main?.paths || []),
+      __dirname + '/../../../'
+    ]
   }))
 }
 

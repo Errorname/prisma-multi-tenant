@@ -1,21 +1,51 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { getConfig } from '@prisma/sdk'
 import { getSchema, getSchemaPath } from '@prisma/cli'
 
-import { writeFile } from './shell'
+import { writeFile, readFile } from './shell'
 import { PmtError } from './errors'
 import { Datasource } from './types'
 import { datasourceProviders } from './constants'
 
-export { getSchemaDir } from '@prisma/cli'
-
-export const readSchema = () => {
-  return getSchema()
+export const readSchema = async () => {
+  try {
+    return await getSchema()
+  } catch (e) {
+    console.error("Couldn't find schema.prisma using @prisma/cli, trying in @prisma/photon...")
+    return readFile(__dirname + '/../../../@prisma/photon/schema.prisma')
+  }
 }
 
-export const parseSchema = (datamodel: string) => {
-  process.env.PMT_URL = 'PMT_TMP_URL'
-  return getConfig({ datamodel })
+export const parseSchema = (
+  datamodel: string
+): {
+  datasources: { name: string; connectorType: string; url: { value: string } }[]
+} => {
+  const datasources = datamodel.match(/datasource\s+\w+\s+{[^}]*}/gm) || []
+
+  return {
+    datasources: datasources.map(ds => {
+      const nameMatch = ds.match(/datasource\s+([^\s]*)\s+{/)
+      const connectorTypeMatch = ds.match(/provider\s+=\s+(.*)/)
+      const urlMatch = ds.match(/url\s+=\s+(.*)/)
+
+      if (!nameMatch || !connectorTypeMatch || !urlMatch) {
+        throw new Error('invalid schema')
+      }
+
+      const connectorType = connectorTypeMatch[1].slice(1, -1)
+      const url = urlMatch[1].startsWith('env(')
+        ? process.env[urlMatch[1].slice(5, -2)] || 'undefined'
+        : urlMatch[1].slice(1, -1)
+
+      return {
+        name: nameMatch[1],
+        connectorType,
+        url: {
+          value: url
+        }
+      }
+    })
+  }
 }
 
 export const writeSchema = async (schema: string) => {
@@ -32,11 +62,11 @@ export const getDatasource = async (type: string) => {
 
   const schema = await parseSchema(rawSchema)
 
-  const managementDatasource = schema.datasources.find(d => d.name == type)
+  const datasource = schema.datasources.find(d => d.name == type)
 
-  if (!managementDatasource) throw new PmtError('no-' + type + '-datasource')
+  if (!datasource) throw new PmtError('no-' + type + '-datasource')
 
-  return managementDatasource
+  return datasource
 }
 
 export const getManagementDatasource = () => getDatasource('management')
@@ -44,7 +74,7 @@ export const getManagementDatasource = () => getDatasource('management')
 export const getTenantDatasource = () => getDatasource('tenant')
 
 export const translateDatasourceUrl = (url: { value: string }) => {
-  if (url.value.startsWith('file:')) {
+  if (url.value.startsWith('file:') && !url.value.startsWith('file:/')) {
     return 'file:' + process.cwd() + '/prisma/' + url.value.replace('file:', '')
   }
 

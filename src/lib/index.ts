@@ -1,11 +1,13 @@
 import { datasourceProviders } from '../shared/constants'
-import { runDistant } from '../shared/shell'
+import { runDistant, requireDistant } from '../shared/shell'
 import { getTenantDatasource } from '../shared/schema'
 import Management from '../shared/management'
 import { Tenant } from '../shared/types'
 
 interface MultiTenantOptions {
-  useManagement: boolean
+  useManagement?: boolean
+  Photon?: any
+  PhotonManagement?: any
 }
 
 interface WithMeta {
@@ -32,16 +34,17 @@ class MultiTenant<Photon extends { disconnect: () => Promise<void> }> {
     this.PhotonTenant = this.requireTenant()
 
     if (this.options.useManagement) {
-      this.management = new Management()
+      this.management = new Management({ Photon: this.options.PhotonManagement })
     }
 
     this.tenants = {}
   }
 
   private requireTenant(): any {
-    return require(require.resolve(`@prisma/photon`, {
-      paths: [process.cwd(), ...(require.main?.paths || [])]
-    })).Photon
+    if (this.options.Photon) {
+      return this.options.Photon
+    }
+    return requireDistant(`@prisma/photon`).Photon
   }
 
   async get(name: string, options?: any): Promise<Photon & WithMeta> {

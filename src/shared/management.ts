@@ -17,7 +17,7 @@ export default class Management {
 
     await setManagementEnv()
 
-    const { Photon } = requireDistant(photonManagementPath)
+    const Photon = this.options?.Photon || requireDistant(photonManagementPath).Photon
 
     this.photon = new Photon({
       debug: process.env.verbose == 'true',
