@@ -1,6 +1,6 @@
 {
   "name": "prisma-multi-tenant",
-  "version": "2.0.0-alpha14",
+  "version": "2.0.0-alpha15",
   "description": "🧭 Use Prisma as a multi-tenant provider for your application",
   "author": {
     "name": "Thibaud Courtoison",
@@ -24,7 +24,8 @@
     "test": "npm run test:prepare && npm run test:cli",
     "test:prepare": "bash tests/playground/prepare.sh",
     "test:cli": "jest tests/cli",
-    "test:lib": "jest tests/lib"
+    "test:lib": "jest tests/lib",
+    "postinstall": "prisma-multi-tenant generate"
   },
   "dependencies": {
     "@prisma/cli": "^0.1.29",

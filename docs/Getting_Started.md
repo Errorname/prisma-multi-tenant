@@ -47,13 +47,12 @@ prisma-multi-tenant init
 
 Running this command will do the following:
 
-1. Install `prisma-multi-tenant` locally in your app _(in order to use the library)_
-2. Prompt for the management datasource (provider and url)
-3. Update the Prisma Schema for multi-tenancy
-4. Generate Photon (for tenants & management)
-5. Set up the management datasource
-6. Create first tenant based on your initial schema
-7. Create an example script (`multi-tenancy-example.js`)
+1. Prompt for the management datasource (provider and url)
+2. Update the Prisma Schema for multi-tenancy
+3. Install `prisma-multi-tenant` locally in your app _(in order to use the library)_
+4. Set up the management datasource
+5. Create first tenant based on your initial schema
+6. Create an example script (`multi-tenancy-example.js`)
 
 ## 3. Add a new tenant
 

@@ -27,25 +27,22 @@ class Init implements Command {
   description = 'Init multi-tenancy for your application'
 
   async execute(args: CommandArguments, management: Management) {
-    // 1. Install prisma-multi-tenant to the application
-    await this.installPMT()
-
-    // 2. Prompt provider & url
+    // 1. Prompt provider & url
     const managementDS = await this.getManagementDatasource(args)
 
-    // 3. Update schema.prisma
+    // 2. Update schema.prisma
     const firstTenant = await this.updatePrismaSchema(managementDS)
 
-    // 4. Generating photons
-    await this.generatingPhotons()
+    // 3. Install prisma-multi-tenant to the application (which will generate photons)
+    await this.installPMT()
 
-    // 5. Set up management
+    // 4. Set up management
     await this.setUpManagement()
 
-    // 6. Create first tenant from initial schema
+    // 5. Create first tenant from initial schema
     await this.createFirstTenant(firstTenant, management)
 
-    // 7. Create multi-tenancy-example.js
+    // 6. Create multi-tenancy-example.js
     await this.createExample(firstTenant)
 
     console.log(chalk`\n✅  {green Your app is now ready for multi-tenancy!}\n`)
