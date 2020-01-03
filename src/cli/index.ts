@@ -15,6 +15,8 @@ import Management from '../shared/management'
 import { PmtError } from '../shared/errors'
 import { Command } from '../shared/types'
 
+require('dotenv').config()
+
 const args = parseArgs()
 let management: Management
 
