@@ -40,11 +40,16 @@ export const convertToCommandArgs = (
   command: Command,
   { primaryArgs, parsedPrimaryArgs: { _ }, secondaryArgs }: CliArguments
 ) => {
-  const options = (command.options || []).reduce((acc: { [name: string]: string }, { name }) => {
-    let arg = _.find(arg => arg.startsWith('--' + name))
+  const spec = (command.options || []).reduce((acc: any, option) => {
+    acc['--' + option.name] = option.boolean ? Boolean : String
+    return acc
+  }, {})
 
-    if (arg) {
-      acc[name] = arg.split('=')[1] || 'true'
+  const parsed = arg(spec, { permissive: true, argv: _ })
+
+  const options = (command.options || []).reduce((acc: { [name: string]: string }, { name }) => {
+    if (parsed['--' + name]) {
+      acc[name] = parsed['--' + name]
     }
 
     return acc

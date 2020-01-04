@@ -15,7 +15,7 @@ describe('management', () => {
   test('add tenants with args', async () => {
     // We can either use "new" or "add"
     await project.run('new --name=test1 --url=file:test1.db')
-    await project.run('add --name=test2 --url=file:test2.db')
+    await project.run('add --name test2 --url file:test2.db')
 
     // Can't add "management"
     await project.run('new --name=management --url=file:another.db').catch(() => {})

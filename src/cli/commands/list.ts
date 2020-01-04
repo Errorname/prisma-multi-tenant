@@ -10,7 +10,8 @@ class List implements Command {
   options = [
     {
       name: 'json',
-      description: 'Print using JSON format'
+      description: 'Print using JSON format',
+      boolean: true
     }
   ]
   description = 'List all tenants'
