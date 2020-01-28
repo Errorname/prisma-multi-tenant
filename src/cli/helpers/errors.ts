@@ -1,12 +1,12 @@
 import chalk from 'chalk'
 
 import { CliArguments, Command } from '../../shared/types'
-import { photonManagementPath } from '../../shared/constants'
+import { clientManagementPath } from '../../shared/constants'
 import { PmtError } from '../../shared/errors'
 
 export const printError = (error: PmtError, args: CliArguments) => {
-  if (error.message.match(`Cannot find module '${photonManagementPath}'`)) {
-    error.type = 'missing-photon-management'
+  if (error.message.match(`Cannot find module '${clientManagementPath}'`)) {
+    error.type = 'missing-client-management'
   }
 
   if (!error.type) {
@@ -30,8 +30,8 @@ export const printError = (error: PmtError, args: CliArguments) => {
         return noSchemaFound()
       case 'no-management-datasource':
         return noManagementDatasource()
-      case 'missing-photon-management':
-        return missingPhotonManagement()
+      case 'missing-client-management':
+        return missingClientManagement()
       case 'tenant-does-not-exist':
         return tenantDoesNotExists(error.data[0])
       case 'tenant-already-exists':
@@ -95,9 +95,9 @@ const noManagementDatasource = () => {
   `)
 }
 
-const missingPhotonManagement = () => {
+const missingClientManagement = () => {
   console.log(chalk`
-  {red No management Photon found}
+  {red No management Client found}
 
   Run \`prisma-multi-tenant generate\` to fix this error
   `)

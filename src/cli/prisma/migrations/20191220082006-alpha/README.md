@@ -43,8 +43,8 @@ migration ..20191220082006-alpha
 +  enabled  = env("PMT_MANAGEMENT_PROVIDER_POSTGRESQL")
 +}
 +
-+generator photon {
-+  provider = "photonjs"
++generator client {
++  provider = "prisma-client-js"
 +  output   = env("PMT_OUTPUT")
 +}
 +
@@ -55,5 +55,3 @@ migration ..20191220082006-alpha
 +  url      String
 +}
 ```
-
-

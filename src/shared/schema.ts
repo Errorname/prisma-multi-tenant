@@ -10,8 +10,8 @@ export const readSchema = async () => {
   try {
     return await getSchema()
   } catch (e) {
-    console.error("Couldn't find schema.prisma using @prisma/cli, trying in @prisma/photon...")
-    return readFile(__dirname + '/../../../@prisma/photon/schema.prisma')
+    console.error("Couldn't find schema.prisma using @prisma/cli, trying in @prisma/client...")
+    return readFile(__dirname + '/../../../@prisma/client/schema.prisma')
   }
 }
 
@@ -92,7 +92,8 @@ export const getManagementEnv = async () => {
 
   return {
     ...providersEnv,
-    PMT_MANAGEMENT_URL: translateDatasourceUrl(managementDatasource.url)
+    PMT_MANAGEMENT_URL: translateDatasourceUrl(managementDatasource.url),
+    PMT_OUTPUT: 'PMT_TMP'
   }
 }
 

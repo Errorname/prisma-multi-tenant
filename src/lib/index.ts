@@ -6,8 +6,8 @@ import { Tenant } from '../shared/types'
 
 interface MultiTenantOptions {
   useManagement?: boolean
-  Photon?: any
-  PhotonManagement?: any
+  PrismaClient?: any
+  PrismaClientManagement?: any
 }
 
 interface WithMeta {
@@ -20,34 +20,34 @@ const defaultMultiTenantOptions = {
   useManagement: true
 }
 
-class MultiTenant<Photon extends { disconnect: () => Promise<void> }> {
-  PhotonTenant: any
+class MultiTenant<PrismaClient extends { disconnect: () => Promise<void> }> {
+  ClientTenant: any
 
   management?: Management
-  tenants: { [name: string]: Photon & WithMeta }
+  tenants: { [name: string]: PrismaClient & WithMeta }
 
   options: MultiTenantOptions
 
   constructor(options?: MultiTenantOptions) {
     this.options = { ...defaultMultiTenantOptions, ...options }
 
-    this.PhotonTenant = this.requireTenant()
+    this.ClientTenant = this.requireTenant()
 
     if (this.options.useManagement) {
-      this.management = new Management({ Photon: this.options.PhotonManagement })
+      this.management = new Management({ PrismaClient: this.options.PrismaClientManagement })
     }
 
     this.tenants = {}
   }
 
   private requireTenant(): any {
-    if (this.options.Photon) {
-      return this.options.Photon
+    if (this.options.PrismaClient) {
+      return this.options.PrismaClient
     }
-    return requireDistant(`@prisma/photon`).Photon
+    return requireDistant(`@prisma/client`).PrismaClient
   }
 
-  async get(name: string, options?: any): Promise<Photon & WithMeta> {
+  async get(name: string, options?: any): Promise<PrismaClient & WithMeta> {
     if (this.tenants[name]) return this.tenants[name]
 
     if (!this.management) {
@@ -66,23 +66,23 @@ class MultiTenant<Photon extends { disconnect: () => Promise<void> }> {
   async directGet(
     tenant: { name: string; url: string },
     options?: any
-  ): Promise<Photon & WithMeta> {
+  ): Promise<PrismaClient & WithMeta> {
     process.env.PMT_URL = tenant.url
-    const photon = new this.PhotonTenant(options)
+    const client = new this.ClientTenant(options)
 
-    photon._meta = {
+    client._meta = {
       name: tenant.name
     }
 
-    this.tenants[tenant.name] = photon
+    this.tenants[tenant.name] = client
 
-    return photon as Photon & WithMeta
+    return client as PrismaClient & WithMeta
   }
 
   async createTenant(
     tenant: { name: string; provider: string; url: string },
     options?: any
-  ): Promise<Photon & WithMeta> {
+  ): Promise<PrismaClient & WithMeta> {
     if (!this.management) {
       throw new Error('Cannot use .createTenant(tenant, options) with `useManagement: false`')
     }

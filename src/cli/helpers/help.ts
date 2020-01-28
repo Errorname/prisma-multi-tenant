@@ -16,8 +16,8 @@ const printGlobalHelp = (): void => {
     
     {grey Examples:}
         {grey prisma-multi-tenant new}
-        {grey prisma-multi-tenant lift my_tenant up}
-        {grey prisma-multi-tenant env my_tenant -- prisma2 dev}
+        {grey prisma-multi-tenant migrate my_tenant up}
+        {grey prisma-multi-tenant env my_tenant -- prisma2 introspect}
         {grey ...}
 
   {bold COMMANDS}
@@ -29,7 +29,7 @@ ${Object.values(commands)
       .map((arg): string => `<${arg.name + (arg.optional ? '?' : '')}>`)
       .join(' ')
     const strLength = command.name.length + args.length
-    const spaceBetween = ''.padStart(23 - strLength)
+    const spaceBetween = ''.padStart(24 - strLength)
 
     return chalk`    {bold ${command.name}} ${args} ${spaceBetween} ${command.description}`
   })
@@ -37,9 +37,9 @@ ${Object.values(commands)
 
   {bold OPTIONS}
 
-    {bold -h, --help}                Output usage information for a command
-    {bold -V, --version}             Output the version number
-    {bold --verbose}                 Print additional logs
+    {bold -h, --help}                 Output usage information for a command
+    {bold -V, --version}              Output the version number
+    {bold --verbose}                  Print additional logs
   `)
   process.exit(0)
 }

@@ -1,7 +1,7 @@
 import { Command, CommandArguments } from '../../shared/types'
 import prompt from '../helpers/prompt'
 import chalk = require('chalk')
-import lift from './lift'
+import migrate from './migrate'
 import Management from '../../shared/management'
 
 class Delete implements Command {
@@ -34,10 +34,10 @@ class Delete implements Command {
       return
     }
 
-    await lift.liftOneTenant(management, 'down', name).catch(() => {})
+    await migrate.migrateOneTenant(management, 'down', name).catch(() => {})
     await management.delete(name)
 
-    console.log(chalk`\n✅  {green Lifted down "${name}" and deleted it from management!}\n`)
+    console.log(chalk`\n✅  {green Migrated down "${name}" and deleted it from management!}\n`)
     console.log(chalk`  {blue Note: You are still in charge of deleting the database!}\n`)
   }
 }

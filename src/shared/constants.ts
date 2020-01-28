@@ -1,2 +1,2 @@
 export const datasourceProviders = ['sqlite', 'mysql', 'postgresql']
-export const photonManagementPath = '@prisma/photon/prisma-multi-tenant/management'
+export const clientManagementPath = '@prisma/prisma-multi-tenant/management'

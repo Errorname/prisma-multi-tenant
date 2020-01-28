@@ -30,7 +30,7 @@ describe('management', () => {
       {
         name: 'db',
         provider: 'sqlite',
-        url: 'file:dev.db'
+        url: 'sqlite:./dev.db'
       },
       {
         name: 'test1',
