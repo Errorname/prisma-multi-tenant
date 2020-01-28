@@ -11,7 +11,7 @@ describe('generate', () => {
 
     await project.run('generate')
 
-    await project.expectFile('node_modules/@prisma/photon').toExists()
-    await project.expectFile('node_modules/@prisma/photon/prisma-multi-tenant')
+    await project.expectFile('node_modules/@prisma/client').toExists()
+    await project.expectFile('node_modules/@prisma/prisma-multi-tenant')
   })
 })

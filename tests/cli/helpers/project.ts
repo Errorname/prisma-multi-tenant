@@ -64,5 +64,7 @@ export const initProject = async (type: string, name: string): Promise<Project> 
 
   await runShell(`cd test-${name} && npm -s install`)
 
+  await runShell('npm link prisma-multi-tenant')
+
   return new Project({ type, name, path: 'test-' + name })
 }
