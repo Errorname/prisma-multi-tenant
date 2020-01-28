@@ -5,7 +5,7 @@ import { runShell, useYarn, requireDistant, writeFile } from '../../shared/shell
 import prompt from '../helpers/prompt'
 import { writeSchema, readSchema, parseSchema, prismaSchemaFragment } from '../../shared/schema'
 import generate from './generate'
-import lift from './lift'
+import migrate from './migrate'
 import { PmtError } from '../../shared/errors'
 import Management from '../../shared/management'
 
@@ -36,8 +36,8 @@ class Init implements Command {
     // 3. Update schema.prisma
     const firstTenant = await this.updatePrismaSchema(managementDS)
 
-    // 4. Generating photons
-    await this.generatingPhotons()
+    // 4. Generating clients
+    await this.generatingClients()
 
     // 5. Set up management
     await this.setUpManagement()
@@ -83,15 +83,15 @@ class Init implements Command {
     }
 
     const strToPrepend = prismaSchemaFragment(previous, managementDS)
-    const newSchema = strToPrepend + schema.replace(/datasource[^\{]*{[^\}]*}\n\n/g, '')
+    const newSchema = strToPrepend + schema.replace(/datasource\s[^\{]*{[^\}]*}\n\n/g, '')
 
     await writeSchema(newSchema)
 
     return previous
   }
 
-  async generatingPhotons() {
-    console.log('\n  Generating photon for both management and tenants...')
+  async generatingClients() {
+    console.log('\n  Generating prisma clients for both management and tenants...')
 
     await generate.generateTenants()
     await generate.generateManagement()
@@ -100,7 +100,7 @@ class Init implements Command {
   setUpManagement() {
     console.log('\n  Setting up management database...')
 
-    return lift.liftManagement('up', '--create-db')
+    return migrate.migrateManagement('up', '--create-db')
   }
 
   async createFirstTenant(firstTenant: Tenant, management: Management) {
@@ -112,29 +112,29 @@ class Init implements Command {
   async createExample(firstTenant: Tenant) {
     console.log('\n  Creating example script...')
 
-    const { Photon } = requireDistant('@prisma/photon')
+    const { PrismaClient } = requireDistant('@prisma/client')
 
-    const tenant = new Photon()
+    const tenant = new PrismaClient()
 
     const firstModelMapping = tenant.dmmf.mappings[0]
     const modelName = firstModelMapping.plural
 
     const script = `
-      // const { Photon } = require('@prisma/photon') // Uncomment for TypeScript support
+      // const { PrismaClient } = require('@prisma/PrismaClient') // Uncomment for TypeScript support
       const { MultiTenant } = require('prisma-multi-tenant')
 
       // This is the name of your first tenant, try with another one
       const name = "${firstTenant.name}"
 
-      // If you are using Typescript, you can do "new MultiTenant<Photon>()" for autocompletion
+      // If you are using TypeScript, you can do "new MultiTenant<PrismaClient>()" for autocompletion
       const multiTenant = new MultiTenant()
       
       async function main() {
         // Prisma-multi-tenant will connect to the correct tenant
-        const photon = await multiTenant.get(name)
+        const prisma = await multiTenant.get(name)
       
         // You keep the same interface as before
-        const ${modelName} = await photon.${modelName}.findMany()
+        const ${modelName} = await prisma.${modelName}.findMany()
       
         console.log(${modelName})
       }

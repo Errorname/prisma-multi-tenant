@@ -1,23 +1,23 @@
 datasource management_sqlite {
   provider = "sqlite"
-  url = "***"
+  url      = "***"
   enabled  = env("PMT_MANAGEMENT_PROVIDER_SQLITE")
 }
 
 datasource management_mysql {
   provider = "mysql"
-  url = "***"
+  url      = "***"
   enabled  = env("PMT_MANAGEMENT_PROVIDER_MYSQL")
 }
 
 datasource management_postgresql {
   provider = "postgresql"
-  url = "***"
+  url      = "***"
   enabled  = env("PMT_MANAGEMENT_PROVIDER_POSTGRESQL")
 }
 
-generator photon {
-  provider = "photonjs"
+generator client {
+  provider = "prisma-client-js"
   output   = env("PMT_OUTPUT")
 }
 

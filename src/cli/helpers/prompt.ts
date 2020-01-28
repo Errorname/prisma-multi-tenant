@@ -87,7 +87,7 @@ const managementConf = async (args: CommandArguments): Promise<Datasource> => {
 }
 
 const tenantConf = async (args: CommandArguments): Promise<Tenant> => {
-  // This is a fix until we can have a multi-provider photon (See #8)
+  // This is a fix until we can have a multi-provider prisma client (See #8)
   const tenantDS = await getTenantDatasource()
   const answers = await askQuestionsList(
     { ...args, options: { ...args.options, provider: tenantDS.connectorType } },

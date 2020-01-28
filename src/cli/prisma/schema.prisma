@@ -16,8 +16,8 @@ datasource management_postgresql {
   enabled  = env("PMT_MANAGEMENT_PROVIDER_POSTGRESQL")
 }
 
-generator photon {
-  provider = "photonjs"
+generator client {
+  provider = "prisma-client-js"
   output   = env("PMT_OUTPUT")
 }
 

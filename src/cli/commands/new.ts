@@ -1,7 +1,7 @@
 import { Command, CommandArguments } from '../../shared/types'
 import prompt from '../helpers/prompt'
 import Management from '../../shared/management'
-import lift from './lift'
+import migrate from './migrate'
 import chalk = require('chalk')
 import { PmtError } from '../../shared/errors'
 
@@ -40,11 +40,11 @@ class New implements Command {
       throw new PmtError('reserved-tenant-name', 'management')
     }
 
-    await lift.liftTenant('up', tenant, '--create-db')
+    await migrate.migrateTenant('up', tenant, '--create-db')
 
     if (args.options['no-management']) {
       console.log(
-        chalk`\n✅  {green Created the new tenant (without management) and lifted up the database}\n`
+        chalk`\n✅  {green Created the new tenant (without management) and migrated up the database}\n`
       )
       return
     }
@@ -52,7 +52,7 @@ class New implements Command {
     await management.create(tenant)
 
     console.log(
-      chalk`\n✅  {green Registered the new tenant into management and lifted up the database!}\n`
+      chalk`\n✅  {green Registered the new tenant into management and migrated up the database!}\n`
     )
   }
 }

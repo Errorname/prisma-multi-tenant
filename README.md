@@ -58,28 +58,27 @@ $> prisma-multi-tenant help
 
     Examples:
         prisma-multi-tenant new
-        prisma-multi-tenant lift my_tenant up
-        prisma-multi-tenant env my_tenant -- prisma2 dev
+        prisma-multi-tenant migrate my_tenant up
+        prisma-multi-tenant env my_tenant -- prisma2 instrospect
         ...
 
   COMMANDS
 
-    init                      Init multi-tenancy for your project
-    list                      List all tenants
-    new                       Create a new tenant
-    studio <name>             Use Studio to access a tenant
-    lift <name?> <up|down>    Lift up or down tenants
-    delete <name?>            Delete one or more tenants
-    generate                  Generate Photon for the tenants and management
-    dev <name>                Run `prisma2 dev` on a specific tenant
-    env <name>                Set env variables for a specific tenant
-    help                      Display this help
+    init                       Init multi-tenancy for your application
+    list                       List all tenants
+    new                        Create a new tenant
+    studio <name>              Use Studio to access a tenant
+    migrate <name?> <up|down>  Migrate up or down tenants
+    delete <name>              Delete one tenant
+    generate                   Generate Prisma Clients for the tenants and management
+    env <name>                 Set env variables for a specific tenant
+    help                       Display this help
 
   OPTIONS
 
-    -h, --help                Output usage information for a command
-    -V, --version             Output the version number
-    --verbose                 Print additional logs
+    -h, --help                 Output usage information for a command
+    -V, --version              Output the version number
+    --verbose                  Print additional logs
 ```
 
 ```js
@@ -104,9 +103,9 @@ Read more on how `prisma-multi-tenant` can help you achieve multi-tenancy for yo
 - [Complete documentation](/docs/Complete_Documentation.md) - For curious people
 - [Contributing guide](/docs/Contributing_Guide.md) - For great people
 - [Examples](/examples) - For everyone
-  - [Basic (JS) example]()
-  - [Basic (TS) example]()
-  - [Nexus example]()
+  - [Basic (JS) example](/examples)
+  - [Basic (TS) example](/examples)
+  - [Nexus example](/examples)
 
 ## Author
 

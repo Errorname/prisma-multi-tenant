@@ -2,7 +2,7 @@ import { exec } from 'child_process'
 import fs from 'fs'
 
 import { getManagementEnv } from './schema'
-import { photonManagementPath } from './constants'
+import { clientManagementPath } from './constants'
 import { Datasource } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -29,10 +29,18 @@ export const runShell = (
   })
 }
 
+export const fileExists = (path: string): Promise<boolean> => {
+  return new Promise(resolve => {
+    fs.access(path, fs.constants.F_OK, err => {
+      resolve(!err)
+    })
+  })
+}
+
 export const findBin = async (): Promise<string> => {
   if (distantBin !== undefined) return distantBin
 
-  let binFolder =
+  const binFolder =
     ((await runShell('npm bin', {
       cwd: process.cwd()
     })) as string).trim() + '/'
@@ -59,7 +67,7 @@ export const runLocal = async (cmd: string): Promise<string | Buffer> => {
     env: {
       ...process.env,
       ...managementEnv,
-      PMT_OUTPUT: nodeModules + '/' + photonManagementPath
+      PMT_OUTPUT: nodeModules + '/' + clientManagementPath
     }
   })
 }
@@ -91,14 +99,6 @@ export const writeFile = (path: string, content: string): Promise<void> => {
     fs.writeFile(path, content, err => {
       if (err) reject(err)
       resolve()
-    })
-  })
-}
-
-export const fileExists = (path: string): Promise<boolean> => {
-  return new Promise(resolve => {
-    fs.access(path, fs.constants.F_OK, err => {
-      resolve(!err)
     })
   })
 }

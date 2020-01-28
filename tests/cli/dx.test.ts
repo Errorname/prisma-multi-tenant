@@ -24,19 +24,6 @@ describe('dx', () => {
     expect(env2).toEqual(expect.stringContaining('file:db2.db'))
   })
 
-  // TODO: Find a way to kill all subprocess
-  /*test('dev', async () => {
-    const dev = project.exec('dev test1')
-
-    await new Promise(resolve => setTimeout(resolve, 10000))
-
-    const html = await fetch('http://localhost:5555').then((r: Response) => r.text())
-
-    expect(html).toEqual(expect.stringContaining('Prisma Studio'))
-
-    process.kill(-dev.pid)
-  })*/
-
   test('studio', async () => {
     // TODO: Remove auto-open (See: prisma/lift#271)
     const studio1 = project.exec('studio test1')

@@ -12,14 +12,14 @@ In this documentation, we will follow a step-by-step tutorial on how to add mult
 - [3. Add a new tenant](#3-add-a-new-tenant)
 - [4. Open Studio for a tenant](#4-open-studio-for-a-tenant)
 - [5. Use the library to access your tenants](#5-use-the-library-to-access-your-tenants)
-- [6. Develop on a specific tenant](#6-develop-on-a-specific-tenant)
+- [6. Watch and generate Prisma Clients](#6-watch-and-generate-prisma-clients)
 - [7. Deploy your schema on all tenants at once](#7-deploy-your-schema-on-all-tenants-at-once)
 
 ## 0. How does Prisma-multi-tenant works
 
 Prisma-multi-tenant uses a "**management**" datasource in order to keep track of all the tenants of your application.
 
-Thanks to this management datasource, prisma-multi-tenant is able to lift all your tenants, as well as providing you with a simple way to access your data.
+Thanks to this management datasource, prisma-multi-tenant is able to migrate all your tenants, as well as providing you with a simple way to access your data.
 
 Prisma-multi-tenant is a two-part project:
 
@@ -121,20 +121,20 @@ console.log(users)
 
 You can access any tenant you want, simply by using their name!
 
-## 6. Develop on a specific tenant
+## 6. Watch and generate Prisma Clients
 
-To develop on a specific tenant, run the following command:
+To watch abd generate Prisma Clients, run the following command:
 
 ```sh
-prisma-multi-tenant dev your_tenant_name
+prisma-multi-tenant generate --watch
 ```
 
 ## 7. Deploy your schema on all tenants at once
 
-If you want to make changes to your schema and lift all your tenants at the same time, you can do it using the following command:
+If you want to make changes to your schema and migrate all your tenants at the same time, you can do it using the following command:
 
 ```sh
-prisma-multi-tenant lift up
+prisma-multi-tenant migrate up
 ```
 
 ---

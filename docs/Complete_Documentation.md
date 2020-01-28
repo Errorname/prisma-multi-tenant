@@ -2,7 +2,7 @@
 
 Prisma-multi-tenant uses a "**management**" datasource in order to keep track of all the tenants of your application.
 
-Thanks to this management datasource, prisma-multi-tenant is able to lift all your tenants, as well as providing you with a simple way to access your data of whichever tenant you want.
+Thanks to this management datasource, prisma-multi-tenant is able to migrate all your tenants, as well as providing you with a simple way to access your data of whichever tenant you want.
 
 Prisma-multi-tenant is a two-part project:
 
@@ -16,7 +16,7 @@ Prisma-multi-tenant is a two-part project:
   - [`list`](#list)
   - [`new`](#new)
   - [`studio`](#studio)
-  - [`lift`](#lift)
+  - [`migrate`](#migrate)
   - [`delete`](#delete)
   - [`generate`](#generate)
   - [`env`](#env)
@@ -106,7 +106,7 @@ prisma-multi-tenant new --no-management
 
 The `new` command create a new database using your schema. It will use a name and a url (that you can provide as options).
 
-If you want to create a tenant without tracking it in the management datasource, you can use `--no-management`. However be careful, because you will need to manually lift up and down this tenant after that.
+If you want to create a tenant without tracking it in the management datasource, you can use `--no-management`. However be careful, because you will need to manually migrate up and down this tenant after that.
 
 ### `studio`
 
@@ -135,33 +135,33 @@ prisma-multi-tenant studio your_other_tenant --port=5556
 
 The `studio` command will connect to the management datasource to retrieve the url of the tenant given as an argument. If you want to run multiple studios, you can pass a specific `--port` option.
 
-### `lift`
+### `migrate`
 
-Lift up or down tenants.
+Migrate up or down tenants.
 
-> Note: You can also lift up the management datasource to deploy another management database: `prisma-multi-tenant lift management up`
+> Note: You can also migrate up the management datasource to deploy another management database: `prisma-multi-tenant migrate management up`
 
 **Arguments**
 
-| Name   | Optional | Description                           |
-| ------ | -------- | ------------------------------------- |
-| name   | Yes      | Name of the tenant you want to lift   |
-| action | **No**   | Either lift `up` or `down` the tenant |
+| Name   | Optional | Description                              |
+| ------ | -------- | ---------------------------------------- |
+| name   | Yes      | Name of the tenant you want to migrate   |
+| action | **No**   | Either migrate `up` or `down` the tenant |
 
 **Examples**
 
 ```sh
-prisma-multi-tenant lift your_tenant_name down
-prisma-multi-tenant lift up
-prisma-multi-tenant lift your_other_tenant up -- --auto-approve
-prisma-mutlite-annt lift management up
+prisma-multi-tenant migrate your_tenant_name down
+prisma-multi-tenant migrate up
+prisma-multi-tenant migrate your_other_tenant up -- --auto-approve
+prisma-mutlite-annt migrate management up
 ```
 
 **Explanations**
 
-The `lift` command is a wrapper to the `prisma2 lift` command. If you pass the `name` argument, it will lift a single tenant. Otherwise, it will apply the action to all of the tenants registered in the management datasource.
+The `migrate` command is a wrapper to the `prisma2 migrate` command. If you pass the `name` argument, it will migrate a single tenant. Otherwise, it will apply the action to all of the tenants registered in the management datasource.
 
-Any arguments written after `--` will be passed to `prisma2 lift`.
+Any arguments written after `--` will be passed to `prisma2 migrate`.
 
 ### `delete`
 
@@ -181,7 +181,7 @@ prisma-multi-tenant delete your_other_tenant
 
 **Explainations**
 
-The `delete` command will lift down the tenant datasource and unregister it from the management datasource.
+The `delete` command will migrate down the tenant datasource and unregister it from the management datasource.
 
 If you do not specify a tenant name as argument, it will do this for all registered tenants.
 
@@ -199,26 +199,6 @@ prisma-multi-tenant generate
 
 The `generate` command generates the Photon package for both Tenants and Management.
 
-### `dev`
-
-Run `prisma2 dev` on a specific tenant
-
-**Arguments**
-
-| Name | Optional | Description                           |
-| ---- | -------- | ------------------------------------- |
-| name | **No**   | Name of the tenant you want to dev on |
-
-**Examples**
-
-```sh
-prisma-multi-tenant dev your_tenant_name
-```
-
-**Explanations**
-
-The `dev` command is simple a wrapper of `prisma2 dev` using the tenants URL.
-
 ### `env`
 
 Set env variables for a specific tenant
@@ -232,7 +212,7 @@ Set env variables for a specific tenant
 **Examples**
 
 ```sh
-prisma-multi-tenant env your_tenant_name -- prisma2 lift save
+prisma-multi-tenant env your_tenant_name -- prisma2 migrate save --experimental
 ```
 
 **Explanations**
@@ -323,7 +303,7 @@ console.log(users)
 
 Creates a new tenant in management and returns the corresponding Photon. Any options passed as second argument will be given to the Photon constructor.
 
-This method will lift up the new database to be up-to-date with the migrations.
+This method will migrate up the new database to be up-to-date with the migrations.
 
 > Note: You currently can't have tenants from multiple datasources. (See #8)
 
@@ -345,7 +325,7 @@ console.log(users)
 
 Delete a tenant in management.
 
-This method will lift down the database.
+This method will migrate down the database.
 
 **Usage**
 
