@@ -5,16 +5,16 @@ const multiTenant = new MultiTenant()
 const name = process.argv[2]
 
 const main = async () => {
-  const photon = await multiTenant.get(name)
+  const prisma = await multiTenant.get(name)
 
-  const userSeeded = await photon.users.create({
+  const userSeeded = await prisma.users.create({
     data: {
       name: 'Jane',
       email: Math.random() + '@jane.doe'
     }
   })
 
-  const user = await photon.users.findOne({
+  const user = await prisma.users.findOne({
     where: { id: userSeeded.id }
   })
 

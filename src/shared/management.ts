@@ -32,7 +32,7 @@ export default class Management {
     const client = await this.getClient()
 
     try {
-      return await client.tenants.create({
+      return await client.tenant.create({
         data: tenant
       })
     } catch (err) {
@@ -44,7 +44,7 @@ export default class Management {
   async read(name: string): Promise<Tenant> {
     const client = await this.getClient()
 
-    const tenant = await client.tenants.findOne({ where: { name } })
+    const tenant = await client.tenant.findOne({ where: { name } })
 
     if (!tenant) {
       throw new PmtError('tenant-does-not-exist', name)
@@ -56,7 +56,7 @@ export default class Management {
   async list(): Promise<Tenant[]> {
     const client = await this.getClient()
 
-    const tenants = await client.tenants.findMany()
+    const tenants = await client.tenant.findMany()
 
     return tenants.map(this.sanitizeTenant)
   }
@@ -65,7 +65,7 @@ export default class Management {
     const client = await this.getClient()
 
     try {
-      return await client.tenants.update({
+      return await client.tenant.update({
         where: { name },
         data: update
       })
@@ -79,7 +79,7 @@ export default class Management {
     const client = await this.getClient()
 
     try {
-      return await client.tenants.delete({ where: { name } })
+      return await client.tenant.delete({ where: { name } })
     } catch (err) {
       if (err.message.includes('RecordNotFound')) throw new PmtError('tenant-does-not-exist', name)
       throw err

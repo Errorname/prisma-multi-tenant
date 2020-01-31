@@ -23,9 +23,9 @@ Prisma-multi-tenant is a two-part project:
   - [`help`](#help)
 - [Library](#library)
   - [`constructor`](#constructoroptions-multitenantoptions)
-  - [`get`](#getname-string-options-any-promisephoton)
-  - [`directGet`](#directgettenant--name-string-url-string--options-any-promisephoton)
-  - [`createTenant`](#createtenanttenant--name-string-provider-string-url-string--options-any-promisephoton)
+  - [`get`](#getname-string-options-any-promiseprismaclient)
+  - [`directGet`](#directgettenant--name-string-url-string--options-any-promiseprismaclient)
+  - [`createTenant`](#createtenanttenant--name-string-provider-string-url-string--options-any-promiseprismaclient)
   - [`deleteTenant`](#deletetenantname-string-promisevoid)
   - [`disconnect`](#disconnect-promisevoid)
 
@@ -56,7 +56,7 @@ The `init` command is used to initialize your application to use `prisma-multi-t
 1. Install `prisma-multi-tenant` locally in your app _(in order to use the library)_
 2. Prompt for the management datasource (provider and url)
 3. Update the Prisma Schema for multi-tenancy
-4. Generate Photon (for tenants & management)
+4. Generate Prisma Clients (for tenants & management)
 5. Set up the management datasource
 6. Create first tenant based on your initial schema
 7. Create an example script (`multi-tenancy-example.js`)
@@ -187,17 +187,24 @@ If you do not specify a tenant name as argument, it will do this for all registe
 
 ### `generate`
 
-Generate Photon for the tenants and management
+Generate Prisma Clients for the tenants and management
+
+**Options**
+
+| Name  | Type    | Description                     |
+| ----- | ------- | ------------------------------- |
+| watch | Boolean | Watches the Prisma project file |
 
 **Examples**
 
 ```sh
 prisma-multi-tenant generate
+prisma-multi-tenant generate --watch
 ```
 
 **Explainations**
 
-The `generate` command generates the Photon package for both Tenants and Management.
+The `generate` command generates the Prisma Client package for both Tenants and Management.
 
 ### `env`
 
@@ -248,10 +255,10 @@ const multiTenant = new MultiTenant()
 This will give you autocompletion on your tenants
 
 ```ts
-const { Photon } = require('@prisma/photon')
+const { PrismaClient } = require('@prisma/client')
 const { MultiTenant } = require('prisma-multi-tenant')
 
-const multiTenant = new MultiTenant<Photon>()
+const multiTenant = new MultiTenant<PrismaClient>()
 ```
 
 **No management**
@@ -264,44 +271,44 @@ const multiTenant = new MultiTenant({
 })
 ```
 
-### `get(name: string, options?: any): Promise<Photon>`
+### `get(name: string, options?: any): Promise<PrismaClient>`
 
-Returns the Photon of your tenant. Any options passed as second argument will be given to the Photon constructor.
+Returns the PrismaClient of your tenant. Any options passed as second argument will be given to the PrismaClient constructor.
 
 This method connects to management, and will throw an error if the tenant is not in the local cache and the useManagement constructor's option is set to false.
 
 **Usage**
 
 ```js
-const photon = await multiTenant.get('your_tenant_name')
+const prisma = await multiTenant.get('your_tenant_name')
 
-const users = await photon.users.findMany()
+const users = await prisma.users.findMany()
 
 console.log(users)
 ```
 
-### `directGet(tenant: { name: string, url: string }, options?: any): Promise<Photon>`
+### `directGet(tenant: { name: string, url: string }, options?: any): Promise<PrismaClient>`
 
-Returns the Photon of your tenant. Any options passed as second argument will be given to the Photon constructor.
+Returns the PrismaClient of your tenant. Any options passed as second argument will be given to the PrismaClient constructor.
 
 This method does not connect to management.
 
 **Usage**
 
 ```js
-const photon = await multiTenant.directGet({
+const prisma = await multiTenant.directGet({
   name: 'your_other_tenant',
   url: 'file:something.db'
 })
 
-const users = await photon.users.findMany()
+const users = await prisma.users.findMany()
 
 console.log(users)
 ```
 
-### `createTenant(tenant: { name: string, provider: string, url: string }, options?: any): Promise<Photon>`
+### `createTenant(tenant: { name: string, provider: string, url: string }, options?: any): Promise<PrismaClient>`
 
-Creates a new tenant in management and returns the corresponding Photon. Any options passed as second argument will be given to the Photon constructor.
+Creates a new tenant in management and returns the corresponding PrismaClient. Any options passed as second argument will be given to the PrismaClient constructor.
 
 This method will migrate up the new database to be up-to-date with the migrations.
 
@@ -310,13 +317,13 @@ This method will migrate up the new database to be up-to-date with the migration
 **Usage**
 
 ```js
-const photon = await multiTenant.createTenant({
+const prisma = await multiTenant.createTenant({
   name: 'a_new_tenant',
   provider: 'postgresql',
   url: 'postgresql://the_postgres_url'
 })
 
-const users = await photon.users.findMany()
+const users = await prisma.users.findMany()
 
 console.log(users)
 ```
@@ -335,7 +342,7 @@ await multiTenant.deleteTenant('my_tenant')
 
 ### `disconnect(): Promise<void[]>`
 
-Disconnects all Photon instances (management & tenants)
+Disconnects all PrismaClient instances (management & tenants)
 
 **Usage**
 

@@ -50,7 +50,7 @@ Running this command will do the following:
 1. Install `prisma-multi-tenant` locally in your app _(in order to use the library)_
 2. Prompt for the management datasource (provider and url)
 3. Update the Prisma Schema for multi-tenancy
-4. Generate Photon (for tenants & management)
+4. Generate PrismaClient (for tenants & management)
 5. Set up the management datasource
 6. Create first tenant based on your initial schema
 7. Create an example script (`multi-tenancy-example.js`)
@@ -108,13 +108,13 @@ const multiTenant = new MultiTenant()
 The name can come from anywhere (headers, token, ...)
 
 ```js
-const photon = await multiTenant.get('your_tenant_name')
+const prisma = await multiTenant.get('your_tenant_name')
 ```
 
-**3. Use Photon as usual**
+**3. Use PrismaClient as usual**
 
 ```js
-const users = await photon.users.findMany()
+const users = await prisma.users.findMany()
 
 console.log(users)
 ```
