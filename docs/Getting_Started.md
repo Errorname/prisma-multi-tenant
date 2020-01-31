@@ -114,7 +114,7 @@ const prisma = await multiTenant.get('your_tenant_name')
 **3. Use PrismaClient as usual**
 
 ```js
-const users = await prisma.users.findMany()
+const users = await prisma.user.findMany()
 
 console.log(users)
 ```
