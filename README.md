@@ -87,10 +87,10 @@ const { MultiTenant } = require('prisma-multi-tenant')
 const multiTenant = new MultiTenant()
 
 // The name can come from anywhere (headers, token, ...)
-const photon = await multiTenant.get('my_tenant_A')
+const prisma = await multiTenant.get('my_tenant_A')
 
-// Use Photon the same way as before
-const users = await photon.users.findMany()
+// Use Prisma-Client the same way as before
+const users = await prisma.user.findMany()
 
 console.log(users)
 ```

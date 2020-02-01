@@ -301,7 +301,7 @@ const prisma = await multiTenant.directGet({
   url: 'file:something.db'
 })
 
-const users = await prisma.users.findMany()
+const users = await prisma.user.findMany()
 
 console.log(users)
 ```
@@ -323,7 +323,7 @@ const prisma = await multiTenant.createTenant({
   url: 'postgresql://the_postgres_url'
 })
 
-const users = await prisma.users.findMany()
+const users = await prisma.user.findMany()
 
 console.log(users)
 ```

@@ -7,14 +7,14 @@ const name = process.argv[2]
 const main = async () => {
   const prisma = await multiTenant.get(name)
 
-  const userSeeded = await prisma.users.create({
+  const userSeeded = await prisma.user.create({
     data: {
       name: 'Jane',
       email: Math.random() + '@jane.doe'
     }
   })
 
-  const user = await prisma.users.findOne({
+  const user = await prisma.user.findOne({
     where: { id: userSeeded.id }
   })
 
