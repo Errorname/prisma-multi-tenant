@@ -16,11 +16,13 @@ export const parseArgs = (): CliArguments => {
       // Types
       '--help': Boolean,
       '--version': Boolean,
-      '--verbose': Boolean, // Counts the number of times --verbose is passed
+      '--verbose': Boolean,
+      '--env': String,
 
       // Aliases
       '-h': '--help',
-      '-v': '--version'
+      '-v': '--version',
+      '-e': '--env'
     },
     { permissive: true, argv: primaryArgs }
   )
@@ -82,4 +84,8 @@ export const shouldPrintVersion = ({ parsedPrimaryArgs }: CliArguments) => {
 
 export const shouldSetVerbose = ({ parsedPrimaryArgs }: CliArguments) => {
   return parsedPrimaryArgs['--verbose'] || false
+}
+
+export const shouldLoadEnv = ({ parsedPrimaryArgs }: CliArguments) => {
+  return !!parsedPrimaryArgs['--env']
 }

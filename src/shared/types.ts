@@ -27,6 +27,7 @@ export interface CliArguments {
     ['--help']?: boolean
     ['--version']?: boolean
     ['--verbose']?: boolean
+    ['--env']?: string
   }
   commandName: string
 }

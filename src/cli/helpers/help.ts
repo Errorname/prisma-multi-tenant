@@ -38,7 +38,8 @@ ${Object.values(commands)
   {bold OPTIONS}
 
     {bold -h, --help}                 Output usage information for a command
-    {bold -V, --version}              Output the version number
+    {bold -v, --version}              Output the version number
+    {bold -e, --env}                  Load env file given as parameter
     {bold --verbose}                  Print additional logs
   `)
   process.exit(0)
