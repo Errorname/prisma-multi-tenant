@@ -53,6 +53,14 @@ export default class Management {
     return this.sanitizeTenant(tenant)
   }
 
+  async exists(name: string): Promise<Boolean> {
+    const client = await this.getClient()
+
+    const tenant = await client.tenant.findOne({ where: { name } })
+
+    return !!tenant
+  }
+
   async list(): Promise<Tenant[]> {
     const client = await this.getClient()
 

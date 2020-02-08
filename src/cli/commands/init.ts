@@ -83,7 +83,7 @@ class Init implements Command {
     }
 
     const strToPrepend = prismaSchemaFragment(previous, managementDS)
-    const newSchema = strToPrepend + schema.replace(/datasource\s[^\{]*{[^\}]*}\n\n/g, '')
+    const newSchema = strToPrepend + schema.replace(/datasource\s[^\{]*{[^\}]*}\n*/g, '')
 
     await writeSchema(newSchema)
 

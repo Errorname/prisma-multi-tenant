@@ -105,7 +105,7 @@ class MultiTenant<PrismaClient extends { disconnect: () => Promise<void> }> {
 
     await this.management.create(tenant)
 
-    await runDistant('prisma2 lift up --create-db', tenant)
+    await runDistant('prisma2 migrate up --create-db --experimental', tenant)
 
     return this.directGet(tenant, options)
   }
@@ -121,9 +121,17 @@ class MultiTenant<PrismaClient extends { disconnect: () => Promise<void> }> {
 
     const tenant = await this.management.delete(name)
 
-    await runDistant('prisma2 lift down --auto-approve', tenant)
+    await runDistant('prisma2 migrate down --auto-approve --experimental', tenant)
 
     return tenant
+  }
+
+  async existsTenant(name: string): Promise<Boolean> {
+    if (!this.management) {
+      throw new Error('Cannot use .existsTenant(name) with `useManagement: false`')
+    }
+
+    return this.management.exists(name)
   }
 
   disconnect(): Promise<void[]> {

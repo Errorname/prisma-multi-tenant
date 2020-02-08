@@ -36,8 +36,8 @@ export const printError = (error: PmtError, args: CliArguments) => {
         return tenantDoesNotExists(error.data[0])
       case 'tenant-already-exists':
         return tenantAlreadyExists(error.data[0])
-      case 'unrecognized-lift-action':
-        return unrecognizedLiftAction(error.data[0].args.join(' '))
+      case 'unrecognized-migrate-action':
+        return unrecognizedMigrateAction(error.data[0].args.join(' '))
       case 'reserved-tenant-name':
         return reservedTenantName(error.data[0])
       default:
@@ -119,11 +119,11 @@ const tenantAlreadyExists = (name: string): void => {
   `)
 }
 
-const unrecognizedLiftAction = (args: string): void => {
+const unrecognizedMigrateAction = (args: string): void => {
   console.log(chalk`
-  {red Unrecognized lift action "${args}"}
+  {red Unrecognized migrate action "${args}"}
 
-  ${messageHelpCommand('lift')}
+  ${messageHelpCommand('migrate')}
   `)
 }
 

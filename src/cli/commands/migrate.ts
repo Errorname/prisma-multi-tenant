@@ -65,7 +65,7 @@ class Migrate implements Command {
       action = arg1
       migrateArgs = [arg2, ...restArgs].join(' ')
     } else {
-      throw new PmtError('unrecognized-lift-action', args)
+      throw new PmtError('unrecognized-migrate-action', args)
     }
 
     return { name, action, migrateArgs, prismaArgs: args.secondary }

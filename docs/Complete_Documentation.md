@@ -27,6 +27,7 @@ Prisma-multi-tenant is a two-part project:
   - [`directGet`](#directgettenant--name-string-url-string--options-any-promiseprismaclient)
   - [`createTenant`](#createtenanttenant--name-string-provider-string-url-string--options-any-promiseprismaclient)
   - [`deleteTenant`](#deletetenantname-string-promisevoid)
+  - [`existsTenant`](#existstenantname-string-promiseboolean)
   - [`disconnect`](#disconnect-promisevoid)
 
 ## CLI
@@ -338,6 +339,16 @@ This method will migrate down the database.
 
 ```js
 await multiTenant.deleteTenant('my_tenant')
+```
+
+### `existsTenant(name: string): Promise<Boolean>`
+
+Test if a tenant exists in management.
+
+**Usage**
+
+```js
+await multiTenant.existsTenant('my_tenant')
 ```
 
 ### `disconnect(): Promise<void[]>`
