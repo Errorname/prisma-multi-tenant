@@ -50,7 +50,7 @@ npm i -g prisma-multi-tenant@alpha
 ```
 $> prisma-multi-tenant help
 
-  🧭  prisma-multi-tenant v2.0.0-alpha19
+  🧭  prisma-multi-tenant v2.0.0-alpha20
 
   USAGE
 

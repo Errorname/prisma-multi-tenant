@@ -40,7 +40,7 @@ export const parseArgs = (): CliArguments => {
 
 export const convertToCommandArgs = (
   command: Command,
-  { primaryArgs, parsedPrimaryArgs: { _ }, secondaryArgs }: CliArguments
+  { parsedPrimaryArgs: { _ }, secondaryArgs }: CliArguments
 ) => {
   const spec = (command.options || []).reduce((acc: any, option) => {
     acc['--' + option.name] = option.boolean ? Boolean : String
@@ -57,7 +57,7 @@ export const convertToCommandArgs = (
     return acc
   }, {})
 
-  const args = primaryArgs.filter(a => !a.startsWith('-')).slice(1)
+  const args = parsed._.slice(1)
 
   if (command.args.filter(a => !a.optional).length > args.length) {
     throw new PmtError('missing-args', command)
