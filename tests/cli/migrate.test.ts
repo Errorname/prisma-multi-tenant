@@ -8,7 +8,7 @@ describe('migrate', () => {
   let project: Project
 
   beforeAll(async () => {
-    project = await initProject('javascript/script', 'migrate')
+    project = await initProject('javascript/script', 'cli-migrate')
 
     await project.run('init --provider=sqlite --url=file:management.db')
     await project.run('delete db --force')

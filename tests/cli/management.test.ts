@@ -7,7 +7,7 @@ describe('management', () => {
   let project: Project
 
   beforeAll(async () => {
-    project = await initProject('javascript/script', 'management')
+    project = await initProject('javascript/script', 'cli-management')
 
     await project.run('init --provider=sqlite --url=file:management.db')
   })

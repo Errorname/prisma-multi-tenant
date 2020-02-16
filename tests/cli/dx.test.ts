@@ -1,6 +1,5 @@
 import fetch, { Response } from 'node-fetch'
 import { Project, initProject } from './helpers/project'
-import { runShell } from './helpers/shell'
 
 // If timeout error, increase the number
 jest.setTimeout(300000)
@@ -9,7 +8,7 @@ describe('dx', () => {
   let project: Project
 
   beforeAll(async () => {
-    project = await initProject('javascript/script', 'dx')
+    project = await initProject('javascript/script', 'cli-dx')
 
     await project.run('init --provider=sqlite --url=file:management.db')
     await project.run('new --name=test1 --url=file:db1.db')
@@ -29,15 +28,36 @@ describe('dx', () => {
     const studio1 = project.exec('studio test1')
     const studio2 = project.exec('studio test2 --port=5556')
 
-    await new Promise(resolve => setTimeout(resolve, 3000))
+    const sleep = (s: number) => new Promise(resolve => setTimeout(resolve, s * 1000))
 
-    const html1 = await fetch('http://localhost:5555').then((r: Response) => r.text())
-    const html2 = await fetch('http://localhost:5556').then((r: Response) => r.text())
+    const connect = async (port: number) => {
+      let html
+      try {
+        html = await fetch('http://localhost:' + port).then((r: Response) => r.text())
+      } catch {
+        await sleep(5)
+        try {
+          html = await fetch('http://localhost:' + port).then((r: Response) => r.text())
+        } catch {
+          await sleep(30)
+          try {
+            html = await fetch('http://localhost:' + port).then((r: Response) => r.text())
+          } catch {
+            html = "Error: couldn't connect to http://localhost:" + port
+          }
+        }
+      }
+      return html
+    }
 
-    expect(html1).toEqual(expect.stringContaining('Prisma Studio'))
-    expect(html2).toEqual(expect.stringContaining('Prisma Studio'))
+    await sleep(5)
+
+    const [html1, html2] = await Promise.all([connect(5555), connect(5556)])
 
     process.kill(-studio1.pid)
     process.kill(-studio2.pid)
+
+    expect(html1).toEqual(expect.stringContaining('Prisma Studio'))
+    expect(html2).toEqual(expect.stringContaining('Prisma Studio'))
   })
 })

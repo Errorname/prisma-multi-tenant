@@ -121,7 +121,7 @@ class MultiTenant<PrismaClient extends { disconnect: () => Promise<void> }> {
 
     const tenant = await this.management.delete(name)
 
-    await runDistant('prisma2 migrate down --auto-approve --experimental', tenant)
+    await runDistant('prisma2 migrate down --experimental', tenant)
 
     return tenant
   }

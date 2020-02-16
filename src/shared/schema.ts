@@ -11,7 +11,21 @@ export const readSchema = async () => {
     return await getSchema()
   } catch (e) {
     console.error("Couldn't find schema.prisma using @prisma/cli, trying in @prisma/client...")
-    return readFile(__dirname + '/../../../@prisma/client/schema.prisma')
+
+    const paths = [
+      __dirname + '/../../../@prisma/client/schema.prisma',
+      '../../../@prisma/client/schema.prisma'
+    ]
+
+    for (let path of paths) {
+      try {
+        return await readFile(path)
+      } catch {
+        console.error(`Path: "${path}" no such file`)
+      }
+    }
+
+    throw new Error("Couldn't find a schema.prisma file")
   }
 }
 

@@ -21,10 +21,10 @@
     "build": "tsc",
     "lint": "eslint src/**/*.ts",
     "prettier": "prettier \"src/**/*.ts\" --check",
-    "test": "npm run test:prepare && npm run test:cli",
+    "test": "npm run test:prepare && npm run test:cli && npm run test:lib",
     "test:prepare": "bash tests/playground/prepare.sh",
     "test:cli": "jest tests/cli",
-    "test:lib": "jest tests/lib"
+    "test:lib": "bash tests/playground/test-lib.sh"
   },
   "dependencies": {
     "@prisma/cli": "^0.1.31",
@@ -54,6 +54,7 @@
     "jest": "^25.1.0",
     "node-fetch": "^2.6.0",
     "prettier": "^1.19.1",
+    "rxjs": "^6.5.4",
     "ts-jest": "^25.0.0",
     "typescript": "^3.7.5"
   },
