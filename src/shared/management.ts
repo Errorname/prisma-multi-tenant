@@ -17,8 +17,20 @@ export default class Management {
 
     await setManagementEnv()
 
-    const PrismaClient =
-      this.options?.PrismaClient || requireDistant(clientManagementPath).PrismaClient
+    let PrismaClient
+
+    if (this.options?.PrismaClient) {
+      PrismaClient = this.options?.PrismaClient
+    } else {
+      try {
+        PrismaClient = requireDistant(clientManagementPath).PrismaClient
+      } catch {
+        console.error(
+          `\nError: Cannot find module '@prisma/prisma-multi-tenant/management'.\n\nTry running "prisma-multi-tenant generate"\n`
+        )
+        process.exit(1)
+      }
+    }
 
     this.client = new PrismaClient({
       debug: process.env.verbose == 'true',
