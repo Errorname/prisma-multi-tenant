@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@prisma/cli": "^0.1.31",
-    "@prisma/client": "^2.0.0-preview021",
+    "@prisma/client": "^2.0.0-preview022",
     "arg": "^4.1.2",
     "chalk": "^3.0.0",
     "cli-table3": "^0.5.1",
