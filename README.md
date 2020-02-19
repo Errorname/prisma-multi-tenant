@@ -102,10 +102,10 @@ Read more on how `prisma-multi-tenant` can help you achieve multi-tenancy for yo
 - [Getting Started](/docs/Getting_Started.md) - For newcomers
 - [Complete documentation](/docs/Complete_Documentation.md) - For curious people
 - [Contributing guide](/docs/Contributing_Guide.md) - For great people
-- [Examples](/examples) - For everyone
-  - [Basic (JS) example](/examples)
-  - [Basic (TS) example](/examples)
-  - [Nexus example](/examples)
+- [Examples](/docs/examples) - For everyone
+  - [Basic (JS) example](/docs/examples)
+  - [Basic (TS) example](/docs/examples)
+  - [Nexus example](/docs/examples)
 
 ## Author
 
@@ -117,9 +117,9 @@ Read more on how `prisma-multi-tenant` can help you achieve multi-tenancy for yo
 
 ## 🤝 Contributors
 
-🙌 Thanks to [@antoinecarat](https://github.com/antoinecarat) for the reviews of this library
+Contributions, issues and feature requests are welcome! 🙌
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/Errorname/prisma-multi-tenant/issues).
+Feel free to check [issues page](https://github.com/Errorname/prisma-multi-tenant/issues).
 
 ## Show your support
 
@@ -127,9 +127,6 @@ Give a ⭐️ if this project helped you!
 
 ## 📝 License
 
-Copyright © 2019 [Thibaud Courtoison](https://github.com/Errorname).<br />
+Copyright © 2020 [Thibaud Courtoison](https://github.com/Errorname).
+
 This project is [MIT](https://github.com/Errorname/prisma-multi-tenant/blob/master/LICENSE) licensed.
-
----
-
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
