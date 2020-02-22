@@ -2,7 +2,7 @@
 
 Prisma-multi-tenant uses a "**management**" datasource in order to keep track of all the tenants of your application.
 
-Thanks to this management datasource, prisma-multi-tenant is able to migrate all your tenants, as well as providing you with a simple way to access your data of whichever tenant you want.
+Thanks to this management datasource, prisma-multi-tenant is able to migrate all your tenants, as well as providing you with a simple way to access the data of whichever tenant you want.
 
 Prisma-multi-tenant is a two-part project:
 
@@ -56,10 +56,10 @@ The `init` command is used to initialize your application to use `prisma-multi-t
 
 1. Install `prisma-multi-tenant` locally in your app _(in order to use the library)_
 2. Prompt for the management datasource (provider and url)
-3. Update the Prisma Schema for multi-tenancy
-4. Generate Prisma Clients (for tenants & management)
+3. Update the `prisma/.env` file with the management's provider and url
+4. Generate PrismaClient (for tenants & management)
 5. Set up the management datasource
-6. Create first tenant based on your initial schema
+6. Create first tenant based on the `DATABASE_URL` env variable
 7. Create an example script (`multi-tenancy-example.js`)
 
 ### `list`
@@ -92,6 +92,7 @@ Create a new tenant
 | Name          | Type    | Description                                                      |
 | ------------- | ------- | ---------------------------------------------------------------- |
 | name          | String  | Name of the tenant                                               |
+| provider      | String  | Provider of the tenant                                           |
 | url           | String  | URL of the database                                              |
 | no-management | Boolean | The new tenant will not be registered in the management database |
 
@@ -99,13 +100,13 @@ Create a new tenant
 
 ```sh
 prisma-multi-tenant new
-prisma-multi-tenant new --name=company_b --url=postgres://...
+prisma-multi-tenant new --name=company_b --provider=postgresql --url=postgres://...
 prisma-multi-tenant new --no-management
 ```
 
 **Explanations**
 
-The `new` command create a new database using your schema. It will use a name and a url (that you can provide as options).
+The `new` command create a new database using your schema. It will use a name, a provider and an url (that you can provide as options).
 
 If you want to create a tenant without tracking it in the management datasource, you can use `--no-management`. However be careful, because you will need to manually migrate up and down this tenant after that.
 
@@ -140,7 +141,7 @@ The `studio` command will connect to the management datasource to retrieve the u
 
 Migrate up or down tenants.
 
-> Note: You can also migrate up the management datasource to deploy another management database: `prisma-multi-tenant migrate management up`
+> Note: You can also migrate up the management datasource to deploy another management database: `prisma-multi-tenant migrate management up -- --create-db`
 
 **Arguments**
 
@@ -155,7 +156,7 @@ Migrate up or down tenants.
 prisma-multi-tenant migrate your_tenant_name down
 prisma-multi-tenant migrate up
 prisma-multi-tenant migrate your_other_tenant up -- --auto-approve
-prisma-mutlite-annt migrate management up
+prisma-multi-tenant migrate management up -- --create-db
 ```
 
 **Explanations**
@@ -166,25 +167,30 @@ Any arguments written after `--` will be passed to `prisma2 migrate`.
 
 ### `delete`
 
-Delete one or more tenants
+Delete one tenant
 
 **Arguments**
 
-|Name|Optional|Description|
-|name|Yes|Name of the tenant you want to delete|
+| Name | Optional | Description                           |
+| ---- | -------- | ------------------------------------- |
+| name | **No**   | Name of the tenant you want to delete |
+
+**Options**
+
+| Name  | Type    | Description                            |
+| ----- | ------- | -------------------------------------- |
+| force | Boolean | If true, will not ask for confirmation |
 
 **Examples**
 
 ```sh
-prisma-multi-tenant delete
 prisma-multi-tenant delete your_other_tenant
+prisma-multi-tenant delete your_other_tenant --force
 ```
 
 **Explainations**
 
 The `delete` command will migrate down the tenant datasource and unregister it from the management datasource.
-
-If you do not specify a tenant name as argument, it will do this for all registered tenants.
 
 ### `generate`
 
@@ -225,7 +231,7 @@ prisma-multi-tenant env your_tenant_name -- prisma2 migrate save --experimental
 
 **Explanations**
 
-The `env` command uses management to add the URL of your tenant in the env variable. Because of that, you can use any `prisma2` command you want, and it will use the tenant you specified.
+The `env` command uses management to add the URL of your tenant in the `DATABASE_URL` env variable. Because of that, you can use any `prisma2` command you want, and it will use the tenant you specified.
 
 ### `help`
 

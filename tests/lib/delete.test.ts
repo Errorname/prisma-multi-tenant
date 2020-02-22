@@ -1,5 +1,11 @@
+import path from 'path'
+
 // @ts-ignore
 const { MultiTenant } = require('prisma-multi-tenant')
+
+require('dotenv').config({
+  path: path.resolve(process.cwd(), 'prisma/.env')
+})
 
 describe('delete', () => {
   test('delete existing tenant', async () => {
@@ -13,7 +19,7 @@ describe('delete', () => {
 
     await multiTenant.deleteTenant('test-delete-1')
 
-    expect(multiTenant.existsTenant('test-delete-1'))
+    await expect(multiTenant.existsTenant('test-delete-1'))
       .resolves.toBe(false)
       .then(() => multiTenant.disconnect())
   })
@@ -21,7 +27,7 @@ describe('delete', () => {
   test('delete non-existing tenant', async () => {
     const multiTenant = new MultiTenant()
 
-    expect(multiTenant.deleteTenant('test-delete-2'))
+    await expect(multiTenant.deleteTenant('test-delete-2'))
       .rejects.toThrow()
       .then(() => multiTenant.disconnect())
   })
@@ -29,7 +35,7 @@ describe('delete', () => {
   test('useManagement: false', async () => {
     const multiTenant = new MultiTenant({ useManagement: false })
 
-    expect(multiTenant.deleteTenant('test-delete-3'))
+    await expect(multiTenant.deleteTenant('test-delete-3'))
       .rejects.toThrow()
       .then(() => multiTenant.disconnect())
   })

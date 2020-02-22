@@ -1,5 +1,11 @@
+import path from 'path'
+
 // @ts-ignore
 const { MultiTenant } = require('prisma-multi-tenant')
+
+require('dotenv').config({
+  path: path.resolve(process.cwd(), 'prisma/.env')
+})
 
 describe('constructor', () => {
   test('no options', () => {

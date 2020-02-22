@@ -109,6 +109,7 @@ ${command.args
 
   console.log(chalk`
     {bold -h, --help}       Display this help
+    {bold -e, --env}        Load env file given as parameter
     {bold --verbose}        Print additional logs
   `)
 }

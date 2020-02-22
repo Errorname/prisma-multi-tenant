@@ -51,10 +51,7 @@ class Generate implements Command {
   async watchGenerateTenants(prismaArgs: string = '') {
     spawn('prisma2', ['generate', '--watch'], {
       stdio: 'inherit',
-      env: {
-        ...process.env,
-        PMT_URL: 'PMT_TMP'
-      }
+      env: process.env
     }).on('exit', (exitCode: number) => process.exit(exitCode))
   }
 }

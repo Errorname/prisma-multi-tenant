@@ -11,9 +11,9 @@ describe('migrate', () => {
     project = await initProject('javascript/script', 'cli-migrate')
 
     await project.run('init --provider=sqlite --url=file:management.db')
-    await project.run('delete db --force')
-    await project.run('new --name=test1 --url=file:test1.db')
-    await project.run('new --name=test2 --url=file:test2.db')
+    await project.run('delete dev --force')
+    await project.run('new --name=test1 --provider=sqlite --url=file:test1.db')
+    await project.run('new --name=test2 --provider=sqlite --url=file:test2.db')
     await project.run('env test1 -- prisma2 migrate save --name=test --experimental')
     await runShell(`cp helpers/seed.js ../playground/${project.path}/seed.js`, '../cli')
   })

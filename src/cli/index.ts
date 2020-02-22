@@ -19,6 +19,9 @@ import { PmtError } from '../shared/errors'
 import { Command } from '../shared/types'
 
 require('dotenv').config()
+require('dotenv').config({
+  path: path.resolve(process.cwd(), 'prisma/.env')
+})
 
 const args = parseArgs()
 let management: Management

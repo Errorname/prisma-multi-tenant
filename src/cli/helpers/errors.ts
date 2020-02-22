@@ -40,6 +40,8 @@ export const printError = (error: PmtError, args: CliArguments) => {
         return unrecognizedMigrateAction(error.data[0].args.join(' '))
       case 'reserved-tenant-name':
         return reservedTenantName(error.data[0])
+      case 'missing-env':
+        return missingEnv(error.data[0].name)
       default:
         console.error(error)
     }
@@ -130,5 +132,11 @@ const unrecognizedMigrateAction = (args: string): void => {
 const reservedTenantName = (name: string): void => {
   console.log(chalk`
   {red You cannot use "${name}" for the name of a tenant}
+  `)
+}
+
+const missingEnv = (name: string): void => {
+  console.log(chalk`
+  {red The env variable "${name}" is required but missing}
   `)
 }

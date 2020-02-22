@@ -1,5 +1,11 @@
+import path from 'path'
+
 // @ts-ignore
 const { MultiTenant } = require('prisma-multi-tenant')
+
+require('dotenv').config({
+  path: path.resolve(process.cwd(), 'prisma/.env')
+})
 
 describe('get', () => {
   test('get existing tenant', async () => {
@@ -18,7 +24,7 @@ describe('get', () => {
   test('get non-existing tenant', async () => {
     const multiTenant = new MultiTenant()
 
-    expect(multiTenant.get('unknown-tenant'))
+    await expect(multiTenant.get('unknown-tenant'))
       .rejects.toThrow()
       .then(() => multiTenant.disconnect())
   })
@@ -28,7 +34,7 @@ describe('get', () => {
       useManagement: false
     })
 
-    expect(multiTenant.get('test1'))
+    await expect(multiTenant.get('test1'))
       .rejects.toThrow()
       .then(() => multiTenant.disconnect())
   })

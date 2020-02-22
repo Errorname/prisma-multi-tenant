@@ -19,7 +19,7 @@ In this documentation, we will follow a step-by-step tutorial on how to add mult
 
 Prisma-multi-tenant uses a "**management**" datasource in order to keep track of all the tenants of your application.
 
-Thanks to this management datasource, prisma-multi-tenant is able to migrate all your tenants, as well as providing you with a simple way to access your data.
+Thanks to this management datasource, prisma-multi-tenant is able to migrate all your tenants, as well as providing you with a simple way to access the data of whichever tenant you want.
 
 Prisma-multi-tenant is a two-part project:
 
@@ -38,7 +38,7 @@ yarn global add prisma-multi-tenant@alpha
 
 ## 2. Initialize multi-tenancy to in your app
 
-Now that `prisma-multi-tenant` is available globally on your system, we can now use it to initialize your application:
+Now that `prisma-multi-tenant` is available globally on your system, we can use it to initialize your application:
 
 ```sh
 # In your application directory:
@@ -49,10 +49,10 @@ Running this command will do the following:
 
 1. Install `prisma-multi-tenant` locally in your app _(in order to use the library)_
 2. Prompt for the management datasource (provider and url)
-3. Update the Prisma Schema for multi-tenancy
+3. Update the `prisma/.env` file with the management's provider and url
 4. Generate PrismaClient (for tenants & management)
 5. Set up the management datasource
-6. Create first tenant based on your initial schema
+6. Create first tenant based on the `DATABASE_URL` env variable
 7. Create an example script (`multi-tenancy-example.js`)
 
 ## 3. Add a new tenant
@@ -123,7 +123,7 @@ You can access any tenant you want, simply by using their name!
 
 ## 6. Watch and generate Prisma Clients
 
-To watch abd generate Prisma Clients, run the following command:
+To watch and generate Prisma Clients, run the following command:
 
 ```sh
 prisma-multi-tenant generate --watch

@@ -19,7 +19,7 @@ class Env implements Command {
 
     const tenant = await management.read(name)
 
-    process.env.PMT_URL = tenant.url
+    process.env.DATABASE_URL = tenant.url
 
     const [command, ...commandArguments] = args.secondary.split(' ')
 

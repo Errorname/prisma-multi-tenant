@@ -3,7 +3,6 @@ import chalk from 'chalk'
 
 import { CommandArguments, Datasource, Tenant } from '../../shared/types'
 import { datasourceProviders } from '../../shared/constants'
-import { getTenantDatasource } from '../../shared/schema'
 
 const confirm = async (message: string) => {
   const { confirm } = await inquirer.prompt([
@@ -88,11 +87,12 @@ const managementConf = async (args: CommandArguments): Promise<Datasource> => {
 
 const tenantConf = async (args: CommandArguments): Promise<Tenant> => {
   // This is a fix until we can have a multi-provider prisma client (See #8)
-  const tenantDS = await getTenantDatasource()
-  const answers = await askQuestionsList(
-    { ...args, options: { ...args.options, provider: tenantDS.connectorType } },
-    ['name', 'provider', 'url']
+
+  console.log(
+    chalk`  {yellow {bold Warning:} Prisma2 does not yet allow for multi-provider clients, so you must use the same provider used in your schema.prisma file.}\n`
   )
+
+  const answers = await askQuestionsList(args, ['name', 'provider', 'url'])
 
   return answers as Tenant
 }

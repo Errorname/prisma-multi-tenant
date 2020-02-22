@@ -14,11 +14,11 @@ describe('management', () => {
 
   test('add tenants with args', async () => {
     // We can either use "new" or "add"
-    await project.run('new --name=test1 --url=file:test1.db')
-    await project.run('add --name test2 --url file:test2.db')
+    await project.run('new --name=test1 --provider=sqlite --url=file:test1.db')
+    await project.run('add --name test2 --provider=sqlite --url file:test2.db')
 
     // Can't add "management"
-    await project.run('new --name=management --url=file:another.db').catch(() => {})
+    await project.run('new --name=management --provider=sqlite --url=file:another.db').catch(() => { })
 
     await project.expectFile('prisma/test1.db').toExists()
     await project.expectFile('prisma/test2.db').toExists()
@@ -28,9 +28,9 @@ describe('management', () => {
   test('list tenants', async () => {
     const tenants = [
       {
-        name: 'db',
+        name: 'dev',
         provider: 'sqlite',
-        url: 'sqlite:./dev.db'
+        url: 'file:dev.db'
       },
       {
         name: 'test1',
@@ -58,7 +58,7 @@ describe('management', () => {
 
   test('delete tenants by force', async () => {
     // We can either use "delete" or "remove"
-    await project.run('delete db --force')
+    await project.run('delete dev --force')
     await project.run('remove test2 --force')
 
     const tenants = [

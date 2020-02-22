@@ -1,6 +1,5 @@
 import { datasourceProviders } from '../shared/constants'
 import { runDistant, requireDistant } from '../shared/shell'
-import { getTenantDatasource } from '../shared/schema'
 import Management from '../shared/management'
 import { Tenant } from '../shared/types'
 
@@ -67,7 +66,7 @@ class MultiTenant<PrismaClient extends { disconnect: () => Promise<void> }> {
     tenant: { name: string; url: string },
     options?: any
   ): Promise<PrismaClient & WithMeta> {
-    process.env.PMT_URL = tenant.url
+    process.env.DATABASE_URL = tenant.url
     const client = new this.ClientTenant(options)
 
     client._meta = {
@@ -92,14 +91,6 @@ class MultiTenant<PrismaClient extends { disconnect: () => Promise<void> }> {
         `Unrecognized "${tenant.provider}" provider. Known providers: ${datasourceProviders.join(
           ', '
         )}`
-      )
-    }
-
-    const tenantDS = await getTenantDatasource()
-
-    if (tenantDS.connectorType !== tenant.provider) {
-      throw new Error(
-        'You cannot have tenants from different providers (See https://github.com/Errorname/prisma-multi-tenant/issues/8)'
       )
     }
 

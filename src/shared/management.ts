@@ -1,6 +1,6 @@
 import { Tenant } from './types'
 import { PmtError } from './errors'
-import { setManagementEnv } from './schema'
+import { setManagementEnv } from './env'
 import { requireDistant } from './shell'
 import { clientManagementPath } from './constants'
 

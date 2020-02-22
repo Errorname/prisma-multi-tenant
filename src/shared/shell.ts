@@ -1,7 +1,7 @@
 import { exec } from 'child_process'
 import fs from 'fs'
 
-import { getManagementEnv } from './schema'
+import { getManagementEnv } from './env'
 import { clientManagementPath } from './constants'
 import { Datasource } from './types'
 
@@ -12,7 +12,7 @@ let distantBin: string
 
 export const runShell = (
   cmd: string,
-  options?: { cwd: string; env?: { [name: string]: string } }
+  options?: { cwd: string; env?: { [name: string]: string | undefined } }
 ): Promise<string | Buffer> => {
   if (process.env.verbose == 'true') {
     console.log('  $> ' + cmd)
@@ -80,7 +80,7 @@ export const runDistant = async (cmd: string, tenant?: Datasource): Promise<stri
     cwd: process.cwd(),
     env: {
       ...process.env,
-      PMT_URL: tenant ? tenant.url : 'PMT_TMP_URL'
+      DATABASE_URL: tenant ? tenant.url : 'PMT_TMP_URL'
     }
   })
 }

@@ -14,12 +14,10 @@ class New implements Command {
       name: 'name',
       description: 'Name of the tenant'
     },
-    /*
-    Uncomment when we can have multiple providers for tenants (See #8)
     {
       name: 'provider',
       description: 'Type of the provider'
-    },*/
+    },
     {
       name: 'url',
       description: 'URL of the database'

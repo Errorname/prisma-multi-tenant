@@ -1,5 +1,11 @@
+import path from 'path'
+
 // @ts-ignore
 const { MultiTenant } = require('prisma-multi-tenant')
+
+require('dotenv').config({
+  path: path.resolve(process.cwd(), 'prisma/.env')
+})
 
 describe('exists', () => {
   test('tenant exists', async () => {
@@ -11,7 +17,7 @@ describe('exists', () => {
       url: 'file:test-exists-1.db'
     })
 
-    expect(multiTenant.existsTenant('test-exists-1'))
+    await expect(multiTenant.existsTenant('test-exists-1'))
       .resolves.toBe(true)
       .then(() => multiTenant.disconnect())
   })
@@ -19,7 +25,7 @@ describe('exists', () => {
   test("tenant doesn't exist", async () => {
     const multiTenant = new MultiTenant()
 
-    expect(multiTenant.existsTenant('test-exists-2'))
+    await expect(multiTenant.existsTenant('test-exists-2'))
       .resolves.toBe(false)
       .then(() => multiTenant.disconnect())
   })
@@ -27,7 +33,7 @@ describe('exists', () => {
   test('useManagement: false', async () => {
     const multiTenant = new MultiTenant({ useManagement: false })
 
-    expect(multiTenant.existsTenant('test-exists-3'))
+    await expect(multiTenant.existsTenant('test-exists-3'))
       .rejects.toThrow()
       .then(() => multiTenant.disconnect())
   })
