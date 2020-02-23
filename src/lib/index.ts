@@ -86,6 +86,10 @@ class MultiTenant<PrismaClient extends { disconnect: () => Promise<void> }> {
       throw new Error('Cannot use .createTenant(tenant, options) with `useManagement: false`')
     }
 
+    if (tenant.name == 'management') {
+      throw new Error('The name "management" is reserved. You cannot use it for a tenant.')
+    }
+
     if (!datasourceProviders.includes(tenant.provider)) {
       throw new Error(
         `Unrecognized "${tenant.provider}" provider. Known providers: ${datasourceProviders.join(

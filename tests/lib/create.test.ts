@@ -31,11 +31,12 @@ describe('create', () => {
   test('useManagement:false', async () => {
     const multiTenant = new MultiTenant({ useManagement: false })
 
-    await expect(multiTenant.createTenant({
-      name: 'test-create-2',
-      provider: 'sqlite',
-      url: 'file:test-create-2.db'
-    })
+    await expect(
+      multiTenant.createTenant({
+        name: 'test-create-2',
+        provider: 'sqlite',
+        url: 'file:test-create-2.db'
+      })
     )
       .rejects.toThrow()
       .then(() => multiTenant.disconnect())
@@ -44,11 +45,12 @@ describe('create', () => {
   test('tenant already exists', async () => {
     const multiTenant = new MultiTenant()
 
-    await expect(multiTenant.createTenant({
-      name: 'test1',
-      provider: 'sqlite',
-      url: 'file:dev1-bis.db'
-    })
+    await expect(
+      multiTenant.createTenant({
+        name: 'test1',
+        provider: 'sqlite',
+        url: 'file:dev1-bis.db'
+      })
     )
       .rejects.toThrow()
       .then(() => multiTenant.disconnect())
@@ -57,11 +59,26 @@ describe('create', () => {
   test('unrecognized provider', async () => {
     const multiTenant = new MultiTenant()
 
-    await expect(multiTenant.createTenant({
-      name: 'test-create-3',
-      provider: 'not-a-real-provider',
-      url: 'file:test-create-3.db'
-    })
+    await expect(
+      multiTenant.createTenant({
+        name: 'test-create-3',
+        provider: 'not-a-real-provider',
+        url: 'file:test-create-3.db'
+      })
+    )
+      .rejects.toThrow()
+      .then(() => multiTenant.disconnect())
+  })
+
+  test('reserved name', async () => {
+    const multiTenant = new MultiTenant()
+
+    await expect(
+      multiTenant.createTenant({
+        name: 'management',
+        provider: 'sqlite',
+        url: 'file:test-create-4.db'
+      })
     )
       .rejects.toThrow()
       .then(() => multiTenant.disconnect())

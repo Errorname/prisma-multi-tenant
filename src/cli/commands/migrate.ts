@@ -1,10 +1,11 @@
+import chalk from 'chalk'
+
 import { Command, CommandArguments, Datasource } from '../../shared/types'
-import { runLocalPrisma, runDistantPrisma } from '../../shared/shell'
+import { runLocalPrisma, runDistantPrisma, spawnShell } from '../../shared/shell'
 import Management from '../../shared/management'
 import { PmtError } from '../../shared/errors'
-import chalk = require('chalk')
 
-const migrateActions = ['up', 'down']
+const migrateActions = ['up', 'down', 'save']
 
 class Migrate implements Command {
   name = 'migrate'
@@ -15,39 +16,67 @@ class Migrate implements Command {
       description: 'Name of the tenant you want to migrate'
     },
     {
-      name: migrateActions.join('|'),
+      name: 'action',
       optional: false,
-      description: 'Either migrate up or down the tenant'
+      description: 'Migrate "up", "down" or "save" the tenant'
     }
   ]
-  description = 'Migrate up or down tenants'
+  description = 'Migrate tenants (up, down, save)'
 
   async execute(args: CommandArguments, management: Management) {
     const { name, action, migrateArgs, prismaArgs } = this.parseArgs(args)
 
-    if (!name) {
-      console.log(`\n  Migrating ${action} all tenants...\n`)
+    if (action == 'save') {
+      // A. Save on default tenant
+      if (!name) {
+        console.log(`\n  Saving migration with default tenant...\n`)
 
-      await this.migrateAllTenants(management, action, migrateArgs, prismaArgs)
+        await this.migrateSave(management, undefined, migrateArgs, prismaArgs)
 
-      console.log(chalk`\n✅  {green Successfuly migrated ${action} all tenants}\n`)
+        console.log(chalk`\n✅  {green Successfuly saved the migration}\n`)
+        return
+      }
+
+      // B. Save on management
+      if (name == 'management') {
+        throw new PmtError('cannot-migrate-save-management')
+      }
+
+      // C. Save on specific tenant
+      console.log(`\n  Saving migration with tenant "${name}"...\n`)
+
+      await this.migrateSave(management, name, migrateArgs, prismaArgs)
+
+      console.log(chalk`\n✅  {green Successfuly saved the migration}\n`)
       return
+    } else {
+      // D. Migrate up or down on all tenants
+      if (!name) {
+        console.log(`\n  Migrating ${action} all tenants...\n`)
+
+        await this.migrateAllTenants(management, action, migrateArgs, prismaArgs)
+
+        console.log(chalk`\n✅  {green Successfuly migrated ${action} all tenants}\n`)
+        return
+      }
+
+      // E. Migrate up or down management
+      if (name == 'management') {
+        console.log(`\n  Migrating management ${action}...`)
+
+        await this.migrateManagement(action, migrateArgs, prismaArgs)
+
+        console.log(chalk`\n✅  {green Successfuly migrated ${action} management}\n`)
+        return
+      }
+
+      // F. Migrate up or down a specific tenant
+      console.log(`\n  Migrating "${name}" ${action}...`)
+
+      await this.migrateOneTenant(management, action, name, migrateArgs, prismaArgs)
+
+      console.log(chalk`\n✅  {green Successfuly migrated ${action} "${name}"}\n`)
     }
-
-    if (name == 'management') {
-      console.log(`\n  Migrating management ${action}...`)
-
-      await this.migrateManagement(action, migrateArgs, prismaArgs)
-
-      console.log(chalk`\n✅  {green Successfuly migrated ${action} management}\n`)
-      return
-    }
-
-    console.log(`\n  Migrating "${name}" ${action}...`)
-
-    await this.migrateOneTenant(management, action, name, migrateArgs, prismaArgs)
-
-    console.log(chalk`\n✅  {green Successfuly migrated ${action} "${name}"}\n`)
   }
 
   parseArgs(args: CommandArguments) {
@@ -99,7 +128,7 @@ class Migrate implements Command {
 
   migrateTenant(
     action: string,
-    tenant: Datasource,
+    tenant?: Datasource,
     migrateArgs: string = '',
     prismaArgs: string = ''
   ) {
@@ -108,6 +137,20 @@ class Migrate implements Command {
 
   migrateManagement(action: string, migrateArgs: string = '', prismaArgs: string = '') {
     return runLocalPrisma(`migrate ${action} ${migrateArgs} ${prismaArgs} --experimental`)
+  }
+
+  async migrateSave(
+    management: Management,
+    name?: string,
+    migrateArgs: string = '',
+    prismaArgs: string = ''
+  ) {
+    if (name) {
+      const tenant = await management.read(name)
+      process.env.DATABASE_URL = tenant.url
+    }
+
+    return spawnShell(`prisma2 migrate save ${migrateArgs} ${prismaArgs} --experimental`)
   }
 }
 

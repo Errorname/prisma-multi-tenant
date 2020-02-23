@@ -1,6 +1,7 @@
 import { Command, CommandArguments } from '../../shared/types'
 import { spawn } from 'child_process'
 import Management from '../../shared/management'
+import { spawnShell } from '../../shared/shell'
 
 class Env implements Command {
   name = 'env'
@@ -21,12 +22,7 @@ class Env implements Command {
 
     process.env.DATABASE_URL = tenant.url
 
-    const [command, ...commandArguments] = args.secondary.split(' ')
-
-    spawn(command, commandArguments, {
-      stdio: 'inherit',
-      shell: true
-    }).on('exit', (exitCode: number) => process.exit(exitCode))
+    spawnShell(args.secondary).then(exitCode => process.exit(exitCode))
   }
 }
 

@@ -141,22 +141,23 @@ The `studio` command will connect to the management datasource to retrieve the u
 
 ### `migrate`
 
-Migrate up or down tenants.
+Migrate up, down or save tenants.
 
 > Note: You can also migrate up the management datasource to deploy another management database: `prisma-multi-tenant migrate management up -- --create-db`
 
 **Arguments**
 
-| Name   | Optional | Description                              |
-| ------ | -------- | ---------------------------------------- |
-| name   | Yes      | Name of the tenant you want to migrate   |
-| action | **No**   | Either migrate `up` or `down` the tenant |
+| Name   | Optional | Description                               |
+| ------ | -------- | ----------------------------------------- |
+| name   | Yes      | Name of the tenant you want to migrate    |
+| action | **No**   | Migrate `up`, `down` or `save` the tenant |
 
 **Examples**
 
 ```sh
 prisma-multi-tenant migrate your_tenant_name down
 prisma-multi-tenant migrate up
+prisma-multi-tenant migrate save
 prisma-multi-tenant migrate your_other_tenant up -- --auto-approve
 prisma-multi-tenant migrate management up -- --create-db
 ```

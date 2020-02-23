@@ -1,8 +1,7 @@
 import chalk from 'chalk'
-import { spawn } from 'child_process'
 
 import { Command, CommandArguments } from '../../shared/types'
-import { runLocalPrisma, runDistantPrisma } from '../../shared/shell'
+import { runLocalPrisma, runDistantPrisma, spawnShell } from '../../shared/shell'
 
 class Generate implements Command {
   name = 'generate'
@@ -49,11 +48,7 @@ class Generate implements Command {
   }
 
   async watchGenerateTenants(prismaArgs: string = '') {
-    spawn('prisma2', ['generate', '--watch'], {
-      stdio: 'inherit',
-      env: process.env,
-      shell: true
-    }).on('exit', (exitCode: number) => process.exit(exitCode))
+    spawnShell(`prisma2 generate --watch ${prismaArgs}`).then(exitCode => process.exit(exitCode))
   }
 }
 

@@ -1,4 +1,4 @@
-import { exec } from 'child_process'
+import { exec, spawn } from 'child_process'
 import fs from 'fs'
 
 import { getManagementEnv } from './env'
@@ -27,6 +27,17 @@ export const runShell = (
       resolve(stdout)
     })
   })
+}
+
+export const spawnShell = (cmd: string): Promise<number> => {
+  const [command, ...commandArguments] = cmd.split(' ')
+  return new Promise(resolve =>
+    spawn(command, commandArguments, {
+      stdio: 'inherit',
+      env: process.env,
+      shell: true
+    }).on('exit', (exitCode: number) => resolve(exitCode))
+  )
 }
 
 export const fileExists = (path: string): Promise<boolean> => {
@@ -76,7 +87,7 @@ export const runDistant = (cmd: string, tenant?: Datasource): Promise<string | B
     cwd: process.cwd(),
     env: {
       ...process.env,
-      DATABASE_URL: tenant ? tenant.url : 'PMT_TMP_URL'
+      DATABASE_URL: tenant?.url || process.env.DATABASE_URL || 'PMT_TMP_URL'
     }
   })
 }

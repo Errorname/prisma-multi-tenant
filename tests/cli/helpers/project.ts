@@ -32,8 +32,11 @@ export class Project {
 
   expect() {
     return {
-      toSeed: async (tenant: string, expected: boolean = true) => {
-        const results = await runShell(`dotenv -e prisma/.env node seed.js ${tenant}`, this.path).catch(e => e)
+      toSeed: async (tenant: string, expected: boolean = true, seedFile: string = 'seed.js') => {
+        const results = await runShell(
+          `dotenv -e prisma/.env node ${seedFile} ${tenant}`,
+          this.path
+        ).catch(e => e)
         if (expected) {
           expect(results).toEqual(expect.stringContaining('Successfully seeded'))
         } else {

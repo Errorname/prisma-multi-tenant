@@ -24,12 +24,6 @@ export const printError = (error: PmtError, args: CliArguments) => {
         return unrecognizedCommandOrOption(args.primaryArgs)
       case 'missing-args':
         return missingArgs(error.data[0])
-      case 'no-existing-datasource':
-        return noExistingDatasource()
-      case 'no-schema-found':
-        return noSchemaFound()
-      case 'no-management-datasource':
-        return noManagementDatasource()
       case 'missing-client-management':
         return missingClientManagement()
       case 'tenant-does-not-exist':
@@ -42,6 +36,8 @@ export const printError = (error: PmtError, args: CliArguments) => {
         return reservedTenantName(error.data[0])
       case 'missing-env':
         return missingEnv(error.data[0].name)
+      case 'cannot-migrate-save-management':
+        return cannotMigrateSaveManagement()
       default:
         console.error(error)
     }
@@ -76,24 +72,6 @@ const missingArgs = (command: Command): void => {
   {red Missing one or more arguments for {bold ${command.name}}}
 
   ${messageHelpCommand(command.name)}
-  `)
-}
-
-const noExistingDatasource = () => {
-  console.log(chalk`
-  {red No existing datasource found in your schema.prisma file}
-  `)
-}
-
-const noSchemaFound = () => {
-  console.log(chalk`
-  {red No schema.prisma file found in your project}
-  `)
-}
-
-const noManagementDatasource = () => {
-  console.log(chalk`
-  {red No management datasource present in your schema.prisma file}
   `)
 }
 
@@ -138,5 +116,11 @@ const reservedTenantName = (name: string): void => {
 const missingEnv = (name: string): void => {
   console.log(chalk`
   {red The env variable "${name}" is required but missing}
+  `)
+}
+
+const cannotMigrateSaveManagement = (): void => {
+  console.log(chalk`
+  {red You cannot \`migrate save\` on the management datasource}
   `)
 }

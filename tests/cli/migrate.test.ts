@@ -16,6 +16,7 @@ describe('migrate', () => {
     await project.run('new --name=test2 --provider=sqlite --url=file:test2.db')
     await project.run('env test1 -- prisma2 migrate save --name=test --experimental')
     await runShell(`cp helpers/seed.js ../playground/${project.path}/seed.js`, '../cli')
+    await runShell(`cp helpers/seed2.js ../playground/${project.path}/seed2.js`, '../cli')
   })
 
   test('migrate up one tenant', async () => {
@@ -32,11 +33,6 @@ describe('migrate', () => {
     await project.expect().toSeed('test2')
   })
 
-  /* TODO
-  test('migrate up management', () => {
-    
-  })*/
-
   test('migrate down one tenant', async () => {
     await project.run('migrate test1 down')
 
@@ -49,5 +45,17 @@ describe('migrate', () => {
 
     await project.expect().toSeed('test1', false)
     await project.expect().toSeed('test2', false)
+  })
+
+  test('migrate save default tenant', async () => {
+    await runShell(
+      `echo "\n\nmodel Admin {\n id Int @id @default(autoincrement())\n email String @unique\n name String?\n megaAdmin Boolean\n}" >> ../playground/${project.path}/prisma/schema.prisma`
+    )
+    await project.run('migrate save -- --name=save-test')
+    await project.run('migrate up')
+    await project.run('generate')
+
+    await project.expect().toSeed('test1', true, 'seed2.js')
+    await project.expect().toSeed('test2', true, 'seed2.js')
   })
 })

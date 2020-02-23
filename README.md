@@ -68,7 +68,7 @@ $> prisma-multi-tenant help
     list                       List all tenants
     new                        Create a new tenant
     studio <name>              Use Studio to access a tenant
-    migrate <name?> <up|down>  Migrate up or down tenants
+    migrate <name?> <action>   Migrate tenants (up, down, save)
     delete <name>              Delete one tenant
     generate                   Generate Prisma Clients for the tenants and management
     env <name>                 Set env variables for a specific tenant
@@ -78,6 +78,7 @@ $> prisma-multi-tenant help
 
     -h, --help                 Output usage information for a command
     -V, --version              Output the version number
+    -e, --env                  Load env file given as parameter
     --verbose                  Print additional logs
 ```
 
