@@ -1,5 +1,5 @@
 import { Command, CommandArguments, Datasource } from '../../shared/types'
-import { runLocal, runDistant } from '../../shared/shell'
+import { runLocalPrisma, runDistantPrisma } from '../../shared/shell'
 import Management from '../../shared/management'
 import { PmtError } from '../../shared/errors'
 import chalk = require('chalk')
@@ -103,14 +103,11 @@ class Migrate implements Command {
     migrateArgs: string = '',
     prismaArgs: string = ''
   ) {
-    return runDistant(
-      `prisma2 migrate ${action} ${migrateArgs} ${prismaArgs} --experimental`,
-      tenant
-    )
+    return runDistantPrisma(`migrate ${action} ${migrateArgs} ${prismaArgs} --experimental`, tenant)
   }
 
   migrateManagement(action: string, migrateArgs: string = '', prismaArgs: string = '') {
-    return runLocal(`prisma2 migrate ${action} ${migrateArgs} ${prismaArgs} --experimental`)
+    return runLocalPrisma(`migrate ${action} ${migrateArgs} ${prismaArgs} --experimental`)
   }
 }
 

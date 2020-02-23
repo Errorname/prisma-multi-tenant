@@ -2,7 +2,7 @@ import chalk from 'chalk'
 import { spawn } from 'child_process'
 
 import { Command, CommandArguments } from '../../shared/types'
-import { runLocal, runDistant } from '../../shared/shell'
+import { runLocalPrisma, runDistantPrisma } from '../../shared/shell'
 
 class Generate implements Command {
   name = 'generate'
@@ -41,17 +41,18 @@ class Generate implements Command {
   }
 
   async generateTenants(prismaArgs: string = '') {
-    await runDistant(`prisma2 generate ${prismaArgs}`)
+    await runDistantPrisma(`generate ${prismaArgs}`)
   }
 
   async generateManagement(prismaArgs: string = '') {
-    await runLocal(`prisma2 generate ${prismaArgs}`)
+    await runLocalPrisma(`generate ${prismaArgs}`)
   }
 
   async watchGenerateTenants(prismaArgs: string = '') {
     spawn('prisma2', ['generate', '--watch'], {
       stdio: 'inherit',
-      env: process.env
+      env: process.env,
+      shell: true
     }).on('exit', (exitCode: number) => process.exit(exitCode))
   }
 }

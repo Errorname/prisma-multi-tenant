@@ -34,7 +34,7 @@ class Delete implements Command {
       return
     }
 
-    await migrate.migrateOneTenant(management, 'down', name).catch(() => { })
+    await migrate.migrateOneTenant(management, 'down', name)
     await management.delete(name)
 
     console.log(chalk`\n✅  {green Migrated down "${name}" and deleted it from management!}\n`)

@@ -24,7 +24,8 @@ class Env implements Command {
     const [command, ...commandArguments] = args.secondary.split(' ')
 
     spawn(command, commandArguments, {
-      stdio: 'inherit'
+      stdio: 'inherit',
+      shell: true
     }).on('exit', (exitCode: number) => process.exit(exitCode))
   }
 }

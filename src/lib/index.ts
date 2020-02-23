@@ -1,5 +1,5 @@
 import { datasourceProviders } from '../shared/constants'
-import { runDistant, requireDistant } from '../shared/shell'
+import { runDistantPrisma, requireDistant } from '../shared/shell'
 import Management from '../shared/management'
 import { Tenant } from '../shared/types'
 
@@ -96,7 +96,7 @@ class MultiTenant<PrismaClient extends { disconnect: () => Promise<void> }> {
 
     await this.management.create(tenant)
 
-    await runDistant('prisma2 migrate up --create-db --experimental', tenant)
+    await runDistantPrisma('migrate up --create-db --experimental', tenant)
 
     return this.directGet(tenant, options)
   }
@@ -112,7 +112,7 @@ class MultiTenant<PrismaClient extends { disconnect: () => Promise<void> }> {
 
     const tenant = await this.management.delete(name)
 
-    await runDistant('prisma2 migrate down --experimental', tenant)
+    await runDistantPrisma('migrate down --experimental', tenant)
 
     return tenant
   }

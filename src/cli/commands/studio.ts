@@ -1,5 +1,5 @@
 import { Command, CommandArguments } from '../../shared/types'
-import { runDistant } from '../../shared/shell'
+import { runDistantPrisma } from '../../shared/shell'
 import Management from '../../shared/management'
 
 class Studio implements Command {
@@ -27,7 +27,7 @@ class Studio implements Command {
 
     const tenant = await management.read(name)
 
-    await runDistant(`prisma2 studio --port ${port} ${args.secondary} --experimental`, tenant)
+    await runDistantPrisma(`studio --port ${port} ${args.secondary} --experimental`, tenant)
   }
 }
 

@@ -60,9 +60,7 @@ export const runLocal = async (cmd: string): Promise<string | Buffer> => {
 
   const managementEnv = await getManagementEnv()
 
-  const baseFolder = await findBin()
-
-  return runShell(baseFolder + cmd, {
+  return runShell(cmd, {
     cwd: __dirname + '/../cli',
     env: {
       ...process.env,
@@ -73,16 +71,27 @@ export const runLocal = async (cmd: string): Promise<string | Buffer> => {
 }
 
 // Run from the place where the CLI was called
-export const runDistant = async (cmd: string, tenant?: Datasource): Promise<string | Buffer> => {
-  const baseFolder = await findBin()
-
-  return runShell(baseFolder + cmd, {
+export const runDistant = (cmd: string, tenant?: Datasource): Promise<string | Buffer> => {
+  return runShell(cmd, {
     cwd: process.cwd(),
     env: {
       ...process.env,
       DATABASE_URL: tenant ? tenant.url : 'PMT_TMP_URL'
     }
   })
+}
+
+export const runLocalPrisma = async (cmd: string): Promise<string | Buffer> => {
+  const baseFolder = await findBin()
+  return runLocal(`"${baseFolder}prisma2" ${cmd}`)
+}
+
+export const runDistantPrisma = async (
+  cmd: string,
+  tenant?: Datasource
+): Promise<string | Buffer> => {
+  const baseFolder = await findBin()
+  return runDistant(`"${baseFolder}prisma2" ${cmd}`, tenant)
 }
 
 export const readFile = (path: string): Promise<string> => {
