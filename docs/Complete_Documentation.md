@@ -62,6 +62,8 @@ The `init` command is used to initialize your application to use `prisma-multi-t
 6. Create first tenant based on the `DATABASE_URL` env variable
 7. Create an example script (`multi-tenancy-example.js`)
 
+> Note: Make sure you are using `DATABASE_URL` in your schema.prisma
+
 ### `list`
 
 List all tenants

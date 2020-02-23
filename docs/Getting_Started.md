@@ -55,6 +55,8 @@ Running this command will do the following:
 6. Create first tenant based on the `DATABASE_URL` env variable
 7. Create an example script (`multi-tenancy-example.js`)
 
+> Note: Make sure you are using `DATABASE_URL` in your schema.prisma
+
 ## 3. Add a new tenant
 
 Following the `init` command, you have a first tenant, your initial datasource.
