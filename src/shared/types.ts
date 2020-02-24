@@ -21,7 +21,7 @@ export interface Argument {
 export interface CliArguments {
   argv: string[]
   primaryArgs: string[]
-  secondaryArgs: string[]
+  secondaryArgs: string
   parsedPrimaryArgs: {
     _: string[]
     ['--help']?: boolean

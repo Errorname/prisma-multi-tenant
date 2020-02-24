@@ -6,10 +6,9 @@ import { PmtError } from '../../shared/errors'
 export const parseArgs = (): CliArguments => {
   const argv = process.argv.slice(2)
 
-  const [primaryArgs = [], secondaryArgs = []] = argv
-    .join(' ')
-    .split(/\s?--\s/g)
-    .map(x => x.trim().split(' '))
+  const [rawPrimaryArgs, ...rawRestArgs] = argv.join(' ').split(' -- ')
+  const primaryArgs = rawPrimaryArgs.trim().split(' ')
+  const secondaryArgs = rawRestArgs.join(' -- ')
 
   const parsedPrimaryArgs = arg(
     {
@@ -66,7 +65,7 @@ export const convertToCommandArgs = (
   return {
     args,
     options,
-    secondary: secondaryArgs.join(' ')
+    secondary: secondaryArgs
   }
 }
 

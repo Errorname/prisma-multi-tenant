@@ -5,6 +5,7 @@ import { Tenant } from '../shared/types'
 
 interface MultiTenantOptions {
   useManagement?: boolean
+  tenantOptions?: any
   PrismaClient?: any
   PrismaClientManagement?: any
 }
@@ -67,7 +68,7 @@ class MultiTenant<PrismaClient extends { disconnect: () => Promise<void> }> {
     options?: any
   ): Promise<PrismaClient & WithMeta> {
     process.env.DATABASE_URL = tenant.url
-    const client = new this.ClientTenant(options)
+    const client = new this.ClientTenant({ ...this.options.tenantOptions, ...options })
 
     client._meta = {
       name: tenant.name
@@ -100,7 +101,7 @@ class MultiTenant<PrismaClient extends { disconnect: () => Promise<void> }> {
 
     await this.management.create(tenant)
 
-    await runDistantPrisma('migrate up --create-db --experimental', tenant)
+    await runDistantPrisma('migrate up --create-db --experimental', tenant, false)
 
     return this.directGet(tenant, options)
   }
@@ -116,7 +117,7 @@ class MultiTenant<PrismaClient extends { disconnect: () => Promise<void> }> {
 
     const tenant = await this.management.delete(name)
 
-    await runDistantPrisma('migrate down --experimental', tenant)
+    await runDistantPrisma('migrate down --experimental', tenant, false)
 
     return tenant
   }

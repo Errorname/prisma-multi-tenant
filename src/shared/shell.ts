@@ -1,5 +1,6 @@
 import { exec, spawn } from 'child_process'
 import fs from 'fs'
+import chalk from 'chalk'
 
 import { getManagementEnv } from './env'
 import { clientManagementPath } from './constants'
@@ -99,10 +100,33 @@ export const runLocalPrisma = async (cmd: string): Promise<string | Buffer> => {
 
 export const runDistantPrisma = async (
   cmd: string,
-  tenant?: Datasource
+  tenant?: Datasource,
+  withTimeout: boolean = true
 ): Promise<string | Buffer> => {
   const baseFolder = await findBin()
-  return runDistant(`"${baseFolder}prisma2" ${cmd}`, tenant)
+
+  const promise = runDistant(`"${baseFolder}prisma2" ${cmd}`, tenant)
+
+  if (!withTimeout) {
+    return promise
+  }
+
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      const altCmd =
+        (tenant?.name ? `prisma-multi-tenant env ${tenant.name} -- ` : '') + 'prisma2 ' + cmd
+      console.log(
+        chalk`\n  {yellow Note: Prisma seems to be unresponsive. Try running \`${altCmd.trim()}\`}\n`
+      )
+    }, 30 * 1000)
+
+    promise
+      .then(() => {
+        clearTimeout(timeout)
+        resolve()
+      })
+      .catch(reject)
+  })
 }
 
 export const readFile = (path: string): Promise<string> => {

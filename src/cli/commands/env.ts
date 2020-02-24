@@ -1,5 +1,4 @@
 import { Command, CommandArguments } from '../../shared/types'
-import { spawn } from 'child_process'
 import Management from '../../shared/management'
 import { spawnShell } from '../../shared/shell'
 

@@ -1,6 +1,7 @@
+import chalk from 'chalk'
+
 import { Command, CommandArguments } from '../../shared/types'
 import prompt from '../helpers/prompt'
-import chalk = require('chalk')
 import migrate from './migrate'
 import Management from '../../shared/management'
 
