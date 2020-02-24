@@ -101,7 +101,7 @@ export const runLocalPrisma = async (cmd: string): Promise<string | Buffer> => {
 export const runDistantPrisma = async (
   cmd: string,
   tenant?: Datasource,
-  withTimeout: boolean = true
+  withTimeout = true
 ): Promise<string | Buffer> => {
   const baseFolder = await findBin()
 

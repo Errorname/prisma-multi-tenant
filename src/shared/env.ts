@@ -4,7 +4,7 @@ import { writeFile, readFile } from './shell'
 import { PmtError } from './errors'
 import { datasourceProviders } from './constants'
 
-export const getEnvPath = async () => {
+export const getEnvPath = async (): Promise<string> => {
   let path
 
   // Try with default path
@@ -25,17 +25,17 @@ export const getEnvPath = async () => {
   return path
 }
 
-export const readEnvFile = async () => {
+export const readEnvFile = async (): Promise<string> => {
   const path = await getEnvPath()
   return readFile(path)
 }
 
-export const writeEnvFile = async (content: string) => {
+export const writeEnvFile = async (content: string): Promise<void> => {
   const path = await getEnvPath()
   return writeFile(path, content)
 }
 
-export const translateDatasourceUrl = (url: string) => {
+export const translateDatasourceUrl = (url: string): string => {
   if (url.startsWith('file:') && !url.startsWith('file:/')) {
     return 'file:' + process.cwd() + '/prisma/' + url.replace('file:', '')
   }
@@ -43,7 +43,7 @@ export const translateDatasourceUrl = (url: string) => {
   return url
 }
 
-export const getManagementEnv = async () => {
+export const getManagementEnv = async (): Promise<{ [name: string]: string }> => {
   if (!process.env.MANAGEMENT_PROVIDER) {
     throw new PmtError('missing-env', { name: 'MANAGEMENT_PROVIDER' })
   } else if (!process.env.MANAGEMENT_URL) {
@@ -68,7 +68,7 @@ export const getManagementEnv = async () => {
   }
 }
 
-export const setManagementEnv = async () => {
+export const setManagementEnv = async (): Promise<void> => {
   const managementEnv = await getManagementEnv()
 
   Object.entries(managementEnv).forEach(([key, value]) => (process.env[key] = value))

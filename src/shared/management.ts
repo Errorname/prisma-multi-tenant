@@ -65,7 +65,7 @@ export default class Management {
     return this.sanitizeTenant(tenant)
   }
 
-  async exists(name: string): Promise<Boolean> {
+  async exists(name: string): Promise<boolean> {
     const client = await this.getClient()
 
     const tenant = await client.tenant.findOne({ where: { name } })

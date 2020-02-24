@@ -122,7 +122,7 @@ class MultiTenant<PrismaClient extends { disconnect: () => Promise<void> }> {
     return tenant
   }
 
-  async existsTenant(name: string): Promise<Boolean> {
+  async existsTenant(name: string): Promise<boolean> {
     if (!this.management) {
       throw new Error('Cannot use .existsTenant(name) with `useManagement: false`')
     }
