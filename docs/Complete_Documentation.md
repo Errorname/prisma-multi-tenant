@@ -87,7 +87,13 @@ The `list` command connects to the management datasource and returns all the ten
 
 ### `new`
 
-Create a new tenant
+Create a new tenant or management
+
+**Arguments**
+
+| Name       | Optional | Description             |
+| ---------- | -------- | ----------------------- |
+| management | Yes      | Create a new management |
 
 **Options**
 
@@ -104,6 +110,7 @@ Create a new tenant
 prisma-multi-tenant new
 prisma-multi-tenant new --name=company_b --provider=postgresql --url=postgres://...
 prisma-multi-tenant new --no-management
+prisma-multi-tenant new management
 ```
 
 **Explanations**
@@ -111,6 +118,8 @@ prisma-multi-tenant new --no-management
 The `new` command create a new database using your schema. It will use a name, a provider and an url (that you can provide as options).
 
 If you want to create a tenant without tracking it in the management datasource, you can use `--no-management`. However be careful, because you will need to manually migrate up and down this tenant after that.
+
+If you add the `management` argument, you can create a new management database. If you want to use this new management, don't forget to add the provider and url in the `prisma/.env` file.
 
 ### `studio`
 

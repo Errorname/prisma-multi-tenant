@@ -9,7 +9,13 @@ import { PmtError } from '../../shared/errors'
 class New implements Command {
   name = 'new'
   altNames = ['add']
-  args = []
+  args = [
+    {
+      name: 'management',
+      optional: true,
+      description: 'Create a new management'
+    }
+  ]
   options = [
     {
       name: 'name',
@@ -29,9 +35,29 @@ class New implements Command {
       boolean: true
     }
   ]
-  description = 'Create a new tenant'
+  description = 'Create a new tenant or management'
 
   async execute(args: CommandArguments, management: Management) {
+    if (args.args[0] === 'management') {
+      await this.newManagement(args)
+    } else {
+      await this.newTenant(args, management)
+    }
+  }
+
+  async newManagement(args: CommandArguments) {
+    console.log()
+    const datasource = await prompt.managementConf(args)
+
+    process.env.MANAGEMENT_PROVIDER = datasource.provider
+    process.env.MANAGEMENT_URL = datasource.url
+
+    await migrate.migrateManagement('up', '--create-db')
+
+    console.log(chalk`\n✅  {green Successfuly created a new management database!}\n`)
+  }
+
+  async newTenant(args: CommandArguments, management: Management) {
     console.log()
     const tenant = await prompt.tenantConf(args)
 

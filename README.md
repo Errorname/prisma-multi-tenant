@@ -66,7 +66,7 @@ $> prisma-multi-tenant help
 
     init                       Init multi-tenancy for your application
     list                       List all tenants
-    new                        Create a new tenant
+    new <management?>          Create a new tenant or management
     studio <name>              Use Studio to access a tenant
     migrate <name?> <action>   Migrate tenants (up, down, save)
     delete <name>              Delete one tenant
