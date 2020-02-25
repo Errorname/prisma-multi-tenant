@@ -104,9 +104,9 @@ Read more on how `prisma-multi-tenant` can help you achieve multi-tenancy for yo
 - [Complete documentation](/docs/Complete_Documentation.md) - For curious people
 - [Contributing guide](/docs/Contributing_Guide.md) - For great people
 - [Examples](/docs/examples) - For everyone
-  - [Basic (JS) example](/docs/examples)
-  - [Basic (TS) example](/docs/examples)
-  - [Nexus example](/docs/examples)
+  - [Basic (JS)](/docs/examples/basic-js)
+  - [Basic (TS)](/docs/examples/basic-js)
+  - Nexus (Work in progress)
 
 ## Author
 

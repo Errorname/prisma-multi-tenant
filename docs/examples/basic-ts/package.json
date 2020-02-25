@@ -1,0 +1,22 @@
+{
+  "name": "basic-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "prisma-multi-tenant generate",
+    "example": "ts-node multi-tenancy-example.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prisma2": "2.0.0-preview022"
+  },
+  "dependencies": {
+    "@prisma/client": "2.0.0-preview022",
+    "dotenv": "^8.2.0",
+    "prisma-multi-tenant": "^2.0.0-alpha22",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.8.2"
+  }
+}

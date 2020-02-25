@@ -257,6 +257,8 @@ prisma-multi-tenant help
 
 ## Library
 
+> Note: You are responsible to provide the environment variable for management any way you want
+
 ### `constructor(options?: MultiTenantOptions)`
 
 Constructor of the `MultiTenant` class.

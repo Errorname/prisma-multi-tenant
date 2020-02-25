@@ -123,6 +123,8 @@ console.log(users)
 
 You can access any tenant you want, simply by using their name!
 
+> Note: You are responsible to provide the environment variable for management any way you want
+
 ## 6. Watch and generate Prisma Clients
 
 To watch and generate Prisma Clients, run the following command:
