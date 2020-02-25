@@ -18,7 +18,9 @@ describe('management', () => {
     await project.run('add --name test2 --provider=sqlite --url file:test2.db')
 
     // Can't add "management"
-    await project.run('new --name=management --provider=sqlite --url=file:another.db').catch(() => { })
+    await project
+      .run('new --name=management --provider=sqlite --url=file:another.db')
+      .catch(() => {})
 
     await project.expectFile('prisma/test1.db').toExists()
     await project.expectFile('prisma/test2.db').toExists()
@@ -72,5 +74,11 @@ describe('management', () => {
     const list = await project.run('list --json')
 
     expect(JSON.parse(list)).toEqual(tenants)
+  })
+
+  test('new management', async () => {
+    await project.run('new management --provider=sqlite --url=file:management2.db')
+
+    await project.expectFile('prisma/management2.db').toExists()
   })
 })
