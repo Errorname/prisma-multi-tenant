@@ -177,6 +177,8 @@ The `migrate` command is a wrapper to the `prisma2 migrate` command. If you pass
 
 Any arguments written after `--` will be passed to `prisma2 migrate`.
 
+The `save` action will use the default DATABASE_URL value if no `name` argument is given.
+
 ### `delete`
 
 Delete one tenant
