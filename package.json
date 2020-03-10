@@ -26,6 +26,9 @@
     "test:cli": "jest tests/cli",
     "test:lib": "bash tests/playground/test-lib.sh"
   },
+  "peerDependencies": {
+    "prisma2": "2.0.0-preview022"
+  },
   "dependencies": {
     "@prisma/cli": "^0.1.44",
     "arg": "^4.1.2",
