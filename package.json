@@ -27,7 +27,6 @@
     "test:lib": "bash tests/playground/test-lib.sh"
   },
   "dependencies": {
-    "@prisma/cli": "^0.1.44",
     "arg": "^4.1.2",
     "chalk": "^3.0.0",
     "cli-table3": "^0.5.1",
@@ -36,7 +35,7 @@
     "inquirer": "^7.0.4"
   },
   "peerDependencies": {
-    "prisma2": "^2.0.0-preview023"
+    "prisma2": "^2.0.0-preview024"
   },
   "devDependencies": {
     "@babel/core": "^7.8.3",
@@ -56,7 +55,7 @@
     "jest": "^25.1.0",
     "node-fetch": "^2.6.0",
     "prettier": "^1.19.1",
-    "prisma2": "^2.0.0-preview023",
+    "prisma2": "^2.0.0-preview024",
     "rxjs": "^6.5.4",
     "ts-jest": "^25.0.0",
     "typescript": "^3.7.5"
