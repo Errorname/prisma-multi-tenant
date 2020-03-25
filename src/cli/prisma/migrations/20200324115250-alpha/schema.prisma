@@ -1,6 +1,6 @@
 datasource management {
-  provider = "to_be_defined"
-  url      = env("PMT_MANAGEMENT_URL")
+  provider = "sqlite"
+  url = "***"
 }
 
 generator client {

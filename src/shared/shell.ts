@@ -6,10 +6,8 @@ import { getManagementEnv } from './env'
 import { clientManagementPath } from './constants'
 import { Datasource } from './types'
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const findNodeModules = require('find-node-modules')
-
 let distantBin: string
+let nodeModules: string
 
 export const runShell = (
   cmd: string,
@@ -66,9 +64,19 @@ export const findBin = async (): Promise<string> => {
   return distantBin
 }
 
+export const getNodeModules = (): string => {
+  if (nodeModules) return nodeModules
+
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const findNodeModules = require('find-node-modules')
+  nodeModules = findNodeModules({ cwd: process.cwd(), relative: false })[0]
+
+  return nodeModules
+}
+
 // Run in this directory
 export const runLocal = async (cmd: string): Promise<string | Buffer> => {
-  const nodeModules = findNodeModules({ cwd: process.cwd(), relative: false })[0]
+  const nodeModules = getNodeModules()
 
   const managementEnv = await getManagementEnv()
 

@@ -3,13 +3,13 @@
   "steps": [
     {
       "tag": "CreateSource",
-      "source": "management_sqlite"
+      "source": "management"
     },
     {
       "tag": "CreateArgument",
       "location": {
         "tag": "Source",
-        "source": "management_sqlite"
+        "source": "management"
       },
       "argument": "provider",
       "value": "\"sqlite\""
@@ -18,81 +18,10 @@
       "tag": "CreateArgument",
       "location": {
         "tag": "Source",
-        "source": "management_sqlite"
+        "source": "management"
       },
       "argument": "url",
       "value": "env(\"PMT_MANAGEMENT_URL\")"
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Source",
-        "source": "management_sqlite"
-      },
-      "argument": "enabled",
-      "value": "env(\"PMT_MANAGEMENT_PROVIDER_SQLITE\")"
-    },
-    {
-      "tag": "CreateSource",
-      "source": "management_mysql"
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Source",
-        "source": "management_mysql"
-      },
-      "argument": "provider",
-      "value": "\"mysql\""
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Source",
-        "source": "management_mysql"
-      },
-      "argument": "url",
-      "value": "env(\"PMT_MANAGEMENT_URL\")"
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Source",
-        "source": "management_mysql"
-      },
-      "argument": "enabled",
-      "value": "env(\"PMT_MANAGEMENT_PROVIDER_MYSQL\")"
-    },
-    {
-      "tag": "CreateSource",
-      "source": "management_postgresql"
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Source",
-        "source": "management_postgresql"
-      },
-      "argument": "provider",
-      "value": "\"postgresql\""
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Source",
-        "source": "management_postgresql"
-      },
-      "argument": "url",
-      "value": "env(\"PMT_MANAGEMENT_URL\")"
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Source",
-        "source": "management_postgresql"
-      },
-      "argument": "enabled",
-      "value": "env(\"PMT_MANAGEMENT_PROVIDER_POSTGRESQL\")"
     },
     {
       "tag": "CreateModel",

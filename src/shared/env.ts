@@ -1,8 +1,9 @@
+import path from 'path'
+import fs from 'fs'
 import { getSchemaPath } from '@prisma/cli'
 
-import { writeFile, readFile } from './shell'
+import { writeFile, readFile, getNodeModules } from './shell'
 import { PmtError } from './errors'
-import { datasourceProviders } from './constants'
 
 export const getEnvPath = async (): Promise<string> => {
   let path
@@ -44,26 +45,12 @@ export const translateDatasourceUrl = (url: string): string => {
 }
 
 export const getManagementEnv = async (): Promise<{ [name: string]: string }> => {
-  if (!process.env.MANAGEMENT_PROVIDER) {
-    throw new PmtError('missing-env', { name: 'MANAGEMENT_PROVIDER' })
-  } else if (!process.env.MANAGEMENT_URL) {
+  if (!process.env.MANAGEMENT_URL) {
     throw new PmtError('missing-env', { name: 'MANAGEMENT_URL' })
   }
 
-  const managementDatasource = {
-    provider: process.env.MANAGEMENT_PROVIDER,
-    url: process.env.MANAGEMENT_URL
-  }
-
-  const providersEnv = datasourceProviders.reduce((acc: { [name: string]: string }, provider) => {
-    acc['PMT_MANAGEMENT_PROVIDER_' + provider.toUpperCase()] =
-      managementDatasource.provider == provider ? 'true' : 'false'
-    return acc
-  }, {})
-
   return {
-    ...providersEnv,
-    PMT_MANAGEMENT_URL: translateDatasourceUrl(managementDatasource.url),
+    PMT_MANAGEMENT_URL: translateDatasourceUrl(process.env.MANAGEMENT_URL),
     PMT_OUTPUT: 'PMT_TMP'
   }
 }
@@ -72,4 +59,39 @@ export const setManagementEnv = async (): Promise<void> => {
   const managementEnv = await getManagementEnv()
 
   Object.entries(managementEnv).forEach(([key, value]) => (process.env[key] = value))
+}
+
+export const setManagementProviderInSchema = async (): Promise<void> => {
+  if (!process.env.MANAGEMENT_PROVIDER) {
+    throw new PmtError('missing-env', { name: 'MANAGEMENT_PROVIDER' })
+  }
+
+  const nodeModules = getNodeModules()
+
+  // 1. Find schema file
+  const schemaPath = await getSchemaPath(
+    path.join(nodeModules, 'prisma-multi-tenant', 'build', 'cli', 'prisma', 'schema.prisma')
+  )
+
+  if (!schemaPath) {
+    throw new PmtError('management-schema-not-found')
+  }
+
+  // 2. Read content of file
+  let content: string = await new Promise((res, rej) =>
+    fs.readFile(schemaPath, 'utf8', (err, data) => (err ? rej(err) : res(data)))
+  )
+
+  // 3. Change provider of datasource
+  content = content.replace(
+    /datasource\s*management\s*{\s*provider\s*=\s*"([^"]*)"/,
+    (match, p1) => {
+      return match.replace(p1, process.env.MANAGEMENT_PROVIDER || '')
+    }
+  )
+
+  // 4. Write content to file
+  return new Promise((res, rej) =>
+    fs.writeFile(schemaPath, content, err => (err ? rej(err) : res()))
+  )
 }
