@@ -50,7 +50,7 @@ npm i -g prisma-multi-tenant@alpha
 ```
 $> prisma-multi-tenant help
 
-  🧭  prisma-multi-tenant v2.0.0-alpha23
+  🧭  prisma-multi-tenant v2.0.0-alpha24
 
   USAGE
 
@@ -107,6 +107,7 @@ Read more on how `prisma-multi-tenant` can help you achieve multi-tenancy for yo
   - [Basic (JS)](/docs/examples/basic-js)
   - [Basic (TS)](/docs/examples/basic-js)
   - Nexus (Work in progress)
+- [Issues with Zeit Now](/docs/Zeit_Now.md)
 
 ## Author
 

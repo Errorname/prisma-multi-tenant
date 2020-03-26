@@ -10,11 +10,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "prisma2": "2.0.0-preview022"
+    "prisma2": "2.0.0-preview024"
   },
   "dependencies": {
-    "@prisma/client": "2.0.0-preview022",
-    "dotenv": "^8.2.0",
-    "prisma-multi-tenant": "^2.0.0-alpha22"
+    "@prisma/client": "2.0.0-preview024",
+    "dotenv": "8.2.0",
+    "prisma-multi-tenant": "2.0.0-alpha23"
   }
 }
