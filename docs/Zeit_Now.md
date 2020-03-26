@@ -16,7 +16,7 @@ This is because Zeit Now did not bundle the query/migration engines in your app.
 
 **Solution:**
 
-In one of your js file, add the following lines to tell Now to bundle the engines with your app:
+In one of your JS file, add the following lines to tell Now to bundle the engines with your app:
 
 ```js
 import path from 'path'
@@ -25,7 +25,7 @@ path.join(__dirname, '../node_modules/prisma2/migration-engine-rhel-openssl-1.0.
 path.join(__dirname, '../node_modules/prisma2/query-engine-rhel-openssl-1.0.x')
 ```
 
-> You need to adapt the relative path based on where you js file is.
+> You need to adapt the relative path based on where you JS file is.
 
 ## No such file or directory
 
@@ -41,13 +41,15 @@ This is because Zeit Now did not bundle the `prisma/` folder in your app.
 
 **Solution:**
 
-In one of your js file, add the following lines to tell Now to bundle the `prisma/` folder with your app:
+In one of your JS file, add the following lines to tell Now to bundle the `prisma/` folder with your app:
 
 ```js
 import path from 'path'
 
 path.join(__dirname, './prisma/')
 ```
+
+> You need to adapt the relative path based on where you JS file is.
 
 ## Task timed out after 10.01 seconds
 
