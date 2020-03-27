@@ -7,7 +7,6 @@ import { getManagementEnv } from './env'
 import { clientManagementPath } from './constants'
 import { Datasource } from './types'
 
-let distantBin: string
 let nodeModules: string
 
 export const runShell = (
@@ -58,6 +57,10 @@ export const getNodeModules = (): string => {
   return nodeModules
 }
 
+export const getPrismaCliPath = (): string => {
+  return path.join(getNodeModules(), '@prisma/cli/build/index.js')
+}
+
 // Run in this directory
 export const runLocal = async (cmd: string): Promise<string | Buffer> => {
   const nodeModules = getNodeModules()
@@ -86,9 +89,7 @@ export const runDistant = (cmd: string, tenant?: Datasource): Promise<string | B
 }
 
 export const runLocalPrisma = async (cmd: string): Promise<string | Buffer> => {
-  const prismaCliPath = path.join(getNodeModules(), 'prisma2', 'build', 'index.js')
-
-  return runLocal(`"${prismaCliPath}" ${cmd}`)
+  return runLocal(`"${getPrismaCliPath()}" ${cmd}`)
 }
 
 export const runDistantPrisma = async (
@@ -96,9 +97,7 @@ export const runDistantPrisma = async (
   tenant?: Datasource,
   withTimeout = true
 ): Promise<string | Buffer> => {
-  const prismaCliPath = path.join(getNodeModules(), 'prisma2', 'build', 'index.js')
-
-  const promise = runDistant(`"${prismaCliPath}" ${cmd}`, tenant)
+  const promise = runDistant(`"${getPrismaCliPath()}" ${cmd}`, tenant)
 
   if (!withTimeout) {
     return promise
@@ -107,7 +106,9 @@ export const runDistantPrisma = async (
   return new Promise((resolve, reject) => {
     const timeout = setTimeout(() => {
       const altCmd =
-        (tenant?.name ? `prisma-multi-tenant env ${tenant.name} -- ` : '') + 'prisma2 ' + cmd
+        (tenant?.name ? `prisma-multi-tenant env ${tenant.name} -- ` : '') +
+        'npx @prisma/cli ' +
+        cmd
       console.log(
         chalk`\n  {yellow Note: Prisma seems to be unresponsive. Try running \`${altCmd.trim()}\`}\n`
       )

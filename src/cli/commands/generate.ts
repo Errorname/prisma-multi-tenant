@@ -52,7 +52,9 @@ class Generate implements Command {
   }
 
   async watchGenerateTenants(prismaArgs: string = '') {
-    spawnShell(`prisma2 generate --watch ${prismaArgs}`).then(exitCode => process.exit(exitCode))
+    spawnShell(`npx @prisma/cli generate --watch ${prismaArgs}`).then(exitCode =>
+      process.exit(exitCode)
+    )
   }
 }
 

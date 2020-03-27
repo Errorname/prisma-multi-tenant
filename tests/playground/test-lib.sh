@@ -1,5 +1,5 @@
 # Prepare folder for lib tests
-rm -Rf tests/playground/test-lib && cp -R tests/playground/prisma-examples/javascript/script tests/playground/test-lib
+rm -Rf tests/playground/test-lib && cp -R tests/playground/example tests/playground/test-lib
 cd tests/playground/test-lib
 npm i
 npm i --save-dev dotenv

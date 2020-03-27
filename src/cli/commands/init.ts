@@ -59,6 +59,11 @@ class Init implements Command {
   async installPMT() {
     console.log('\n  Installing `prisma-multi-tenant` in your app...')
 
+    // This is used for testing purposes
+    if (process.env.PMT_TEST) {
+      return runShell(`npm link prisma-multi-tenant`)
+    }
+
     const yarnOrNpm = (await useYarn()) ? 'yarn add' : 'npm install'
 
     return runShell(`${yarnOrNpm} prisma-multi-tenant@${packageJson.version}`)

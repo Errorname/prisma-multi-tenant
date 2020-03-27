@@ -89,7 +89,7 @@ const tenantConf = async (args: CommandArguments): Promise<Tenant> => {
   // This is a fix until we can have a multi-provider prisma client (See #8)
 
   console.log(
-    chalk`  {yellow {bold Warning:} Prisma2 does not yet allow for multi-provider clients, so you must use the same provider used in your schema.prisma file.}\n`
+    chalk`  {yellow {bold Warning:} Prisma does not yet allow for multi-provider clients, so you must use the same provider used in your schema.prisma file.}\n`
   )
 
   const answers = await askQuestionsList(args, ['name', 'provider', 'url'])

@@ -5,7 +5,7 @@ jest.setTimeout(300000)
 
 describe('init', () => {
   test('init with args', async () => {
-    const project = await initProject('javascript/script', 'cli-init-with-args')
+    const project = await initProject('cli-init-with-args')
 
     await project.run('init --provider=sqlite --url=file:management.db')
 

@@ -17,7 +17,7 @@ const printGlobalHelp = (): void => {
     {grey Examples:}
         {grey prisma-multi-tenant new}
         {grey prisma-multi-tenant migrate my_tenant up}
-        {grey prisma-multi-tenant env my_tenant -- prisma2 introspect}
+        {grey prisma-multi-tenant env my_tenant -- npx @prisma/cli introspect}
         {grey ...}
 
   {bold COMMANDS}

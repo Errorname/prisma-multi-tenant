@@ -20,7 +20,11 @@ export const runShell = (cmd: string, cwd: string = ''): Promise<string> => {
     exec(
       cmd,
       {
-        cwd: playgroundPath + cwd
+        cwd: playgroundPath + cwd,
+        env: {
+          ...process.env,
+          PMT_TEST: 'true'
+        }
       },
       (error, stdout, stderr) => {
         if (error) reject(error)

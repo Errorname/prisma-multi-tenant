@@ -150,7 +150,7 @@ class Migrate implements Command {
       process.env.DATABASE_URL = tenant.url
     }
 
-    return spawnShell(`prisma2 migrate save ${migrateArgs} ${prismaArgs} --experimental`)
+    return spawnShell(`npx @prisma/cli migrate save ${migrateArgs} ${prismaArgs} --experimental`)
   }
 }
 

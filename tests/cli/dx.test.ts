@@ -8,7 +8,7 @@ describe('dx', () => {
   let project: Project
 
   beforeAll(async () => {
-    project = await initProject('javascript/script', 'cli-dx')
+    project = await initProject('cli-dx')
 
     await project.run('init --provider=sqlite --url=file:management.db')
     await project.run('new --name=test1 --provider=sqlite --url=file:db1.db')

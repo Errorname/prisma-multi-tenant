@@ -5,7 +5,7 @@ jest.setTimeout(300000)
 
 describe('generate', () => {
   test('generate', async () => {
-    const project = await initProject('javascript/script', 'cli-generate')
+    const project = await initProject('cli-generate')
 
     await project.run('init --provider=sqlite --url=file:management.db')
 

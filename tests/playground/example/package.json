@@ -1,0 +1,17 @@
+{
+  "name": "script",
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "2.0.0-preview025"
+  },
+  "devDependencies": {
+    "@prisma/cli": "2.0.0-preview025"
+  },
+  "scripts": {
+    "dev": "node ./script.js"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  }
+}

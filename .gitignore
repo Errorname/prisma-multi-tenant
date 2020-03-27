@@ -1,5 +1,6 @@
 node_modules
 build
 tests/playground/*
+!tests/playground/example
 !tests/playground/prepare.sh
 !tests/playground/test-lib.sh
