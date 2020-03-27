@@ -1,29 +1,16 @@
 import path from 'path'
-import fs from 'fs'
-import { getSchemaPath } from '@prisma/cli'
 
-import { writeFile, readFile, getNodeModules } from './shell'
+import { writeFile, readFile, getNodeModules, fileExists } from './shell'
 import { PmtError } from './errors'
 
 export const getEnvPath = async (): Promise<string> => {
-  let path
+  const envPath = path.join(process.cwd(), 'prisma', '.env')
 
-  // Try with default path
-  path = await getSchemaPath().catch(() => null)
-
-  // Try with relative path
-  if (!path) {
-    path = await getSchemaPath('../../../../@prisma/schema.prisma').catch(() => null)
-  }
-
-  if (!path) {
+  if (!(await fileExists(envPath))) {
     throw new Error("Couldn't find the prisma/.env file")
   }
 
-  // Use .env file, not schema.prisma
-  path = path.replace('schema.prisma', '.env')
-
-  return path
+  return envPath
 }
 
 export const readEnvFile = async (): Promise<string> => {
@@ -69,18 +56,21 @@ export const setManagementProviderInSchema = async (): Promise<void> => {
   const nodeModules = getNodeModules()
 
   // 1. Find schema file
-  const schemaPath = await getSchemaPath(
-    path.join(nodeModules, 'prisma-multi-tenant', 'build', 'cli', 'prisma', 'schema.prisma')
+  const schemaPath = path.join(
+    nodeModules,
+    'prisma-multi-tenant',
+    'build',
+    'cli',
+    'prisma',
+    'schema.prisma'
   )
 
-  if (!schemaPath) {
+  if (!(await fileExists(schemaPath))) {
     throw new PmtError('management-schema-not-found')
   }
 
   // 2. Read content of file
-  let content: string = await new Promise((res, rej) =>
-    fs.readFile(schemaPath, 'utf8', (err, data) => (err ? rej(err) : res(data)))
-  )
+  let content = await readFile(schemaPath)
 
   // 3. Change provider of datasource
   content = content.replace(
@@ -91,7 +81,5 @@ export const setManagementProviderInSchema = async (): Promise<void> => {
   )
 
   // 4. Write content to file
-  return new Promise((res, rej) =>
-    fs.writeFile(schemaPath, content, err => (err ? rej(err) : res()))
-  )
+  return writeFile(schemaPath, content)
 }

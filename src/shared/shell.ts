@@ -1,5 +1,6 @@
 import { exec, spawn } from 'child_process'
 import fs from 'fs'
+import path from 'path'
 import chalk from 'chalk'
 
 import { getManagementEnv } from './env'
@@ -47,23 +48,6 @@ export const fileExists = (path: string): Promise<boolean> => {
   })
 }
 
-export const findBin = async (): Promise<string> => {
-  if (distantBin !== undefined) return distantBin
-
-  const binFolder =
-    ((await runShell('npm bin', {
-      cwd: process.cwd()
-    })) as string).trim() + '/'
-
-  if (await fileExists(binFolder + 'prisma2')) {
-    distantBin = binFolder
-  } else {
-    distantBin = ''
-  }
-
-  return distantBin
-}
-
 export const getNodeModules = (): string => {
   if (nodeModules) return nodeModules
 
@@ -102,8 +86,9 @@ export const runDistant = (cmd: string, tenant?: Datasource): Promise<string | B
 }
 
 export const runLocalPrisma = async (cmd: string): Promise<string | Buffer> => {
-  const baseFolder = await findBin()
-  return runLocal(`"${baseFolder}prisma2" ${cmd}`)
+  const prismaCliPath = path.join(getNodeModules(), 'prisma2', 'build', 'index.js')
+
+  return runLocal(`"${prismaCliPath}" ${cmd}`)
 }
 
 export const runDistantPrisma = async (
@@ -111,9 +96,9 @@ export const runDistantPrisma = async (
   tenant?: Datasource,
   withTimeout = true
 ): Promise<string | Buffer> => {
-  const baseFolder = await findBin()
+  const prismaCliPath = path.join(getNodeModules(), 'prisma2', 'build', 'index.js')
 
-  const promise = runDistant(`"${baseFolder}prisma2" ${cmd}`, tenant)
+  const promise = runDistant(`"${prismaCliPath}" ${cmd}`, tenant)
 
   if (!withTimeout) {
     return promise
