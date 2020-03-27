@@ -9,7 +9,7 @@ If you try to deploy and use Prisma-multi-tenant on Zeit Now, you may encounter 
 When trying to programmatically create a new tenant, you may receive the following error:
 
 ```
-"Command failed: \"/var/task/node_modules/prisma2/build/index.js\" migrate up --create-db --experimental\nError: Could not find query-engine binary. Searched in /var/task/node_modules/prisma2/query-engine-rhel-openssl-1.0.x and /var/task/node_modules/query-engine-rhel-openssl-1.0.x\n"
+"Command failed: \"/var/task/node_modules/@prisma/cli/build/index.js\" migrate up --create-db --experimental\nError: Could not find query-engine binary. Searched in /var/task/node_modules/prisma2/query-engine-rhel-openssl-1.0.x and /var/task/node_modules/query-engine-rhel-openssl-1.0.x\n"
 ```
 
 This is because Zeit Now did not bundle the query/migration engines in your app.
@@ -21,8 +21,8 @@ In one of your JS file, add the following lines to tell Now to bundle the engine
 ```js
 import path from 'path'
 
-path.join(__dirname, '../node_modules/prisma2/migration-engine-rhel-openssl-1.0.x')
-path.join(__dirname, '../node_modules/prisma2/query-engine-rhel-openssl-1.0.x')
+path.join(__dirname, '../node_modules/@prisma/cli/migration-engine-rhel-openssl-1.0.x')
+path.join(__dirname, '../node_modules/@prisma/cli/query-engine-rhel-openssl-1.0.x')
 ```
 
 > You need to adapt the relative path based on where you JS file is.
@@ -34,7 +34,7 @@ path.join(__dirname, '../node_modules/prisma2/query-engine-rhel-openssl-1.0.x')
 When trying to programmatically create a new tenant, you may receive the following error:
 
 ```
-"Command failed: \"/var/task/node_modules/prisma2/build/index.js\" migrate up --create-db --experimental\nError: ENOENT: no such file or directory, mkdir\n"
+"Command failed: \"/var/task/node_modules/@prisma/cli/build/index.js\" migrate up --create-db --experimental\nError: ENOENT: no such file or directory, mkdir\n"
 ```
 
 This is because Zeit Now did not bundle the `prisma/` folder in your app.
