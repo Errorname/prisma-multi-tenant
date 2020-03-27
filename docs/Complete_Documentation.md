@@ -173,9 +173,9 @@ prisma-multi-tenant migrate management up -- --create-db
 
 **Explanations**
 
-The `migrate` command is a wrapper to the `prisma2 migrate` command. If you pass the `name` argument, it will migrate a single tenant. Otherwise, it will apply the action to all of the tenants registered in the management datasource.
+The `migrate` command is a wrapper to the `@prisma/cli migrate` command. If you pass the `name` argument, it will migrate a single tenant. Otherwise, it will apply the action to all of the tenants registered in the management datasource.
 
-Any arguments written after `--` will be passed to `prisma2 migrate`.
+Any arguments written after `--` will be passed to `@prisma/cli migrate`.
 
 The `save` action will use the default DATABASE_URL value if no `name` argument is given.
 
@@ -240,12 +240,12 @@ Set env variables for a specific tenant
 **Examples**
 
 ```sh
-prisma-multi-tenant env your_tenant_name -- prisma2 migrate save --experimental
+prisma-multi-tenant env your_tenant_name -- npx @prisma/cli migrate save --experimental
 ```
 
 **Explanations**
 
-The `env` command uses management to add the URL of your tenant in the `DATABASE_URL` env variable. Because of that, you can use any `prisma2` command you want, and it will use the tenant you specified.
+The `env` command uses management to add the URL of your tenant in the `DATABASE_URL` env variable. Because of that, you can use any `@prisma/cli` command you want, and it will use the tenant you specified.
 
 ### `help`
 

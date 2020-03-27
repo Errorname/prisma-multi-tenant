@@ -59,7 +59,7 @@ $> prisma-multi-tenant help
     Examples:
         prisma-multi-tenant new
         prisma-multi-tenant migrate my_tenant up
-        prisma-multi-tenant env my_tenant -- prisma2 instrospect
+        prisma-multi-tenant env my_tenant -- npx @prisma/cli instrospect
         ...
 
   COMMANDS

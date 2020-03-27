@@ -14,7 +14,7 @@ describe('migrate', () => {
     await project.run('delete dev --force')
     await project.run('new --name=test1 --provider=sqlite --url=file:test1.db')
     await project.run('new --name=test2 --provider=sqlite --url=file:test2.db')
-    await project.run('env test1 -- prisma2 migrate save --name=test --experimental')
+    await project.run('env test1 -- npx @prisma/cli migrate save --name=test --experimental')
     await runShell(`cp helpers/seed.js ../playground/${project.path}/seed.js`, '../cli')
     await runShell(`cp helpers/seed2.js ../playground/${project.path}/seed2.js`, '../cli')
   })
