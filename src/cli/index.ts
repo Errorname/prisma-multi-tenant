@@ -14,6 +14,7 @@ import {
 import { printError } from './helpers/errors'
 import help from './helpers/help'
 import Management from '../shared/management'
+import checkCompatibility from './helpers/checkCompatibility'
 
 import { PmtError } from '../shared/errors'
 import { Command } from '../shared/types'
@@ -48,6 +49,9 @@ const run = async (): Promise<void> => {
       path: path.resolve(process.cwd(), args.parsedPrimaryArgs['--env'] || '')
     })
   }
+
+  // Check version compatibility
+  checkCompatibility()
 
   const { parsedPrimaryArgs, commandName } = args
 
