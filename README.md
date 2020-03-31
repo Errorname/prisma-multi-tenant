@@ -19,8 +19,6 @@
 
 > 🧭 Use Prisma as a multi-tenant provider for your application
 
-> **Note:** This package works with `Prisma2`, if you want the `Prisma1` version, checkout [prisma-multi-tenant@1.0.3](https://github.com/Errorname/prisma-multi-tenant/tree/v1.0.3)
-
 **What's a multi-tenant application?**
 
 A [multi-tenant](https://en.wikipedia.org/wiki/Multitenancy) application is when a single instance of your application runs on a server and serves multiple tenants.
@@ -40,7 +38,7 @@ Because `prisma-multi-tenant` does not only allow you to access multiple databas
 ## Install
 
 ```sh
-npm i -g prisma-multi-tenant@alpha
+npm i -g prisma-multi-tenant@beta
 ```
 
 ## Usage
@@ -50,7 +48,7 @@ npm i -g prisma-multi-tenant@alpha
 ```
 $> prisma-multi-tenant help
 
-  🧭  prisma-multi-tenant v2.0.0-alpha25
+  🧭  prisma-multi-tenant v2.0.0-beta.1
 
   USAGE
 

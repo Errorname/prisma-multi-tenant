@@ -31,9 +31,9 @@ Prisma-multi-tenant is a two-part project:
 Before using any of them, we will first need to install globally `prisma-multi-tenant`, here is how you do it (using npm or yarn):
 
 ```sh
-npm install -g prisma-multi-tenant@alpha
+npm install -g prisma-multi-tenant@beta
 # OR
-yarn global add prisma-multi-tenant@alpha
+yarn global add prisma-multi-tenant@beta
 ```
 
 ## 2. Initialize multi-tenancy to in your app

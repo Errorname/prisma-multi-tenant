@@ -1,6 +1,6 @@
 {
   "name": "prisma-multi-tenant",
-  "version": "2.0.0-alpha25",
+  "version": "2.0.0-beta.1",
   "description": "🧭 Use Prisma as a multi-tenant provider for your application",
   "author": {
     "name": "Thibaud Courtoison",
@@ -34,12 +34,13 @@
     "inquirer": "^7.0.4"
   },
   "peerDependencies": {
-    "@prisma/cli": "^2.0.0-preview025"
+    "@prisma/cli": "^2.0.0-beta.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.3",
     "@babel/preset-env": "^7.8.3",
     "@babel/preset-typescript": "^7.8.3",
+    "@prisma/cli": "^2.0.0-beta.1",
     "@types/inquirer": "^6.5.0",
     "@types/jest": "^25.1.0",
     "@types/node": "^13.7.0",
@@ -54,7 +55,6 @@
     "jest": "^25.1.0",
     "node-fetch": "^2.6.0",
     "prettier": "^1.19.1",
-    "@prisma/cli": "^2.0.0-preview025",
     "rxjs": "^6.5.4",
     "ts-jest": "^25.0.0",
     "typescript": "^3.7.5"
