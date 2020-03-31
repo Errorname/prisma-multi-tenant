@@ -73,6 +73,8 @@ npm run test
 
 Everything's green? Perfect!
 
-You can now [create a Pull Request](https://github.com/Errorname/prisma-multi-tenant/compare), linking to the issue and explaining what your contribution does.
+> Note: If you are contributing on some documention, please use the [Prisma's documentation style guide](https://www.prisma.io/more/style-guide)
+
+You can now [create a Pull Request](https://github.com/Errorname/prisma-multi-tenant/compare), link to the issue, and explain what your contribution does.
 
 Thank you for taking the time to improve this project 🙂

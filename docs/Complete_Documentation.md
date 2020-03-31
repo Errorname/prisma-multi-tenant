@@ -6,7 +6,7 @@ Thanks to this management datasource, prisma-multi-tenant is able to migrate all
 
 Prisma-multi-tenant is a two-part project:
 
-- The [CLI](#CLI) that you will use to init, develop and deploy your tenants
+- The [CLI](#CLI) that you will use to init, develop, and deploy your tenants
 - The [Library](#Library) that you will use in your app to access the data in your tenants
 
 **Table of content:**
@@ -83,7 +83,7 @@ prisma-multi-tenant list --json
 
 **Explanations**
 
-The `list` command connects to the management datasource and returns all the tenants in it. You can use the `--json` argument to retrieve a machine-readable format of your tenants for any use-case you want.
+The `list` command connects to the management datasource and returns all the tenants in it. You can use the `--json` argument to retrieve a machine-readable format of your tenants for any use case you want.
 
 ### `new`
 
@@ -115,7 +115,7 @@ prisma-multi-tenant new management
 
 **Explanations**
 
-The `new` command create a new database using your schema. It will use a name, a provider and an url (that you can provide as options).
+The `new` command create a new database using your schema. It will use a name, a provider, and an url (that you can provide as options).
 
 If you want to create a tenant without tracking it in the management datasource, you can use `--no-management`. However be careful, because you will need to manually migrate up and down this tenant after that.
 
@@ -150,16 +150,16 @@ The `studio` command will connect to the management datasource to retrieve the u
 
 ### `migrate`
 
-Migrate up, down or save tenants.
+Migrate up, down, or save tenants.
 
 > Note: You can also migrate up the management datasource to deploy another management database: `prisma-multi-tenant migrate management up -- --create-db`
 
 **Arguments**
 
-| Name   | Optional | Description                               |
-| ------ | -------- | ----------------------------------------- |
-| name   | Yes      | Name of the tenant you want to migrate    |
-| action | **No**   | Migrate `up`, `down` or `save` the tenant |
+| Name   | Optional | Description                                |
+| ------ | -------- | ------------------------------------------ |
+| name   | Yes      | Name of the tenant you want to migrate     |
+| action | **No**   | Migrate `up`, `down`, or `save` the tenant |
 
 **Examples**
 
@@ -245,7 +245,7 @@ prisma-multi-tenant env your_tenant_name -- npx @prisma/cli migrate save --exper
 
 **Explanations**
 
-The `env` command uses management to add the URL of your tenant in the `DATABASE_URL` env variable. Because of that, you can use any `@prisma/cli` command you want, and it will use the tenant you specified.
+The `env` command uses management to add the URL of your tenant in the `DATABASE_URL` env variable. Because of that, you can use any `@prisma/cli` command you want and it will use the tenant you specified.
 
 ### `help`
 
@@ -298,7 +298,9 @@ const multiTenant = new MultiTenant({
 
 Returns the PrismaClient of your tenant. Any options passed as second argument will be given to the PrismaClient constructor.
 
-This method connects to management, and will throw an error if the tenant is not in the local cache and the useManagement constructor's option is set to false.
+If the tenant is present in the local cache, this method will return it. Otherwise, if the `useManagement` constructor's option is set to `true`, it will try to find the tenant in the management database.
+
+If the tenant couldn't be accessed (either because `useManagement: false` or because it doesn't exist), this method will throw an error.
 
 **Usage**
 

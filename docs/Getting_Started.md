@@ -2,7 +2,7 @@
 
 Welcome to `prisma-multi-tenant`!
 
-In this documentation, we will follow a step-by-step tutorial on how to add multi-tenancy to your application, and how to develop and deploy on your tenants.
+In this documentation, you will follow a step-by-step tutorial on how to add multi-tenancy to your application and how to develop and deploy on your tenants.
 
 **Table of content:**
 
@@ -23,12 +23,12 @@ Thanks to this management datasource, prisma-multi-tenant is able to migrate all
 
 Prisma-multi-tenant is a two-part project:
 
-- The **CLI** that you will use to init, develop and deploy your tenants
+- The **CLI** that you will use to init, develop, and deploy your tenants
 - The **library** that you will use in your app to access the data in your tenants
 
 ## 1. Install Prisma-multi-tenant
 
-Before using any of them, we will first need to install globally `prisma-multi-tenant`, here is how you do it (using npm or yarn):
+Before using any of them, you will first need to install globally `prisma-multi-tenant`, here is how you do it (using npm or yarn):
 
 ```sh
 npm install -g prisma-multi-tenant@beta
@@ -38,7 +38,7 @@ yarn global add prisma-multi-tenant@beta
 
 ## 2. Initialize multi-tenancy to in your app
 
-Now that `prisma-multi-tenant` is available globally on your system, we can use it to initialize your application:
+Now that `prisma-multi-tenant` is available globally on your system, you can use it to initialize your application:
 
 ```sh
 # In your application directory:
@@ -77,9 +77,9 @@ prisma-multi-tenant list
 
 ## 4. Open Studio for a tenant
 
-Now that you have two tenants, we want to access them and put some data in it.
+Now that you have two tenants, you want to access them and put some data in it.
 
-We will do that by running Studio using **the name of one of your tenant**:
+You will do that by running Studio using **the name of one of your tenant**:
 
 ```sh
 prisma-multi-tenant studio your_tenant_name

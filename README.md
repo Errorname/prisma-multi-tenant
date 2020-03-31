@@ -29,7 +29,7 @@ For example, you could run a social-network for companies, where each company wo
 
 **Why is Prisma great for multi-tenancy?**
 
-Prisma gives you all the tools necessary to handle your database: data modeling, database schema migrations, type-safe database access, etc. Doing so, we can then automate those processes and help you make a multi-tenant application.
+Prisma gives you all the tools necessary to handle your database: data modeling, database schema migrations, type safe database access, etc. Doing so, `prisma-multi-tenant` can then automate those processes and help you make a multi-tenant application.
 
 **Why do I need `prisma-multi-tenant`?**
 
@@ -117,7 +117,7 @@ Read more on how `prisma-multi-tenant` can help you achieve multi-tenancy for yo
 
 ## 🤝 Contributors
 
-Contributions, issues and feature requests are welcome! 🙌
+Contributions, issues, and feature requests are welcome! 🙌
 
 Feel free to check [issues page](https://github.com/Errorname/prisma-multi-tenant/issues).
 
