@@ -20,6 +20,7 @@ Prisma-multi-tenant is a two-part project:
   - [`delete`](#delete)
   - [`generate`](#generate)
   - [`env`](#env)
+  - [`eject`](#eject)
   - [`help`](#help)
 - [Library](#library)
   - [`constructor`](#constructoroptions-multitenantoptions)
@@ -202,7 +203,7 @@ prisma-multi-tenant delete your_other_tenant
 prisma-multi-tenant delete your_other_tenant --force
 ```
 
-**Explainations**
+**Explanations**
 
 The `delete` command will migrate down the tenant datasource and unregister it from the management datasource.
 
@@ -223,7 +224,7 @@ prisma-multi-tenant generate
 prisma-multi-tenant generate --watch
 ```
 
-**Explainations**
+**Explanations**
 
 The `generate` command generates the Prisma Client package for both Tenants and Management.
 
@@ -246,6 +247,14 @@ prisma-multi-tenant env your_tenant_name -- npx @prisma/cli migrate save --exper
 **Explanations**
 
 The `env` command uses management to add the URL of your tenant in the `DATABASE_URL` env variable. Because of that, you can use any `@prisma/cli` command you want and it will use the tenant you specified.
+
+### `eject`
+
+Eject prisma-multi-tenant from your application
+
+**Explanations**
+
+The `eject` command can be used if you no longer need `prisma-multi-tenant` in your application. This command will uninstall `prisma-multi-tenant`. It will not touch your databases as you may have important data in them.
 
 ### `help`
 

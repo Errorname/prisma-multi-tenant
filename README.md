@@ -70,6 +70,7 @@ $> prisma-multi-tenant help
     delete <name>              Delete one tenant
     generate                   Generate Prisma Clients for the tenants and management
     env <name>                 Set env variables for a specific tenant
+    eject                      Eject prisma-multi-tenant from your application
     help                       Display this help
 
   OPTIONS
