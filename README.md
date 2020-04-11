@@ -103,7 +103,7 @@ Read more on how `prisma-multi-tenant` can help you achieve multi-tenancy for yo
 - [Contributing guide](/docs/Contributing_Guide.md) - For great people
 - [Examples](/docs/examples) - For everyone
   - [Basic (JS)](/docs/examples/basic-js)
-  - [Basic (TS)](/docs/examples/basic-js)
+  - [Basic (TS)](/docs/examples/basic-ts)
   - Nexus (Work in progress)
 - [Issues with Zeit Now](/docs/Zeit_Now.md)
 
