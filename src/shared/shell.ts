@@ -68,11 +68,11 @@ export const runLocal = async (cmd: string): Promise<string | Buffer> => {
   const managementEnv = await getManagementEnv()
 
   return runShell(cmd, {
-    cwd: __dirname + '/../cli',
+    cwd: path.join(nodeModules, 'prisma-multi-tenant/build/cli'),
     env: {
       ...process.env,
       ...managementEnv,
-      PMT_OUTPUT: nodeModules + '/' + clientManagementPath
+      PMT_OUTPUT: path.join(nodeModules, clientManagementPath)
     }
   })
 }

@@ -56,14 +56,7 @@ export const setManagementProviderInSchema = async (): Promise<void> => {
   const nodeModules = getNodeModules()
 
   // 1. Find schema file
-  const schemaPath = path.join(
-    nodeModules,
-    'prisma-multi-tenant',
-    'build',
-    'cli',
-    'prisma',
-    'schema.prisma'
-  )
+  const schemaPath = path.join(nodeModules, 'prisma-multi-tenant/build/cli/prisma/schema.prisma')
 
   if (!(await fileExists(schemaPath))) {
     throw new PmtError('management-schema-not-found')
