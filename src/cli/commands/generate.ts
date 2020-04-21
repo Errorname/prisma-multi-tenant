@@ -2,7 +2,7 @@ import chalk from 'chalk'
 
 import { Command, CommandArguments } from '../../shared/types'
 import { runLocalPrisma, runDistantPrisma, spawnShell } from '../../shared/shell'
-import { setManagementProviderInSchema } from '../../shared/env'
+import { setManagementProviderInSchema, setManagementProviderInMigration } from '../../shared/env'
 
 class Generate implements Command {
   name = 'generate'
@@ -47,6 +47,7 @@ class Generate implements Command {
   async generateManagement(prismaArgs: string = '') {
     // This is a workaround until Prisma allows for multi-provider datasources
     await setManagementProviderInSchema()
+    await setManagementProviderInMigration()
 
     await runLocalPrisma(`generate ${prismaArgs}`)
   }

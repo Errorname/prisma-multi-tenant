@@ -76,3 +76,32 @@ export const setManagementProviderInSchema = async (): Promise<void> => {
   // 4. Write content to file
   return writeFile(schemaPath, content)
 }
+
+export const setManagementProviderInMigration = async (): Promise<void> => {
+  if (!process.env.MANAGEMENT_PROVIDER) {
+    throw new PmtError('missing-env', { name: 'MANAGEMENT_PROVIDER' })
+  }
+
+  const nodeModules = getNodeModules()
+
+  // 1. Find migration steps file
+  const stepsPath = path.join(
+    nodeModules,
+    'prisma-multi-tenant/build/cli/prisma/migrations/20200411135513-alpha/steps.json'
+  )
+
+  if (!(await fileExists(stepsPath))) {
+    throw new PmtError('management-migration-not-found')
+  }
+
+  // 2. Read content of file
+  const content = JSON.parse(await readFile(stepsPath))
+
+  // 3. Change provider of datasource
+  content.steps.find(
+    (step: any) => step.argument == 'provider'
+  ).value = `\"${process.env.MANAGEMENT_PROVIDER}\"`
+
+  // 4. Write content to file
+  return writeFile(stepsPath, JSON.stringify(content, null, 2))
+}
