@@ -11,7 +11,7 @@ export default () => {
     const prismaVersionRequired = peerDependencies['@prisma/cli'].replace('^', '')
 
     if (prismaVersion !== prismaVersionRequired) {
-      console.warn(
+      console[process.env.PMT_TEST ? 'log' : 'warn'](
         chalk.yellow(
           `Warning: This version of prisma-multi-tenant is compatible with @prisma/cli@${prismaVersionRequired}, but you have @prisma/cli@${prismaVersion} installed. This may break in unexpected ways.`
         )
