@@ -67,6 +67,9 @@ export const runLocal = async (cmd: string): Promise<string | Buffer> => {
 
   const managementEnv = await getManagementEnv()
 
+  // Fixes a weird bug that would not use the provided PMT_OUTPUT env
+  delete process.env.INIT_CWD
+
   return runShell(cmd, {
     cwd: path.join(nodeModules, 'prisma-multi-tenant/build/cli'),
     env: {
