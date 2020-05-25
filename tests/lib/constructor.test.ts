@@ -32,7 +32,7 @@ describe('constructor', () => {
 
   test('PrismaClient & PrismaClientManagement', () => {
     const PrismaClient = require(`@prisma/client`)
-    const PrismaClientManagement = require(`@prisma/prisma-multi-tenant/management`)
+    const PrismaClientManagement = require(`.prisma-multi-tenant/management`)
 
     const multiTenant = new MultiTenant({
       PrismaClient,

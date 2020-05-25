@@ -18,6 +18,8 @@ export default () => {
       )
     }
   } catch {
-    console.warn(chalk.yellow`Warning: Couldn't verify version compatibility with @prisma/cli`)
+    console.warn(
+      chalk.yellow`Warning: Couldn't verify version compatibility with @prisma/cli. Did you forget to install it locally?`
+    )
   }
 }

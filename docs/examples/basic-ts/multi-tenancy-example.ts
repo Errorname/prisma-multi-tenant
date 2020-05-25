@@ -1,11 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import { MultiTenant } from 'prisma-multi-tenant'
 
-require('dotenv').config({
-  path: 'prisma/.env'
-})
-
-// This is the name of your first tenant, try with another one
+// This is the name of your first tenant, try with another one: "prod"
 const name = 'dev'
 
 const multiTenant = new MultiTenant<PrismaClient>()

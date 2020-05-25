@@ -1,3 +1,4 @@
+import path from 'path'
 import { datasourceProviders } from '../shared/constants'
 import { runDistantPrisma, requireDistant } from '../shared/shell'
 import Management from '../shared/management'
@@ -31,6 +32,8 @@ class MultiTenant<PrismaClient extends { disconnect: () => Promise<void> }> {
   constructor(options?: MultiTenantOptions) {
     this.options = { ...defaultMultiTenantOptions, ...options }
 
+    this.loadEnv()
+
     this.ClientTenant = this.requireTenant()
 
     if (this.options.useManagement) {
@@ -38,6 +41,13 @@ class MultiTenant<PrismaClient extends { disconnect: () => Promise<void> }> {
     }
 
     this.tenants = {}
+  }
+
+  private loadEnv(): void {
+    // Try loading env variables
+    require('dotenv').config({
+      path: path.resolve(process.cwd(), 'prisma/.env')
+    })
   }
 
   private requireTenant(): any {
