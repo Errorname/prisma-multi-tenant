@@ -145,7 +145,9 @@ export const writeFile = (path: string, content: string): Promise<void> => {
 }
 
 export const requireDistant = (name: string): any => {
-  return require(require.resolve(name, {
+  // Keep previous env so that the required module doesn't update it
+  const previousEnv = { ...process.env }
+  const required = require(require.resolve(name, {
     paths: [
       process.cwd() + '/node_modules/',
       process.cwd(),
@@ -153,6 +155,8 @@ export const requireDistant = (name: string): any => {
       __dirname + '/../../../'
     ]
   }))
+  process.env = previousEnv
+  return required
 }
 
 export const useYarn = (): Promise<boolean> => {

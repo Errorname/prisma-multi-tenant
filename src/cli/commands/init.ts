@@ -145,11 +145,9 @@ class Init implements Command {
   async createExample(firstTenant: Tenant | null) {
     console.log('\n  Creating example script...')
 
-    const { PrismaClient } = requireDistant('@prisma/client')
+    const { dmmf } = requireDistant('@prisma/client')
 
-    const tenant = new PrismaClient()
-
-    const firstModelMapping = tenant.dmmf.mappings[0]
+    const firstModelMapping = dmmf.mappings[0]
 
     // We should use singular name (See prisma/prisma-client-js#509)
     const modelNamePlural = firstModelMapping.plural

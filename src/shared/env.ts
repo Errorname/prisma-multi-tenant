@@ -87,7 +87,7 @@ export const setManagementProviderInMigration = async (): Promise<void> => {
   // 1. Find migration steps file
   const stepsPath = path.join(
     nodeModules,
-    'prisma-multi-tenant/build/cli/prisma/migrations/20200411135513-alpha/steps.json'
+    'prisma-multi-tenant/build/cli/prisma/migrations/20200526145455-beta/steps.json'
   )
 
   if (!(await fileExists(stepsPath))) {

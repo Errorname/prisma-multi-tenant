@@ -4,8 +4,9 @@ datasource management {
 }
 
 generator client {
-  provider = "prisma-client-js"
-  output   = env("PMT_OUTPUT")
+  provider      = "prisma-client-js"
+  output        = env("PMT_OUTPUT")
+  binaryTargets = ["native"]
 }
 
 model Tenant {
