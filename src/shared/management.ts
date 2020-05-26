@@ -48,7 +48,7 @@ export default class Management {
         data: tenant
       })
     } catch (err) {
-      if (err.code == 'P2002') throw new PmtError('tenant-already-exists', client.name)
+      if (err.code == 'P2002') throw new PmtError('tenant-already-exists', tenant.name)
       throw err
     }
   }
