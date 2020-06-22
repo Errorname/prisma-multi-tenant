@@ -150,4 +150,8 @@ class MultiTenant<PrismaClient extends { disconnect: () => Promise<void> }> {
   }
 }
 
-export { MultiTenant }
+// Fix for Vercel + Next issue
+//@ts-ignore
+const requirePrismaManagement = () => require('.prisma-multi-tenant/management').PrismaClient
+
+export { MultiTenant, requirePrismaManagement }

@@ -10,10 +10,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@prisma/cli": "2.0.0-beta.6"
+    "@prisma/cli": "^2.0.0"
   },
   "dependencies": {
-    "@prisma/client": "2.0.0-beta.6",
-    "prisma-multi-tenant": "2.0.0-beta.6"
+    "@prisma/client": "^2.0.0",
+    "prisma-multi-tenant": "^2.0.0"
   }
 }

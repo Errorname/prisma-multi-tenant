@@ -38,7 +38,7 @@ Because `prisma-multi-tenant` does not only allow you to access multiple databas
 ## Install
 
 ```sh
-npm i -g prisma-multi-tenant@beta
+npm i -g prisma-multi-tenant
 ```
 
 ## Usage
@@ -48,7 +48,7 @@ npm i -g prisma-multi-tenant@beta
 ```
 $> prisma-multi-tenant help
 
-  🧭  prisma-multi-tenant v2.0.0-beta.6
+  🧭  prisma-multi-tenant v2.0.0
 
   USAGE
 
