@@ -48,7 +48,7 @@ npm i -g prisma-multi-tenant
 ```
 $> prisma-multi-tenant help
 
-  🧭  prisma-multi-tenant v2.0.0
+  🧭  prisma-multi-tenant v2.1.0
 
   USAGE
 
