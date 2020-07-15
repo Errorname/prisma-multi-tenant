@@ -151,7 +151,7 @@ class MultiTenant<PrismaClient extends { disconnect: () => Promise<void> }> {
 }
 
 // Fix for Vercel + Next issue
-//@ts-ignore
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const requirePrismaManagement = () => require('.prisma-multi-tenant/management').PrismaClient
 
 export { MultiTenant, requirePrismaManagement }

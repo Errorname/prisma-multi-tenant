@@ -147,6 +147,7 @@ export const writeFile = (path: string, content: string): Promise<void> => {
 export const requireDistant = (name: string): any => {
   // Keep previous env so that the required module doesn't update it
   const previousEnv = { ...process.env }
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const required = require(require.resolve(name, {
     paths: [
       process.cwd() + '/node_modules/',

@@ -1,6 +1,6 @@
 import path from 'path'
 
-import { writeFile, readFile, getNodeModules, fileExists } from './shell'
+import { writeFile, readFile, fileExists } from './shell'
 import { PmtError } from './errors'
 
 export const getEnvPath = async (): Promise<string> => {
@@ -46,62 +46,4 @@ export const setManagementEnv = async (): Promise<void> => {
   const managementEnv = await getManagementEnv()
 
   Object.entries(managementEnv).forEach(([key, value]) => (process.env[key] = value))
-}
-
-export const setManagementProviderInSchema = async (): Promise<void> => {
-  if (!process.env.MANAGEMENT_PROVIDER) {
-    throw new PmtError('missing-env', { name: 'MANAGEMENT_PROVIDER' })
-  }
-
-  const nodeModules = getNodeModules()
-
-  // 1. Find schema file
-  const schemaPath = path.join(nodeModules, 'prisma-multi-tenant/build/cli/prisma/schema.prisma')
-
-  if (!(await fileExists(schemaPath))) {
-    throw new PmtError('management-schema-not-found')
-  }
-
-  // 2. Read content of file
-  let content = await readFile(schemaPath)
-
-  // 3. Change provider of datasource
-  content = content.replace(
-    /datasource\s*management\s*{\s*provider\s*=\s*"([^"]*)"/,
-    (match, p1) => {
-      return match.replace(p1, process.env.MANAGEMENT_PROVIDER || '')
-    }
-  )
-
-  // 4. Write content to file
-  return writeFile(schemaPath, content)
-}
-
-export const setManagementProviderInMigration = async (): Promise<void> => {
-  if (!process.env.MANAGEMENT_PROVIDER) {
-    throw new PmtError('missing-env', { name: 'MANAGEMENT_PROVIDER' })
-  }
-
-  const nodeModules = getNodeModules()
-
-  // 1. Find migration steps file
-  const stepsPath = path.join(
-    nodeModules,
-    'prisma-multi-tenant/build/cli/prisma/migrations/20200526145455-beta/steps.json'
-  )
-
-  if (!(await fileExists(stepsPath))) {
-    throw new PmtError('management-migration-not-found')
-  }
-
-  // 2. Read content of file
-  const content = JSON.parse(await readFile(stepsPath))
-
-  // 3. Change provider of datasource
-  content.steps.find(
-    (step: any) => step.argument == 'provider'
-  ).value = `\"${process.env.MANAGEMENT_PROVIDER}\"`
-
-  // 4. Write content to file
-  return writeFile(stepsPath, JSON.stringify(content, null, 2))
 }

@@ -12,7 +12,7 @@
         "source": "management"
       },
       "argument": "provider",
-      "value": "\"sqlite\""
+      "value": "[\"sqlite\", \"mysql\", \"postgresql\"]"
     },
     {
       "tag": "CreateArgument",
@@ -21,7 +21,7 @@
         "source": "management"
       },
       "argument": "url",
-      "value": "env(\"PMT_MANAGEMENT_URL\")"
+      "value": "\"***\""
     },
     {
       "tag": "CreateModel",

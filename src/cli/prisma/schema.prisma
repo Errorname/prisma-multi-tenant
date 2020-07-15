@@ -1,5 +1,5 @@
 datasource management {
-  provider = "to_be_defined"
+  provider = ["sqlite","mysql","postgresql"]
   url      = env("PMT_MANAGEMENT_URL")
 }
 

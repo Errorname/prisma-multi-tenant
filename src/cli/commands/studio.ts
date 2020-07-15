@@ -27,7 +27,7 @@ class Studio implements Command {
 
     const tenant = await management.read(name)
 
-    await runDistantPrisma(`studio --port ${port} ${args.secondary} --experimental`, tenant)
+    await runDistantPrisma(`studio --port ${port} ${args.secondary} --experimental`, tenant, false)
   }
 }
 

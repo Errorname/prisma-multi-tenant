@@ -52,9 +52,11 @@ const askQuestions = async (
   return (answers as unknown) as Datasource
 }
 
-const askQuestionsList = ({ options }: CommandArguments, questionNames: string[]) => {
+const askQuestionsList = (
+  { options }: CommandArguments,
+  questionNames: (keyof typeof questionTemplates)[]
+) => {
   const questions = questionNames.map(name => ({
-    // @ts-ignore
     ...questionTemplates[name],
     value: options[name]
   }))
@@ -86,12 +88,6 @@ const managementConf = async (args: CommandArguments): Promise<Datasource> => {
 }
 
 const tenantConf = async (args: CommandArguments): Promise<Tenant> => {
-  // This is a fix until we can have a multi-provider prisma client (See #8)
-
-  console.log(
-    chalk`  {yellow {bold Warning:} Prisma does not yet allow for multi-provider clients, so you must use the same provider used in your schema.prisma file.}\n`
-  )
-
   const answers = await askQuestionsList(args, ['name', 'provider', 'url'])
 
   return answers as Tenant
