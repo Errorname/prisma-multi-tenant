@@ -1,4 +1,4 @@
-const { MultiTenant } = require('prisma-multi-tenant')
+const { MultiTenant } = require('@prisma-multi-tenant/client')
 
 // This is the name of your first tenant, try with another one: "prod"
 const name = 'dev'
@@ -16,7 +16,7 @@ async function main() {
 }
 
 main()
-  .catch(e => console.error(e))
+  .catch((e) => console.error(e))
   .finally(async () => {
     await multiTenant.disconnect()
   })

@@ -1,5 +1,5 @@
-import * as allCommands from '../../src/cli/commands'
-import { Command } from '../../src/shared/types'
+import * as allCommands from '../../packages/cli/src/commands'
+import { Command } from '../../packages/cli/src/types'
 import { runShell } from './helpers/shell'
 
 const packageJson = require('../../package.json')

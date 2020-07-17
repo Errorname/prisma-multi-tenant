@@ -31,19 +31,16 @@ describe('management', () => {
     const tenants = [
       {
         name: 'dev',
-        provider: 'sqlite',
-        url: 'file:dev.db'
+        url: 'file:dev.db',
       },
       {
         name: 'test1',
-        provider: 'sqlite',
-        url: 'file:test1.db'
+        url: 'file:test1.db',
       },
       {
         name: 'test2',
-        provider: 'sqlite',
-        url: 'file:test2.db'
-      }
+        url: 'file:test2.db',
+      },
     ]
 
     const textList = await project.run('list')
@@ -66,9 +63,8 @@ describe('management', () => {
     const tenants = [
       {
         name: 'test1',
-        provider: 'sqlite',
-        url: 'file:test1.db'
-      }
+        url: 'file:test1.db',
+      },
     ]
 
     const list = await project.run('list --json')

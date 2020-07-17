@@ -2,12 +2,12 @@
 
 Prisma-multi-tenant uses a "**management**" datasource in order to keep track of all the tenants of your application.
 
-Thanks to this management datasource, prisma-multi-tenant is able to migrate all your tenants, as well as providing you with a simple way to access the data of whichever tenant you want.
+Thanks to this management datasource, prisma-multi-tenant is able to migrate all your tenants at once, as well as providing you with a simple way to access the data of whichever tenant you want.
 
 Prisma-multi-tenant is a two-part project:
 
-- The [CLI](#CLI) that you will use to init, develop, and deploy your tenants
-- The [Library](#Library) that you will use in your app to access the data in your tenants
+- The [CLI](#CLI) (`prisma-multi-tenant`) that you will use to init, develop, and deploy your tenants
+- The [Client](#Library) (`@prisma-multi-tenant/client`) that you will use in your app to access the data in your tenants
 
 **Table of content:**
 
@@ -33,37 +33,38 @@ Prisma-multi-tenant is a two-part project:
 
 ## CLI
 
+> Note: You can run the CLI with either `prisma-multi-tenant` or `pmt`. Example: `pmt init`
+
 ### `init`
 
 Init multi-tenancy for your application
 
 **Options**
 
-| Name     | Type   | Description                     |
-| -------- | ------ | ------------------------------- |
-| provider | String | Type of the management provider |
-| url      | String | URL of the management database  |
+| Name | Type   | Description                    |
+| ---- | ------ | ------------------------------ |
+| url  | String | URL of the management database |
 
 **Examples**
 
 ```sh
 prisma-multi-tenant init
-prisma-multi-tenant init --provider=sqlite --url=file:management.db
+prisma-multi-tenant init --url=file:management.db
 ```
 
 **Explanations**
 
 The `init` command is used to initialize your application to use `prisma-multi-tenant`. It will do the following:
 
-1. Install `prisma-multi-tenant` locally in your app _(in order to use the library)_
-2. Prompt for the management datasource (provider and url)
-3. Update the `prisma/.env` file with the management's provider and url
+1. Install `@prisma-multi-tenant/client` locally in your app
+2. Prompt for the management datasource url
+3. Update the `prisma/.env` file with the management's url
 4. Generate PrismaClient (for tenants & management)
 5. Set up the management datasource
 6. Create first tenant based on the `DATABASE_URL` env variable
 7. Create an example script (`multi-tenancy-example.js`)
 
-> Note: Make sure you are using `DATABASE_URL` in your schema.prisma
+> Note: Make sure you are using `DATABASE_URL` in the default datasource of your schema.prisma file
 
 ### `list`
 
@@ -101,7 +102,6 @@ Create a new tenant or management
 | Name          | Type    | Description                                                      |
 | ------------- | ------- | ---------------------------------------------------------------- |
 | name          | String  | Name of the tenant                                               |
-| provider      | String  | Provider of the tenant                                           |
 | url           | String  | URL of the database                                              |
 | no-management | Boolean | The new tenant will not be registered in the management database |
 
@@ -109,14 +109,14 @@ Create a new tenant or management
 
 ```sh
 prisma-multi-tenant new
-prisma-multi-tenant new --name=company_b --provider=postgresql --url=postgres://...
+prisma-multi-tenant new --name=company_b --url=postgres://...
 prisma-multi-tenant new --no-management
 prisma-multi-tenant new management
 ```
 
 **Explanations**
 
-The `new` command create a new database using your schema. It will use a name, a provider, and an url (that you can provide as options).
+The `new` command create a new database using your schema. It will use a name, and an url (that you can provide as options).
 
 If you want to create a tenant without tracking it in the management datasource, you can use `--no-management`. However be careful, because you will need to manually migrate up and down this tenant after that.
 
@@ -254,7 +254,7 @@ Eject prisma-multi-tenant from your application
 
 **Explanations**
 
-The `eject` command can be used if you no longer need `prisma-multi-tenant` in your application. This command will uninstall `prisma-multi-tenant`. It will not touch your databases as you may have important data in them.
+The `eject` command can be used if you no longer need `prisma-multi-tenant` in your application. This command will uninstall `@prisma-multi-tenant/client`. It will not touch your databases as you may have important data in them.
 
 ### `help`
 
@@ -268,7 +268,7 @@ prisma-multi-tenant help
 
 ## Library
 
-> Note: You are responsible to provide the environment variable for management any way you want
+> Note: The client will try to read the `MANAGEMENT_URL` environment variables in `prisma/.env`, but you can also provide it yourself.
 
 ### `constructor(options?: MultiTenantOptions)`
 
@@ -277,7 +277,7 @@ Constructor of the `MultiTenant` class.
 **Usage (JavaScript)**
 
 ```js
-const { MultiTenant } = require('prisma-multi-tenant')
+const { MultiTenant } = require('@prisma-multi-tenant/client')
 
 const multiTenant = new MultiTenant()
 ```
@@ -288,7 +288,7 @@ This will give you autocompletion on your tenants
 
 ```ts
 const { PrismaClient } = require('@prisma/client')
-const { MultiTenant } = require('prisma-multi-tenant')
+const { MultiTenant } = require('@prisma-multi-tenant/client')
 
 const multiTenant = new MultiTenant<PrismaClient>()
 ```
@@ -299,7 +299,7 @@ If you do not want to connect to the Management database when connecting to a ne
 
 ```js
 const multiTenant = new MultiTenant({
-  useManagement: false
+  useManagement: false,
 })
 ```
 
@@ -332,7 +332,7 @@ This method does not connect to management.
 ```js
 const prisma = await multiTenant.directGet({
   name: 'your_other_tenant',
-  url: 'file:something.db'
+  url: 'file:something.db',
 })
 
 const users = await prisma.user.findMany()
@@ -340,21 +340,18 @@ const users = await prisma.user.findMany()
 console.log(users)
 ```
 
-### `createTenant(tenant: { name: string, provider: string, url: string }, options?: any): Promise<PrismaClient>`
+### `createTenant(tenant: { name: string, url: string }, options?: any): Promise<PrismaClient>`
 
 Creates a new tenant in management and returns the corresponding PrismaClient. Any options passed as second argument will be given to the PrismaClient constructor.
 
 This method will migrate up the new database to be up-to-date with the migrations.
-
-> Note: You currently can't have tenants from multiple datasources. (See #8)
 
 **Usage**
 
 ```js
 const prisma = await multiTenant.createTenant({
   name: 'a_new_tenant',
-  provider: 'postgresql',
-  url: 'postgresql://the_postgres_url'
+  url: 'postgresql://the_postgres_url',
 })
 
 const users = await prisma.user.findMany()

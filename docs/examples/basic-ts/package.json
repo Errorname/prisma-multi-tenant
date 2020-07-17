@@ -9,12 +9,12 @@
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@prisma/cli": "^2.2.0"
-  },
   "dependencies": {
     "@prisma/client": "^2.2.0",
-    "prisma-multi-tenant": "^2.1.0",
+    "@prisma-multi-tenant/client": "^2.2.0-dev.1"
+  },
+  "devDependencies": {
+    "@prisma/cli": "^2.2.0",
     "ts-node": "8.6.2",
     "typescript": "3.8.2"
   }

@@ -1,4 +1,4 @@
-const { MultiTenant } = require('prisma-multi-tenant')
+const { MultiTenant } = require('@prisma-multi-tenant/client')
 
 const multiTenant = new MultiTenant()
 
@@ -10,12 +10,12 @@ const main = async () => {
   const userSeeded = await prisma.user.create({
     data: {
       name: 'Jane',
-      email: Math.random() + '@jane.doe'
-    }
+      email: Math.random() + '@jane.doe',
+    },
   })
 
   const user = await prisma.user.findOne({
-    where: { id: userSeeded.id }
+    where: { id: userSeeded.id },
   })
 
   if (user.name == 'Jane' && user.email.endsWith('@jane.doe')) {
@@ -26,7 +26,7 @@ const main = async () => {
 }
 
 main()
-  .catch(e => console.error(e))
+  .catch((e) => console.error(e))
   .finally(async () => {
     await multiTenant.disconnect()
   })

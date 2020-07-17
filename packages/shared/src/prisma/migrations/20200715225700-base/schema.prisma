@@ -1,0 +1,15 @@
+datasource management {
+  provider = ["sqlite","mysql","postgresql"]
+  url = "***"
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  output        = env("PMT_OUTPUT")
+  binaryTargets = ["native"]
+}
+
+model Tenant {
+  name     String @id
+  url      String
+}

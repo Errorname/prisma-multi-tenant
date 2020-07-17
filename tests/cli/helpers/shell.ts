@@ -10,8 +10,8 @@ export const spawnCommand = (cmd: string, cwd: string = ''): ChildProcess => {
     cwd: playgroundPath + cwd,
     env: {
       ...process.env,
-      PATH: __dirname + ':' + process.env.PATH
-    }
+      PATH: __dirname + ':' + process.env.PATH,
+    },
   })
 }
 
@@ -23,8 +23,8 @@ export const runShell = (cmd: string, cwd: string = ''): Promise<string> => {
         cwd: playgroundPath + cwd,
         env: {
           ...process.env,
-          PMT_TEST: 'true'
-        }
+          PMT_TEST: 'true',
+        },
       },
       (error, stdout, stderr) => {
         if (error) reject(error)
@@ -36,8 +36,8 @@ export const runShell = (cmd: string, cwd: string = ''): Promise<string> => {
 }
 
 export const fileExists = (path: string) => {
-  return new Promise(resolve => {
-    fs.access(playgroundPath + path, fs.constants.F_OK, err => {
+  return new Promise((resolve) => {
+    fs.access(playgroundPath + path, fs.constants.F_OK, (err) => {
       resolve(!err)
     })
   })

@@ -48,7 +48,7 @@ npm i -g prisma-multi-tenant
 ```
 $> prisma-multi-tenant help
 
-  🧭  prisma-multi-tenant v2.1.0
+  🧭  prisma-multi-tenant v2.2.0
 
   USAGE
 
@@ -82,7 +82,7 @@ $> prisma-multi-tenant help
 ```
 
 ```js
-const { MultiTenant } = require('prisma-multi-tenant')
+const { MultiTenant } = require('@prisma-multi-tenant/client')
 
 const multiTenant = new MultiTenant()
 
@@ -105,8 +105,10 @@ Read more on how `prisma-multi-tenant` can help you achieve multi-tenancy for yo
 - [Examples](/docs/examples) - For everyone
   - [Basic (JS)](/docs/examples/basic-js)
   - [Basic (TS)](/docs/examples/basic-ts)
-  - Nexus (Work in progress)
-- [Issues with Zeit Now](/docs/Zeit_Now.md)
+  - Nexus (TODO)
+  - Redwood (TODO)
+  - Blitz (TODO)
+- [Issues with Vercel](/docs/Vercel.md)
 
 ## Author
 

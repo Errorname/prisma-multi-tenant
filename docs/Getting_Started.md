@@ -23,8 +23,8 @@ Thanks to this management datasource, prisma-multi-tenant is able to migrate all
 
 Prisma-multi-tenant is a two-part project:
 
-- The **CLI** that you will use to init, develop, and deploy your tenants
-- The **library** that you will use in your app to access the data in your tenants
+- The **CLI** (`prisma-multi-tenant`) that you will use to init, develop, and deploy your tenants
+- The **Client** (`@prisma-multi-tenant/client`) that you will use in your app to access the data in your tenants
 
 ## 1. Install Prisma-multi-tenant
 
@@ -45,17 +45,19 @@ Now that `prisma-multi-tenant` is available globally on your system, you can use
 prisma-multi-tenant init
 ```
 
+> Note: You can either use the command line `prisma-multi-tenant` or its alias: `pmt`. Example: `pmt init`
+
 Running this command will do the following:
 
-1. Install `prisma-multi-tenant` locally in your app _(in order to use the library)_
-2. Prompt for the management datasource (provider and url)
-3. Update the `prisma/.env` file with the management's provider and url
-4. Generate PrismaClient (for tenants & management)
-5. Set up the management datasource
-6. Create first tenant based on the `DATABASE_URL` env variable
-7. Create an example script (`multi-tenancy-example.js`)
+1. Installs `@prisma-multi-tenant/client` in your app
+2. Prompts for the management datasource url
+3. Updates the `prisma/.env` file with the management's url
+4. Generates PrismaClient (for tenants & management)
+5. Sets up the management datasource
+6. Creates first tenant based on the `DATABASE_URL` env variable
+7. Creates an example script (`multi-tenancy-example.js`)
 
-> Note: Make sure you are using `DATABASE_URL` in your schema.prisma
+> Note: Make sure you are using `DATABASE_URL` in the default datasource of your schema.prisma file
 
 ## 3. Add a new tenant
 
@@ -97,15 +99,15 @@ If you want to know how to use the library to access the tenants in your applica
 
 It can be split in 3 parts:
 
-**1. Instantiating MultiTenant**
+**a. Instantiating MultiTenant**
 
 ```js
-const { MultiTenant } = require('prisma-multi-tenant')
+const { MultiTenant } = require('@prisma-multi-tenant/client')
 
 const multiTenant = new MultiTenant()
 ```
 
-**2. Get the tenant**
+**b. Get the tenant**
 
 The name can come from anywhere (headers, token, ...)
 
@@ -113,7 +115,7 @@ The name can come from anywhere (headers, token, ...)
 const prisma = await multiTenant.get('your_tenant_name')
 ```
 
-**3. Use PrismaClient as usual**
+**c. Use PrismaClient as usual**
 
 ```js
 const users = await prisma.user.findMany()

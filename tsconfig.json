@@ -7,7 +7,5 @@
     "strict": true,
     "removeComments": true,
     "esModuleInterop": true
-  },
-  "include": ["src/**/*"],
-  "exclude": ["src/**/*.spec.*"]
+  }
 }

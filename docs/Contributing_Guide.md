@@ -26,31 +26,52 @@ Once you have an issue, you can clone and install Prisma-multi-tenant:
 ```sh
 git clone https://github.com/Errorname/prisma-multi-tenant.git
 
-cd prisma-multi-tenant
-
-npm install
+npm run install # Not `npm install`!
 ```
 
 ## 3. Running and linking Prisma-multi-tenant
 
-Prisma-multi-tenant is written in Typescript. You will need to build it with the following command:
+Prisma-multi-tenant is a mono-repository hosting 3 packages:
+
+- `prisma-multi-tenant` found in `/packages/cli`
+- `@prisma-multi-tenant/client` found in `/packages/client`
+- `@prisma-multi-tenant/shared` found in `/packages/shared`
+
+Those packages are written in Typescript. For each one of those package, you will need to build it with the following command:
 
 ```sh
+cd packages/shared
+npm run build -- -w
+
+cd packages/cli
+npm run build -- -w
+
+cd packages/client
 npm run build -- -w
 ```
 
-Prisma-multi-tenant is a CLI. When running in your console, you will want the command to execute your own builded version of `prisma-multi-tenant`. To do that, you will need to "link" it:
+Since NPM installs dependencies from its own repositories, we need to locally link our packages between them:
 
 ```sh
-# In the Prisma-multi-tenant repository
+cd packages/shared
 npm link
+
+cd packages/cli
+npm link
+npm link @prisma-multi-tenant/shared
+
+cd packages/client
+npm link
+npm link @prisma-multi-tenant/shared
 ```
 
-Prisma-multi-tenant is also a library. When using it in a project, you will also want to execute your own builded version of `prisma-multi-tenant`. To do that, go into your project's directory and "link" it:
+Now, whenever you use the command `prisma-multi-tenant` or `pmt`, it will use your local version.
+
+When using `@prisma-multi-tenant/client` in a project, you will also want to execute your own builded version of `@prisma-multi-tenant/client`. To do that, go into your project's directory and "link" it:
 
 ```sh
 # In your project's directory
-npm link prisma-multi-tenant
+npm link @prisma-multi-tenant/client
 ```
 
 You can now work on your issue! 🥳
@@ -62,12 +83,15 @@ Your contribution is working beyond expectation? Great, let's add it to the proj
 First, make sure your code is correctly formatted:
 
 ```sh
+# In the root of prisma-multi-tenant
 npm run lint
+npm run prettier
 ```
 
 Then, make sure you don't introduce regressions:
 
 ```sh
+# In the root of prisma-multi-tenant
 npm run test
 ```
 

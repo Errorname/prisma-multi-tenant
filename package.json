@@ -1,79 +1,30 @@
 {
-  "name": "prisma-multi-tenant",
-  "version": "2.1.0",
-  "description": "🧭 Use Prisma as a multi-tenant provider for your application",
-  "author": {
-    "name": "Thibaud Courtoison",
-    "email": "do.not.press.enter@gmail.com",
-    "url": "https://errorna.me"
-  },
-  "license": "MIT",
-  "main": "build/lib/index.js",
-  "typings": "build/lib/index.d.ts",
-  "bin": {
-    "prisma-multi-tenant": "build/cli/index.js"
-  },
-  "files": [
-    "build"
-  ],
+  "version": "2.2.0-dev.1",
   "scripts": {
-    "prepare": "rm -rf build && npm run build && cp -R src/cli/prisma/ build/cli/prisma/",
-    "build": "tsc",
-    "lint": "eslint src/**/*.ts",
-    "prettier": "prettier \"src/**/*.ts\" --check",
-    "test": "npm run test:cli && npm run test:lib",
-    "test:cli": "jest tests/cli",
-    "test:lib": "bash tests/playground/test-lib.sh"
-  },
-  "dependencies": {
-    "arg": "^4.1.2",
-    "chalk": "^3.0.0",
-    "cli-table3": "^0.5.1",
-    "dotenv": "^8.2.0",
-    "find-node-modules": "^2.0.0",
-    "inquirer": "^7.0.4"
-  },
-  "peerDependencies": {
-    "@prisma/cli": "^2.2.0"
+    "install:all": "npm install && npm run install:shared && npm run install:client && npm run install:cli",
+    "install:cli": "cd packages/cli && npm install",
+    "install:client": "cd packages/client && npm install",
+    "install:shared": "cd packades/shared && npm install",
+    "lint": "npm run lint:cli && npm run lint:client && npm run lint:shared",
+    "lint:cli": "cd packages/cli && npm run lint",
+    "lint:client": "cd packages/client && npm run lint",
+    "lint:shared": "cd packages/shared && npm run lint",
+    "prettier": "npm run prettier:cli && npm run prettier:client && npm run prettier:shared",
+    "prettier:cli": "cd packages/cli && npm run prettier",
+    "prettier:client": "cd packages/client && npm run prettier",
+    "prettier:shared": "cd packages/shared && npm run prettier",
+    "test": "npm run test:cli && npm run test:client",
+    "test:cli": "jest tests/cli/",
+    "test:client": "bash tests/playground/test-client.sh",
+    "check": "npm run lint && npm run prettier && npm run test"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.3",
-    "@babel/preset-env": "^7.8.3",
-    "@babel/preset-typescript": "^7.8.3",
-    "@prisma/cli": "^2.2.0",
-    "@types/inquirer": "^6.5.0",
-    "@types/jest": "^25.1.0",
-    "@types/node": "^13.7.0",
-    "@types/node-fetch": "^2.5.4",
-    "@typescript-eslint/eslint-plugin": "^2.18.0",
-    "@typescript-eslint/parser": "^2.18.0",
-    "concat-stream": "^2.0.0",
-    "cross-spawn": "^7.0.1",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.9.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "jest": "^25.1.0",
+    "@types/jest": "^26.0.4",
+    "@types/node": "^14.0.23",
+    "@types/node-fetch": "^2.5.7",
+    "jest": "^26.1.0",
     "node-fetch": "^2.6.0",
-    "prettier": "^1.19.1",
-    "rxjs": "^6.5.4",
-    "ts-jest": "^25.0.0",
-    "typescript": "^3.7.5"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Errorname/prisma-multi-tenant.git"
-  },
-  "keywords": [
-    "prisma",
-    "multi-tenant"
-  ],
-  "bugs": {
-    "url": "https://github.com/Errorname/prisma-multi-tenant/issues"
-  },
-  "homepage": "https://github.com/Errorname/prisma-multi-tenant#readme",
-  "prettier": {
-    "printWidth": 100,
-    "semi": false,
-    "singleQuote": true
+    "ts-jest": "^26.1.2",
+    "typescript": "^3.9.6"
   }
 }
