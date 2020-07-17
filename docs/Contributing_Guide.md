@@ -25,8 +25,7 @@ Once you have an issue, you can clone and install Prisma-multi-tenant:
 
 ```sh
 git clone https://github.com/Errorname/prisma-multi-tenant.git
-
-npm run install # Not `npm install`!
+npm install
 ```
 
 ## 3. Running and linking Prisma-multi-tenant

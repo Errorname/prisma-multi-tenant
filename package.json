@@ -1,10 +1,7 @@
 {
-  "version": "2.2.0-dev.1",
+  "version": "2.2.0-dev.2",
   "scripts": {
-    "install:all": "npm install && npm run install:shared && npm run install:client && npm run install:cli",
-    "install:cli": "cd packages/cli && npm install",
-    "install:client": "cd packages/client && npm install",
-    "install:shared": "cd packades/shared && npm install",
+    "postintall": "./scripts/bootstrap.sh",
     "lint": "npm run lint:cli && npm run lint:client && npm run lint:shared",
     "lint:cli": "cd packages/cli && npm run lint",
     "lint:client": "cd packages/client && npm run lint",
@@ -16,12 +13,14 @@
     "test": "npm run test:cli && npm run test:client",
     "test:cli": "jest tests/cli/",
     "test:client": "bash tests/playground/test-client.sh",
-    "check": "npm run lint && npm run prettier && npm run test"
+    "check": "npm run lint && npm run prettier && npm run test",
+    "publish": "node scripts/publish.js"
   },
   "devDependencies": {
     "@types/jest": "^26.0.4",
     "@types/node": "^14.0.23",
     "@types/node-fetch": "^2.5.7",
+    "inquirer": "^7.3.2",
     "jest": "^26.1.0",
     "node-fetch": "^2.6.0",
     "ts-jest": "^26.1.2",
