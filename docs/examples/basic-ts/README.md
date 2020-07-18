@@ -8,13 +8,21 @@ This is an example project written in TypeScript to run Prisma and Prisma-multi-
 npm install
 ```
 
-## Commands you can try
-
-This will run the example script:
+Run the example script:
 
 ```sh
 npm run example
 ```
+
+Then, go to `multi-tenancy-example.js`, and change the tenant name to `"prod"`:
+
+```js
+const name = 'prod'
+```
+
+Finally, re-run the script!
+
+## Commands you can try
 
 This will list the available tenants:
 

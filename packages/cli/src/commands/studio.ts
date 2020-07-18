@@ -1,6 +1,8 @@
 import { Management, runDistantPrisma } from '@prisma-multi-tenant/shared'
 
 import { Command, CommandArguments } from '../types'
+import chalk from 'chalk'
+import { log } from 'console'
 
 class Studio implements Command {
   name = 'studio'
@@ -27,7 +29,20 @@ class Studio implements Command {
 
     const tenant = await management.read(name)
 
-    await runDistantPrisma(`studio --port ${port} ${args.secondary} --experimental`, tenant, false)
+    try {
+      await runDistantPrisma(
+        `studio --port ${port} ${args.secondary} --experimental`,
+        tenant,
+        false
+      )
+    } catch (e) {
+      if (e.message.includes('EADDRINUSE')) {
+        console.log(chalk.red(`  The port for studio is already being used, try another one:`))
+        console.log(`  > prisma-multi-tenant studio ${name} --port ${Number(port) + 1}\n`)
+      } else {
+        throw e
+      }
+    }
   }
 }
 

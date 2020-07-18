@@ -22,6 +22,18 @@ query {
 }
 ```
 
+Then, go to `api/app.ts`, and change the tenant name to `"prod"`:
+
+```js
+use(
+  prismaMultiTenant({
+    tenantRouter: () => 'prod',
+  })
+)
+```
+
+Finally, re-run the GraphQL query!
+
 ## Commands you can try
 
 This will list the available tenants:
