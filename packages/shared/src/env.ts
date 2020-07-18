@@ -48,3 +48,23 @@ export const writeEnvFile = async (content: string): Promise<void> => {
   const path = await getEnvPath()
   return fs.promises.writeFile(path, content)
 }
+
+export const getSchemaPath = async (): Promise<string> => {
+  const schemaPath = path.join(process.cwd(), 'prisma', 'schema.prisma')
+
+  if (!(await fileExists(schemaPath))) {
+    throw new Error("Couldn't find the prisma/schema.prisma file")
+  }
+
+  return schemaPath
+}
+
+export const readSchemaFile = async (): Promise<string> => {
+  const path = await getSchemaPath()
+  return fs.promises.readFile(path, 'utf-8')
+}
+
+export const writeSchemaFile = async (content: string): Promise<void> => {
+  const path = await getSchemaPath()
+  return fs.promises.writeFile(path, content)
+}

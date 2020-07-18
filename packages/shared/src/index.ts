@@ -1,6 +1,6 @@
 export { clientManagementPath } from './constants'
 export { PmtError } from './errors'
-export { readEnvFile, writeEnvFile } from './env'
+export { readEnvFile, writeEnvFile, readSchemaFile, writeSchemaFile } from './env'
 export { default as Management } from './management'
 export {
   runShell,
@@ -10,5 +10,6 @@ export {
   runLocalPrisma,
   spawnShell,
   requireDistant,
+  isPrismaCliLocallyInstalled,
 } from './shell'
 export { Datasource } from './types'

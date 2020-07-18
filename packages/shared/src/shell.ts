@@ -103,6 +103,10 @@ export const getPrismaCliPath = async (): Promise<string> => {
   return path.join(nodeModules, '@prisma/cli/build/index.js')
 }
 
+export const isPrismaCliLocallyInstalled = async (): Promise<boolean> => {
+  return fileExists(await getPrismaCliPath())
+}
+
 export const runLocalPrisma = async (cmd: string): Promise<string | Buffer> => {
   const prismaCliPath = await getPrismaCliPath()
   return runLocal(`"${prismaCliPath}" ${cmd}`)
@@ -136,7 +140,10 @@ export const runDistantPrisma = async (
         clearTimeout(timeout)
         resolve()
       })
-      .catch(reject)
+      .catch((err) => {
+        clearTimeout(timeout)
+        reject(err)
+      })
   })
 }
 

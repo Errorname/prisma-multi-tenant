@@ -4,7 +4,7 @@ const { exec } = require('child_process')
 
 const packages = ['shared', 'client', 'cli', 'nexus']
 
-const docs = ['doc-basic-js', 'doc-basic-ts']
+const docs = ['doc-basic-js', 'doc-basic-ts', 'doc-nexus']
 
 const cwd = {
   root: path.join(__dirname, '../'),
@@ -14,6 +14,7 @@ const cwd = {
   nexus: path.join(__dirname, '../packages/nexus'),
   'doc-basic-js': path.join(__dirname, '../docs/examples/basic-js'),
   'doc-basic-ts': path.join(__dirname, '../docs/examples/basic-ts'),
+  'doc-nexus': path.join(__dirname, '../docs/examples/nexus'),
 }
 
 const updatePackageJson = async (name, versionNumber, dryRun) => {
@@ -26,11 +27,13 @@ const updatePackageJson = async (name, versionNumber, dryRun) => {
   packageJson.version = versionNumber
 
   if (!dryRun) {
-    if (packageJson.dependencies && packageJson.dependencies['@prisma-multi-tenant/shared']) {
-      packageJson.dependencies['@prisma-multi-tenant/shared'] = `^${versionNumber}`
-    }
-    if (packageJson.dependencies && packageJson.dependencies['@prisma-multi-tenant/client']) {
-      packageJson.dependencies['@prisma-multi-tenant/client'] = `^${versionNumber}`
+    for (let packName of packages) {
+      if (
+        packageJson.dependencies &&
+        packageJson.dependencies[`@prisma-multi-tenant/${packName}`]
+      ) {
+        packageJson.dependencies[`@prisma-multi-tenant/${packName}`] = `^${versionNumber}`
+      }
     }
   }
 

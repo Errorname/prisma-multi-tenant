@@ -8,6 +8,9 @@ import {
   readEnvFile,
   writeEnvFile,
   requireDistant,
+  readSchemaFile,
+  writeSchemaFile,
+  isPrismaCliLocallyInstalled,
 } from '@prisma-multi-tenant/shared'
 
 import { Command, CommandArguments } from '../types'
@@ -38,7 +41,7 @@ class Init implements Command {
     const managementUrl = await this.getManagementDatasource(args)
 
     // 3. Update .env file
-    const firstTenant = await this.updateEnvFile(managementUrl)
+    const firstTenant = await this.updateEnvAndSchemaFiles(managementUrl)
 
     // 4. Generate clients
     await this.generateClients()
@@ -59,7 +62,7 @@ class Init implements Command {
   }
 
   async installPMT() {
-    console.log('\n  Installing `@prisma-multi-tenant/client` in your app...')
+    console.log('\n  Installing `@prisma-multi-tenant/client` as a dependency in your app...')
 
     // This is used for testing purposes
     if (process.env.PMT_TEST) {
@@ -68,9 +71,17 @@ class Init implements Command {
       )
     }
 
-    const yarnOrNpm = (await useYarn()) ? 'yarn add' : 'npm install'
+    const isUsingYarn = await useYarn()
+    const command = isUsingYarn ? 'yarn add' : 'npm install'
+    const devOption = isUsingYarn ? '--dev' : '-D'
 
-    return runShell(`${yarnOrNpm} @prisma-multi-tenant/client@${packageJson.version}`)
+    await runShell(`${command} @prisma-multi-tenant/client@${packageJson.version}`)
+
+    if (!(await isPrismaCliLocallyInstalled())) {
+      console.log('\n  Also installing `@prisma/cli` as a dev dependency in your app...')
+
+      await runShell(`${command} ${devOption} @prisma/cli`)
+    }
   }
 
   async getManagementDatasource(args: CommandArguments) {
@@ -83,10 +94,68 @@ class Init implements Command {
     return managementUrl
   }
 
-  async updateEnvFile(managementUrl: string): Promise<Datasource | null> {
-    const envFile = await readEnvFile()
+  async updateEnvAndSchemaFiles(managementUrl: string): Promise<Datasource | null> {
+    console.log('\n  Updating .env and schema.prisma files...')
+    let firstTenantUrl
+    let mustAddDatabaseUrlEnv = false
 
-    const envs = `
+    // Read/write schema file and try to get first tenant's url
+    try {
+      let schemaFile = await readSchemaFile()
+
+      const datasourceConfig = schemaFile.match(/datasource\s*\w*\s*\{\s([^}]*)\}/)?.[1]
+      if (!datasourceConfig) {
+        throw new Error('No config found in schema.prisma')
+      }
+
+      const datasourceConfigUrl = datasourceConfig
+        .split('\n')
+        .map((l) =>
+          l
+            .trim()
+            .split('=')
+            .map((l) => l.trim())
+        )
+        .find(([key]) => key === 'url')?.[1]
+      if (!datasourceConfigUrl) {
+        throw new Error('No url found in datasource')
+      }
+
+      if (datasourceConfigUrl.startsWith('env("') && datasourceConfigUrl.endsWith('")')) {
+        // If using an env var
+        const envName = datasourceConfigUrl.slice(5, -2)
+        firstTenantUrl = process.env[envName] || undefined
+
+        if (envName !== 'DATABASE_URL') {
+          // If using an env var but not "DATABASE_URL"
+          mustAddDatabaseUrlEnv = true
+        }
+      } else if (datasourceConfigUrl.startsWith('"') && datasourceConfigUrl.endsWith('"')) {
+        // If using a static value
+        firstTenantUrl = datasourceConfigUrl.slice(1, -1)
+        mustAddDatabaseUrlEnv = true
+      } else {
+        throw new Error(`Unknown format for url: "${datasourceConfigUrl}"`)
+      }
+
+      if (mustAddDatabaseUrlEnv) {
+        schemaFile = schemaFile.replace(datasourceConfigUrl, 'env("DATABASE_URL")')
+        await writeSchemaFile(schemaFile)
+      }
+    } catch {}
+
+    // Write env file
+    let envFile = ''
+
+    try {
+      envFile = await readEnvFile()
+    } catch {}
+
+    if (mustAddDatabaseUrlEnv) {
+      envFile += `\nDATABASE_URL=${firstTenantUrl || ''}`
+    }
+
+    envFile += `
 
       # The following env variable is used by prisma-multi-tenant
       
@@ -96,18 +165,16 @@ class Init implements Command {
       .map((x) => x.substr(6))
       .join('\n')
 
-    await writeEnvFile(envFile + envs)
+    await writeEnvFile(envFile)
 
-    const url = process.env.DATABASE_URL
-
-    if (!url) {
-      console.error(chalk`\n  {red Couldn't find DATABASE_URL env variable}`)
+    if (!firstTenantUrl) {
+      console.error(chalk`\n  {red Couldn't find initial datasource url}`)
       return null
     }
 
     return {
       name: 'dev',
-      url,
+      url: firstTenantUrl,
     }
   }
 

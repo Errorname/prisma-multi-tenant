@@ -27,18 +27,18 @@ Finally, re-run the script!
 This will list the available tenants:
 
 ```sh
-prisma-multi-tenant list
+pmt list # or prisma-multi-tenant list
 ```
 
 This will open studio for the tenants (dev & prod):
 
 ```sh
-prisma-multi-tenant studio dev
-prisma-multi-tenant studio prod
+pmt studio dev
+pmt studio prod
 ```
 
 This will make you create a new tenant:
 
 ```sh
-prisma-multi-tenant new
+pmt new
 ```
