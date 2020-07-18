@@ -79,19 +79,11 @@ You can now work on your issue! 🥳
 
 Your contribution is working beyond expectation? Great, let's add it to the project!
 
-First, make sure your code is correctly formatted:
+But first, let's make sure your code is correctly formatted, and doesn't introduce regressions:
 
 ```sh
 # In the root of prisma-multi-tenant
-npm run lint
-npm run prettier
-```
-
-Then, make sure you don't introduce regressions:
-
-```sh
-# In the root of prisma-multi-tenant
-npm run test
+npm run check
 ```
 
 Everything's green? Perfect!

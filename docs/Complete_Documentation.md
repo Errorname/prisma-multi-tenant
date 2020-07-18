@@ -7,7 +7,11 @@ Thanks to this management datasource, prisma-multi-tenant is able to migrate all
 Prisma-multi-tenant is a two-part project:
 
 - The [CLI](#CLI) (`prisma-multi-tenant`) that you will use to init, develop, and deploy your tenants
-- The [Client](#Library) (`@prisma-multi-tenant/client`) that you will use in your app to access the data in your tenants
+- The [Client](#Client) (`@prisma-multi-tenant/client`) that you will use in your app to access the data in your tenants
+
+There is also plugins for Prisma-powered frameworks:
+
+- The [Nexus plugin](#Nexus-plugin) (`@prisma-multi-tenant/nexus`) which is a wrapper of the `nexus-plugin-prisma` package, and adds multi-tenancy to your Nexus application.
 
 **Table of content:**
 
@@ -22,7 +26,7 @@ Prisma-multi-tenant is a two-part project:
   - [`env`](#env)
   - [`eject`](#eject)
   - [`help`](#help)
-- [Library](#library)
+- [Client](#client)
   - [`constructor`](#constructoroptions-multitenantoptions)
   - [`get`](#getname-string-options-any-promiseprismaclient)
   - [`directGet`](#directgettenant--name-string-url-string--options-any-promiseprismaclient)
@@ -30,6 +34,8 @@ Prisma-multi-tenant is a two-part project:
   - [`deleteTenant`](#deletetenantname-string-promisevoid)
   - [`existsTenant`](#existstenantname-string-promiseboolean)
   - [`disconnect`](#disconnect-promisevoid)
+- [Nexus plugin](#nexus-plugin)
+  - [`prismaMultiTenant`](#prismamultitenantsettings-multitenantsettings-runtimeplugin)
 
 ## CLI
 
@@ -266,7 +272,7 @@ Displays the global help
 prisma-multi-tenant help
 ```
 
-## Library
+## Client
 
 > Note: The client will try to read the `MANAGEMENT_URL` environment variables in `prisma/.env`, but you can also provide it yourself.
 
@@ -389,4 +395,37 @@ Disconnects all PrismaClient instances (management & tenants)
 
 ```js
 await multiTenant.disconnect()
+```
+
+## Nexus plugin
+
+### `prismaMultiTenant(settings: MultiTenantSettings): RuntimePlugin`
+
+Registers the plugin into Nexus. You must give a `tenantRouter` attribute in the settings that will return the name of the tenant that should be used during this Request.
+
+**Usage:**
+
+```ts
+import { use } from 'nexus'
+import { prismaMultiTenant } from '@prisma-multi-tenant/nexus'
+
+const tenantRouter = (req: Express.Request) => {
+  // The name can come from anywhere (headers, token, ...)
+  return 'my_tenant_A'
+}
+
+use(prismaMultiTenant({ tenantRouter }))
+```
+
+**Settings:**
+
+Since `@prisma-multi-tenant/nexus` is a wrapper of `nexus-plugin-prisma`, any settings given will be passed through:
+
+```js
+use(
+  prismaMultiTenant({
+    tenantRouter,
+    features: { crud: true },
+  })
+)
 ```

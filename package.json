@@ -1,20 +1,12 @@
 {
-  "version": "2.2.0-dev.2",
+  "version": "2.2.0-dev.3",
   "scripts": {
-    "postintall": "./scripts/bootstrap.sh",
-    "lint": "npm run lint:cli && npm run lint:client && npm run lint:shared",
-    "lint:cli": "cd packages/cli && npm run lint",
-    "lint:client": "cd packages/client && npm run lint",
-    "lint:shared": "cd packages/shared && npm run lint",
-    "prettier": "npm run prettier:cli && npm run prettier:client && npm run prettier:shared",
-    "prettier:cli": "cd packages/cli && npm run prettier",
-    "prettier:client": "cd packages/client && npm run prettier",
-    "prettier:shared": "cd packages/shared && npm run prettier",
+    "postintall": "node scripts/bootstrap.js",
+    "check": "node scripts/check.js",
+    "publish": "node scripts/publish.js",
     "test": "npm run test:cli && npm run test:client",
     "test:cli": "jest tests/cli/",
-    "test:client": "bash tests/playground/test-client.sh",
-    "check": "npm run lint && npm run prettier && npm run test",
-    "publish": "node scripts/publish.js"
+    "test:client": "bash tests/playground/test-client.sh"
   },
   "devDependencies": {
     "@types/jest": "^26.0.4",

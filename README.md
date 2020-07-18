@@ -35,10 +35,12 @@ Prisma gives you all the tools necessary to handle your database: data modeling,
 
 Because `prisma-multi-tenant` does not only allow you to access multiple databases seamlessly with only a couple of lines of code in your server, but it also let you use the CLI to create new tenants and assure consistancy between all your databases as easily as possible.
 
-## Install
+## Installation
 
 ```sh
 npm i -g prisma-multi-tenant
+
+prisma-multi-tenant init # Init multi-tenancy in your Prisma project
 ```
 
 ## Usage
@@ -105,9 +107,10 @@ Read more on how `prisma-multi-tenant` can help you achieve multi-tenancy for yo
 - [Examples](/docs/examples) - For everyone
   - [Basic (JS)](/docs/examples/basic-js)
   - [Basic (TS)](/docs/examples/basic-ts)
-  - Nexus (TODO)
+  - [Nexus](/docs/examples/nexus)
   - Redwood (TODO)
   - Blitz (TODO)
+- [Usage with Nexus](/packages/nexus)
 - [Issues with Vercel](/docs/Vercel.md)
 
 ## Author
