@@ -14,8 +14,9 @@ export const plugin: RuntimePlugin<MultiTenantSettings> = (settings) => (project
 
   if (prismaPluginData.context) {
     prismaPluginData.context.create = async (req) => {
+      const name = await tenantRouter(req)
       const tenant = await multiTenant.get(
-        tenantRouter(req),
+        name,
         (prismaSettings.client as PrismaClientOptions)?.options || null
       )
 

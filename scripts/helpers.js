@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const { exec } = require('child_process')
 
-const packages = ['shared', 'client', 'cli', 'nexus']
+const packages = ['shared', 'client', 'cli', 'nexus', 'blitz']
 
 const docs = ['doc-basic-js', 'doc-basic-ts', 'doc-express', 'doc-apollo', 'doc-nexus']
 
@@ -12,6 +12,7 @@ const cwd = {
   client: path.join(__dirname, '../packages/client'),
   cli: path.join(__dirname, '../packages/cli'),
   nexus: path.join(__dirname, '../packages/nexus'),
+  blitz: path.join(__dirname, '../packages/blitz'),
   'doc-basic-js': path.join(__dirname, '../docs/examples/basic-js'),
   'doc-basic-ts': path.join(__dirname, '../docs/examples/basic-ts'),
   'doc-express': path.join(__dirname, '../docs/examples/express'),
