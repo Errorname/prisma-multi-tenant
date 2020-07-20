@@ -1,5 +1,5 @@
 {
-  "version": "2.2.0-dev.4",
+  "version": "2.2.0-dev.5",
   "scripts": {
     "postintall": "node scripts/bootstrap.js",
     "check": "node scripts/check.js",

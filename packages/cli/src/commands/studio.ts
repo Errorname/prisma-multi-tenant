@@ -1,8 +1,7 @@
-import { Management, runDistantPrisma } from '@prisma-multi-tenant/shared'
+import { Management, runDistantPrisma, getSchemaPath } from '@prisma-multi-tenant/shared'
 
 import { Command, CommandArguments } from '../types'
 import chalk from 'chalk'
-import { log } from 'console'
 
 class Studio implements Command {
   name = 'studio'
@@ -16,12 +15,15 @@ class Studio implements Command {
   options = [
     {
       name: 'port',
+      altNames: ['p'],
       description: 'Port to start Studio on',
     },
   ]
   description = 'Use Studio to access a tenant'
 
   async execute(args: CommandArguments, management: Management) {
+    console.log(args.options)
+
     const [name] = args.args
     const port = args.options.port || '5555'
 
@@ -30,17 +32,20 @@ class Studio implements Command {
     const tenant = await management.read(name)
 
     try {
+      const schemaPath = await getSchemaPath()
       await runDistantPrisma(
-        `studio --port ${port} ${args.secondary} --experimental`,
+        `studio --port ${port} ${args.secondary} --experimental --schema ${schemaPath}`,
         tenant,
         false
       )
-    } catch (e) {
-      if (e.message.includes('EADDRINUSE')) {
+    } catch (err) {
+      // There is currently a bug with @prisma/cli where the studio error is malformed.
+      // We will assume that if it throws, its an issue with the port.
+      if (err.message.includes('EADDRINUSE') || true) {
         console.log(chalk.red(`  The port for studio is already being used, try another one:`))
         console.log(`  > prisma-multi-tenant studio ${name} --port ${Number(port) + 1}\n`)
       } else {
-        throw e
+        throw err
       }
     }
   }

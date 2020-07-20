@@ -1,0 +1,19 @@
+{
+  "name": "express",
+  "version": "2.2.0-dev.5",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "prisma-multi-tenant generate",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma-multi-tenant/client": "^2.2.0-dev.5",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@prisma/cli": "^2.2.0"
+  }
+}

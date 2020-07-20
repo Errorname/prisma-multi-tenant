@@ -43,18 +43,30 @@ export const convertToCommandArgs = (
 ): CommandArguments => {
   const spec = (command.options || []).reduce((acc: any, option) => {
     acc['--' + option.name] = option.boolean ? Boolean : String
+    for (const altName of option.altNames || []) {
+      acc['-' + altName] = option.boolean ? Boolean : String
+    }
     return acc
   }, {})
 
   const parsed = arg(spec, { permissive: true, argv: _ })
 
-  const options = (command.options || []).reduce((acc: { [name: string]: string }, { name }) => {
-    if (parsed['--' + name]) {
-      acc[name] = parsed['--' + name]
-    }
+  const options = (command.options || []).reduce(
+    (acc: { [name: string]: string }, { name, altNames = [] }) => {
+      if (parsed['--' + name]) {
+        acc[name] = parsed['--' + name]
+      }
 
-    return acc
-  }, {})
+      for (const altName of altNames) {
+        if (parsed['-' + altName]) {
+          acc[name] = parsed['-' + altName]
+        }
+      }
+
+      return acc
+    },
+    {}
+  )
 
   const args = parsed._.slice(1)
 

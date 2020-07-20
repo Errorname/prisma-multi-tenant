@@ -4,7 +4,7 @@ const { exec } = require('child_process')
 
 const packages = ['shared', 'client', 'cli', 'nexus']
 
-const docs = ['doc-basic-js', 'doc-basic-ts', 'doc-nexus']
+const docs = ['doc-basic-js', 'doc-basic-ts', 'doc-express', 'doc-apollo', 'doc-nexus']
 
 const cwd = {
   root: path.join(__dirname, '../'),
@@ -14,6 +14,8 @@ const cwd = {
   nexus: path.join(__dirname, '../packages/nexus'),
   'doc-basic-js': path.join(__dirname, '../docs/examples/basic-js'),
   'doc-basic-ts': path.join(__dirname, '../docs/examples/basic-ts'),
+  'doc-express': path.join(__dirname, '../docs/examples/express'),
+  'doc-apollo': path.join(__dirname, '../docs/examples/apollo'),
   'doc-nexus': path.join(__dirname, '../docs/examples/nexus'),
 }
 

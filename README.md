@@ -45,7 +45,7 @@ prisma-multi-tenant init # Init multi-tenancy in your Prisma project
 
 ## Usage
 
-> If this is your first time using `prisma-multi-tenant`, I **strongly suggest** that you follow the [**Getting Started**](/docs/Getting_Started.md) tutorial.
+> If this is your first time using `prisma-multi-tenant`, I **strongly suggest** that you follow the ✨ [**Getting Started**](/docs/Getting_Started.md) ✨ tutorial.
 
 ```
 $> prisma-multi-tenant help
@@ -101,17 +101,24 @@ console.log(users)
 
 Read more on how `prisma-multi-tenant` can help you achieve multi-tenancy for your apps:
 
-- [Getting Started](/docs/Getting_Started.md) - For newcomers
-- [Complete documentation](/docs/Complete_Documentation.md) - For curious people
-- [Contributing guide](/docs/Contributing_Guide.md) - For great people
-- [Examples](/docs/examples) - For everyone
+- ✨ [Getting Started](/docs/Getting_Started.md) ✨
+- [Complete documentation](/docs/Complete_Documentation.md)
+- [How to integrate with:](/docs/integrations)
+  - [Express](/docs/integrations/Express.md)
+  - [Apollo](/docs/integrations/Apollo.md)
+  - [Nexus](/docs/integrations/Nexus.md)
+  - Blitz (TODO)
+  - Redwood (TODO)
+- [Examples](/docs/examples)
   - [Basic (JS)](/docs/examples/basic-js)
   - [Basic (TS)](/docs/examples/basic-ts)
+  - [Express](/docs/examples/express)
+  - [Apollo](/docs/examples/apollo)
   - [Nexus](/docs/examples/nexus)
-  - Redwood (TODO)
   - Blitz (TODO)
-- [Usage with Nexus](/packages/nexus)
+  - Redwood (TODO)
 - [Issues with Vercel](/docs/Vercel.md)
+- [Contributing guide](/docs/Contributing_Guide.md)
 
 ## Author
 

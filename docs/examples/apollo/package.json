@@ -1,0 +1,20 @@
+{
+  "name": "apollo",
+  "version": "2.2.0-dev.5",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "prisma-multi-tenant generate",
+    "start": "node src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma-multi-tenant/client": "^2.2.0-dev.5",
+    "apollo-server": "^2.16.0",
+    "graphql": "^15.3.0"
+  },
+  "devDependencies": {
+    "@prisma/cli": "^2.2.0"
+  }
+}

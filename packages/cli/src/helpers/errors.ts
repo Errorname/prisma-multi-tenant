@@ -4,7 +4,6 @@ import { CliArguments, Command } from '../types'
 import { clientManagementPath, PmtError } from '@prisma-multi-tenant/shared'
 
 export const printError = (error: PmtError, args: CliArguments): void => {
-  throw error
   if (error.message.match(`Cannot find module '${clientManagementPath}'`)) {
     error.type = 'missing-client-management'
   }

@@ -12,6 +12,7 @@ export interface Command {
 
 export interface Argument {
   name: string
+  altNames?: string[]
   optional?: boolean
   secondary?: boolean
   description: string

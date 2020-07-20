@@ -1,6 +1,11 @@
 import chalk from 'chalk'
 
-import { runDistantPrisma, runLocalPrisma, spawnShell } from '@prisma-multi-tenant/shared'
+import {
+  runDistantPrisma,
+  runLocalPrisma,
+  spawnShell,
+  getSchemaPath,
+} from '@prisma-multi-tenant/shared'
 
 import { Command, CommandArguments } from '../types'
 
@@ -41,7 +46,8 @@ class Generate implements Command {
   }
 
   async generateTenants(prismaArgs = '') {
-    await runDistantPrisma(`generate ${prismaArgs}`)
+    const schemaPath = await getSchemaPath()
+    await runDistantPrisma(`generate ${prismaArgs} --schema ${schemaPath}`)
   }
 
   async generateManagement(prismaArgs = '') {
@@ -49,9 +55,10 @@ class Generate implements Command {
   }
 
   async watchGenerateTenants(prismaArgs = '') {
-    spawnShell(`npx @prisma/cli generate --watch ${prismaArgs}`).then((exitCode) =>
-      process.exit(exitCode)
-    )
+    const schemaPath = await getSchemaPath()
+    spawnShell(
+      `npx @prisma/cli generate --watch ${prismaArgs} --schema ${schemaPath}`
+    ).then((exitCode) => process.exit(exitCode))
   }
 }
 

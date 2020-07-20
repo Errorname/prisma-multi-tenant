@@ -17,7 +17,7 @@
   </a>
 </p>
 
-> 🧭 Add multi-tenancy to your Nexus/Prisma application
+> 🧭 Add multi-tenancy to your [Nexus](https://nexusjs.org/) application
 
 ## Installation
 
