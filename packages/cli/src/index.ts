@@ -15,14 +15,11 @@ import {
 } from './helpers/arguments'
 import { printError } from './helpers/errors'
 import help from './helpers/help'
+import { loadEnv } from './helpers/env'
 import checkCompatibility from './helpers/checkCompatibility'
 import { Command } from './types'
 
-// Load env variables from .env and prisma/.env
-require('dotenv').config()
-require('dotenv').config({
-  path: path.resolve(process.cwd(), 'prisma/.env'),
-})
+loadEnv()
 
 const args = parseArgs()
 let management: Management

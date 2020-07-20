@@ -101,7 +101,7 @@ console.log(users)
 
 Read more on how `prisma-multi-tenant` can help you achieve multi-tenancy for your apps:
 
-- ✨ [Getting Started](/docs/Getting_Started.md) ✨
+- ✨ [**Getting Started**](/docs/Getting_Started.md) ✨
 - [Complete documentation](/docs/Complete_Documentation.md)
 - [How to integrate with:](/docs/integrations)
   - [Express](/docs/integrations/Express.md)

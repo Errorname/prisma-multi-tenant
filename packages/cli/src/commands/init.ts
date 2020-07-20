@@ -72,7 +72,7 @@ class Init implements Command {
     }
 
     const isUsingYarn = await useYarn()
-    const command = isUsingYarn ? 'yarn add' : 'npm install'
+    const command = isUsingYarn ? 'yarn add --ignore-workspace-root-check' : 'npm install'
     const devOption = isUsingYarn ? '--dev' : '-D'
 
     await runShell(`${command} @prisma-multi-tenant/client@${packageJson.version}`)
@@ -153,6 +153,7 @@ class Init implements Command {
 
     if (mustAddDatabaseUrlEnv) {
       envFile += `\nDATABASE_URL=${firstTenantUrl || ''}`
+      process.env.DATABASE_URL = firstTenantUrl || ''
     }
 
     envFile += `

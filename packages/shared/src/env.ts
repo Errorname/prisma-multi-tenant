@@ -32,10 +32,15 @@ export const setManagementEnv = async (): Promise<void> => {
   Object.entries(managementEnv).forEach(([key, value]) => (process.env[key] = value))
 }
 
-export const getEnvPath = async (): Promise<string> => {
-  const paths = ['prisma/.env', 'db/.env', '.env']
+export const envPaths = [
+  'prisma/.env',
+  'db/.env', // Blitz
+  'api/prisma/.env', // Redwood
+  '.env',
+]
 
-  for (const envPath of paths) {
+export const getEnvPath = async (): Promise<string> => {
+  for (const envPath of envPaths) {
     if (await fileExists(envPath)) {
       return envPath
     }
@@ -50,14 +55,25 @@ export const readEnvFile = async (): Promise<string> => {
 }
 
 export const writeEnvFile = async (content: string): Promise<void> => {
-  const path = await getEnvPath()
+  let path
+  try {
+    path = await getEnvPath()
+  } catch {
+    // Can't get path? Then we force write it to prisma/.env
+    path = 'prisma/.env'
+  }
   return fs.promises.writeFile(path, content)
 }
 
-export const getSchemaPath = async (): Promise<string> => {
-  const paths = ['prisma/schema.prisma', 'db/schema.prisma', 'schema.prisma']
+export const schemaPaths = [
+  'prisma/schema.prisma',
+  'db/schema.prisma', // Blitz
+  'api/prisma/schema.prisma', // Redwood
+  'schema.prisma',
+]
 
-  for (const schemaPath of paths) {
+export const getSchemaPath = async (): Promise<string> => {
+  for (const schemaPath of schemaPaths) {
     if (await fileExists(schemaPath)) {
       return schemaPath
     }
