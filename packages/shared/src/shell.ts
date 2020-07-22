@@ -108,7 +108,7 @@ export const isPrismaCliLocallyInstalled = async (): Promise<boolean> => {
 
 export const runLocalPrisma = async (cmd: string): Promise<string | Buffer> => {
   const prismaCliPath = await getPrismaCliPath()
-  return runLocal(`"${prismaCliPath}" ${cmd}`)
+  return runLocal(`node "${prismaCliPath}" ${cmd}`)
 }
 
 export const runDistantPrisma = async (
@@ -117,7 +117,7 @@ export const runDistantPrisma = async (
   withTimeout = true
 ): Promise<string | Buffer> => {
   const prismaCliPath = await getPrismaCliPath()
-  const promise = runDistant(`"${prismaCliPath}" ${cmd}`, tenant)
+  const promise = runDistant(`node "${prismaCliPath}" ${cmd}`, tenant)
 
   if (!withTimeout) {
     return promise

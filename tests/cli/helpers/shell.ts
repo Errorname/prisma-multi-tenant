@@ -28,7 +28,6 @@ export const runShell = (cmd: string, cwd: string = ''): Promise<string> => {
       },
       (error, stdout, stderr) => {
         if (error) reject(error)
-        if (stderr) reject(stderr)
         resolve(stdout)
       }
     )

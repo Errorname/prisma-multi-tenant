@@ -13,9 +13,8 @@ export class Project {
 
   async run(cmd: string) {
     console.log(`Running "prisma-multi-tenant ${cmd}" on "${this.name}"`)
-    const ret = await runShell('prisma-multi-tenant ' + cmd, this.path)
 
-    return ret
+    return runShell('prisma-multi-tenant ' + cmd, this.path)
   }
 
   exec(cmd: string) {
@@ -30,13 +29,13 @@ export class Project {
         const results = await runShell(
           `dotenv -e prisma/.env node ${seedFile} ${tenant}`,
           this.path
-        ).catch(e => e)
+        ).catch((e) => e)
         if (expected) {
           expect(results).toEqual(expect.stringContaining('Successfully seeded'))
         } else {
           expect(results).not.toEqual(expect.stringContaining('Successfully seeded'))
         }
-      }
+      },
     }
   }
 
@@ -49,7 +48,7 @@ export class Project {
       toContain: async (expected: string) => {
         const content = await runShell(`cat ${path}`, this.path)
         expect(content).toEqual(expect.stringContaining(expected))
-      }
+      },
     }
   }
 }
