@@ -107,7 +107,7 @@ Read more on how `prisma-multi-tenant` can help you achieve multi-tenancy for yo
   - [Express](/docs/integrations/Express.md)
   - [Apollo](/docs/integrations/Apollo.md)
   - [Nexus](/docs/integrations/Nexus.md)
-  - Blitz (TODO)
+  - [Blitz](/docs/integrations/Blitz.md)
   - Redwood (TODO)
 - [Examples](/docs/examples)
   - [Basic (JS)](/docs/examples/basic-js)

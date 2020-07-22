@@ -48,7 +48,7 @@ module.exports = {
 }
 ```
 
-Then, in your queries and mutation, access the tenant from the context:
+Then, in your queries and mutations, access the tenant from the context:
 
 ```js
 export default async function getProjects(args, ctx) {
@@ -72,7 +72,7 @@ Read more on how `prisma-multi-tenant` can help you achieve multi-tenancy for yo
   - [Express](/docs/integrations/Express.md)
   - [Apollo](/docs/integrations/Apollo.md)
   - [Nexus](/docs/integrations/Nexus.md)
-  - Blitz (TODO)
+  - [Blitz](/docs/integrations/Blitz.md)
   - Redwood (TODO)
 - [Examples](/docs/examples)
   - [Basic (JS)](/docs/examples/basic-js)
