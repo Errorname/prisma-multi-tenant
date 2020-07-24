@@ -7,7 +7,12 @@ import { fileExists } from './shell'
 export const translateDatasourceUrl = async (url: string): Promise<string> => {
   if (url.startsWith('file:') && !url.startsWith('file:/')) {
     const schemaPath = await getSchemaPath()
-    return 'file:' + path.join(process.cwd(), path.dirname(schemaPath), url.replace('file:', ''))
+    return (
+      'file:' +
+      path
+        .join(process.cwd(), path.dirname(schemaPath), url.replace('file:', ''))
+        .replace(/\\/g, '/')
+    )
   }
 
   return url
