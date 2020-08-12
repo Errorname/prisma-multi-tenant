@@ -10,11 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^2.2.0",
+    "@prisma/client": "^2.4.1",
     "@prisma-multi-tenant/client": "^2.2.0"
   },
   "devDependencies": {
-    "@prisma/cli": "^2.2.0",
+    "@prisma/cli": "^2.4.1",
     "ts-node": "8.6.2",
     "typescript": "3.8.2"
   }
