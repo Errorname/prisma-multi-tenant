@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma-multi-tenant/client": "^2.2.0",
+    "@prisma-multi-tenant/client": "^2.4.1",
     "apollo-server": "^2.16.0",
     "graphql": "^15.3.0"
   },

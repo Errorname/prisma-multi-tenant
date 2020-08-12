@@ -20,7 +20,7 @@
     "prettier": "prettier \"src/**/*.ts\" --check"
   },
   "dependencies": {
-    "@prisma-multi-tenant/client": "^2.2.0"
+    "@prisma-multi-tenant/client": "^2.4.1"
   },
   "peerDependencies": {
     "blitz": "^0.16.4"
