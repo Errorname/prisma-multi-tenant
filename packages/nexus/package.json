@@ -20,7 +20,7 @@
     "prettier": "prettier \"src/**/*.ts\" --check"
   },
   "dependencies": {
-    "@prisma-multi-tenant/client": "^2.4.1",
+    "@prisma-multi-tenant/client": "^2.2.0",
     "nexus-plugin-prisma": "^0.16.2-next.4"
   },
   "peerDependencies": {

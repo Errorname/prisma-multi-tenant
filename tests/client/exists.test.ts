@@ -14,7 +14,7 @@ describe('exists', () => {
 
     await expect(multiTenant.existsTenant('test-exists-1'))
       .resolves.toBe(true)
-      .then(() => multiTenant.disconnect())
+      .then(() => multiTenant.$disconnect())
   })
 
   test("tenant doesn't exist", async () => {
@@ -22,7 +22,7 @@ describe('exists', () => {
 
     await expect(multiTenant.existsTenant('test-exists-2'))
       .resolves.toBe(false)
-      .then(() => multiTenant.disconnect())
+      .then(() => multiTenant.$disconnect())
   })
 
   test('useManagement: false', async () => {
@@ -30,6 +30,6 @@ describe('exists', () => {
 
     await expect(multiTenant.existsTenant('test-exists-3'))
       .rejects.toThrow()
-      .then(() => multiTenant.disconnect())
+      .then(() => multiTenant.$disconnect())
   })
 })

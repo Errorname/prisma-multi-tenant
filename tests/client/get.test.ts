@@ -14,7 +14,7 @@ describe('get', () => {
     expect(tenant).toBeInstanceOf(multiTenant.ClientTenant)
     expect(multiTenant.tenants['test1']).toBe(tenant)
 
-    await multiTenant.disconnect()
+    await multiTenant.$disconnect()
   })
 
   test('get non-existing tenant', async () => {
@@ -22,7 +22,7 @@ describe('get', () => {
 
     await expect(multiTenant.get('unknown-tenant'))
       .rejects.toThrow()
-      .then(() => multiTenant.disconnect())
+      .then(() => multiTenant.$disconnect())
   })
 
   test('get with useManagement: false', async () => {
@@ -32,7 +32,7 @@ describe('get', () => {
 
     await expect(multiTenant.get('test1'))
       .rejects.toThrow()
-      .then(() => multiTenant.disconnect())
+      .then(() => multiTenant.$disconnect())
   })
 
   test('directGet', async () => {
@@ -48,6 +48,6 @@ describe('get', () => {
     expect(tenant).toBeInstanceOf(multiTenant.ClientTenant)
     expect(multiTenant.tenants['test1']).toBe(tenant)
 
-    await multiTenant.disconnect()
+    await multiTenant.$disconnect()
   })
 })

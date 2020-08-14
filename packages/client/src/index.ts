@@ -25,7 +25,7 @@ const defaultMultiTenantOptions = {
   useManagement: true,
 }
 
-class MultiTenant<PrismaClient extends { disconnect: () => Promise<void> }> {
+class MultiTenant<PrismaClient extends { $disconnect: () => Promise<void> }> {
   ClientTenant: any
 
   management?: Management
@@ -169,10 +169,10 @@ class MultiTenant<PrismaClient extends { disconnect: () => Promise<void> }> {
     return this.management.exists(name)
   }
 
-  disconnect(): Promise<void[]> {
+  $disconnect(): Promise<void[]> {
     return Promise.all([
-      ...(this.management ? [this.management.disconnect()] : []),
-      ...Object.values(this.tenants).map((t) => t.disconnect()),
+      ...(this.management ? [this.management.$disconnect()] : []),
+      ...Object.values(this.tenants).map((t) => t.$disconnect()),
     ])
   }
 }
