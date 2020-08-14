@@ -9,18 +9,16 @@ describe('management', () => {
   beforeAll(async () => {
     project = await initProject('cli-management')
 
-    await project.run('init --provider=sqlite --url=file:management.db')
+    await project.run('init --url=file:management.db')
   })
 
   test('add tenants with args', async () => {
     // We can either use "new" or "add"
-    await project.run('new --name=test1 --provider=sqlite --url=file:test1.db')
-    await project.run('add --name test2 --provider=sqlite --url file:test2.db')
+    await project.run('new --name=test1 --url=file:test1.db')
+    await project.run('add --name test2 --url file:test2.db')
 
     // Can't add "management"
-    await project
-      .run('new --name=management --provider=sqlite --url=file:another.db')
-      .catch(() => {})
+    await project.run('new --name=management --url=file:another.db').catch(() => {})
 
     await project.expectFile('prisma/test1.db').toExists()
     await project.expectFile('prisma/test2.db').toExists()
@@ -73,7 +71,7 @@ describe('management', () => {
   })
 
   test('new management', async () => {
-    await project.run('new management --provider=sqlite --url=file:management2.db')
+    await project.run('new management --url=file:management2.db')
 
     await project.expectFile('prisma/management2.db').toExists()
   })

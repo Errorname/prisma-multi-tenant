@@ -71,6 +71,7 @@ Read more on how `prisma-multi-tenant` can help you achieve multi-tenancy for yo
   - [Nexus](/docs/integrations/Nexus.md)
   - [Blitz](/docs/integrations/Blitz.md)
   - Redwood (TODO)
+  - Bison (TODO)
 - [Examples](/docs/examples)
   - [Basic (JS)](/docs/examples/basic-js)
   - [Basic (TS)](/docs/examples/basic-ts)
@@ -79,6 +80,7 @@ Read more on how `prisma-multi-tenant` can help you achieve multi-tenancy for yo
   - [Nexus](/docs/examples/nexus)
   - Blitz (TODO)
   - Redwood (TODO)
+  - Bison (TODO)
 - [Issues with Vercel](/docs/Vercel.md)
 - [Contributing guide](/docs/Contributing_Guide.md)
 

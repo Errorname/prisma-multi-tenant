@@ -30,6 +30,11 @@ class Init implements Command {
       name: 'url',
       description: 'URL of the management database',
     },
+    {
+      name: 'no-example',
+      description: 'Disable creation of example file',
+      boolean: true,
+    },
   ]
   description = 'Init multi-tenancy for your application'
 
@@ -55,7 +60,9 @@ class Init implements Command {
     }
 
     // 7. Create multi-tenancy-example.js
-    await this.createExample(firstTenant)
+    if (!args.options['no-example']) {
+      await this.createExample(firstTenant)
+    }
 
     console.log(chalk`\n✅  {green Your app is now ready for multi-tenancy!}\n`)
     console.log(chalk`  {bold Next step:} Create a new tenant with \`prisma-multi-tenant new\`\n`)

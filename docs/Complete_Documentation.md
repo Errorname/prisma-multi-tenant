@@ -9,9 +9,10 @@ Prisma-multi-tenant is a two-part project:
 - The [CLI](#CLI) (`prisma-multi-tenant`) that you will use to init, develop, and deploy your tenants
 - The [Client](#Client) (`@prisma-multi-tenant/client`) that you will use in your app to access the data in your tenants
 
-There is also plugins for Prisma-powered frameworks:
+There are also plugins for Prisma-powered frameworks:
 
-- The [Nexus plugin](#Nexus-plugin) (`@prisma-multi-tenant/nexus`) which is a wrapper of the `nexus-plugin-prisma` package, and adds multi-tenancy to your Nexus application.
+- The [Nexus plugin](#nexus-plugin) (`@prisma-multi-tenant/nexus`) which is a wrapper of the `nexus-plugin-prisma` package, and adds multi-tenancy to your Nexus application.
+- The [Blitz plugin](#blitz-plugin) (`@prisma-multi-tenant/blitz`) which adds multi-tenancy to your Blitz application.
 
 **Table of content:**
 
@@ -30,12 +31,14 @@ There is also plugins for Prisma-powered frameworks:
   - [`constructor`](#constructoroptions-multitenantoptions)
   - [`get`](#getname-string-options-any-promiseprismaclient)
   - [`directGet`](#directgettenant--name-string-url-string--options-any-promiseprismaclient)
-  - [`createTenant`](#createtenanttenant--name-string-provider-string-url-string--options-any-promiseprismaclient)
+  - [`createTenant`](#createtenanttenant--name-string-url-string--options-any-promiseprismaclient)
   - [`deleteTenant`](#deletetenantname-string-promisevoid)
   - [`existsTenant`](#existstenantname-string-promiseboolean)
   - [`disconnect`](#disconnect-promisevoid)
 - [Nexus plugin](#nexus-plugin)
   - [`prismaMultiTenant`](#prismamultitenantsettings-multitenantsettings-runtimeplugin)
+- [Blitz plugin](#blitz-plugin)
+  - [`multiTenantMiddleware`](#multiTenantMiddlewaretenantRouter-function-prismaoptions-prismaclientoptions-middleware)
 
 ## CLI
 
@@ -47,9 +50,10 @@ Init multi-tenancy for your application
 
 **Options**
 
-| Name | Type   | Description                    |
-| ---- | ------ | ------------------------------ |
-| url  | String | URL of the management database |
+| Name       | Type    | Description                      |
+| ---------- | ------- | -------------------------------- |
+| url        | String  | URL of the management database   |
+| no-example | Boolean | Disable creation of example file |
 
 **Examples**
 
@@ -126,7 +130,7 @@ The `new` command create a new database using your schema. It will use a name, a
 
 If you want to create a tenant without tracking it in the management datasource, you can use `--no-management`. However be careful, because you will need to manually migrate up and down this tenant after that.
 
-If you add the `management` argument, you can create a new management database. If you want to use this new management, don't forget to add the provider and url in the `prisma/.env` file.
+If you add the `management` argument, you can create a new management database. If you want to use this new management, don't forget to add the url in the `prisma/.env` file.
 
 ### `studio`
 
@@ -428,4 +432,28 @@ use(
     features: { crud: true },
   })
 )
+```
+
+## Blitz plugin
+
+### `multiTenantMiddleware(tenantRouter: Function, prismaOptions?: PrismaClientOptions): Middleware`
+
+Registers the middleware into Blitz. The `tenantRouter` function is required, and you can also provide `prismaOptions` to be passed to every Prisma Client instances used for the tenants.
+
+**Usage**
+
+In the `blitz.config.js` file:
+
+```ts
+const { multiTenantMiddleware } = require('@prisma-multi-tenant/blitz')
+
+module.exports = {
+  // ...
+  middleware: [
+    multiTenantMiddleware((req, res) => {
+      // The name can come from anywhere (headers, token, ...)
+      return 'my_tenant_A'
+    }),
+  ],
+}
 ```

@@ -7,7 +7,7 @@ describe('generate', () => {
   test('generate', async () => {
     const project = await initProject('cli-generate')
 
-    await project.run('init --provider=sqlite --url=file:management.db')
+    await project.run('init --url=file:management.db')
 
     await project.run('generate')
 

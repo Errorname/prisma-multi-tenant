@@ -5,5 +5,6 @@
 - [Nexus](/docs/integrations/Nexus.md)
 - [Blitz](/docs/integrations/Blitz.md)
 - Redwood (TODO)
+- Bison (TODO)
 
 Do you want more integrations documentation? [Add an issue](https://github.com/Errorname/prisma-multi-tenant/issues/new) to request one!
