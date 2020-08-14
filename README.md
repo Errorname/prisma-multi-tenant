@@ -50,7 +50,7 @@ prisma-multi-tenant init # Init multi-tenancy in your Prisma project
 ```
 $> prisma-multi-tenant help
 
-  🧭  prisma-multi-tenant v2.2.0
+  🧭  prisma-multi-tenant v2.4.1
 
   USAGE
 

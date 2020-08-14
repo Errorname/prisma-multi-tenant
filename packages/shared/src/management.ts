@@ -115,7 +115,7 @@ export default class Management {
   disconnect(): Promise<void> {
     if (!this.client) return Promise.resolve()
 
-    return this.client.disconnect()
+    return this.client.$disconnect()
   }
 
   private sanitizeTenant(tenant: Tenant): Tenant {

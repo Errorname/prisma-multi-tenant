@@ -1,7 +1,7 @@
 {
   "version": "2.2.0",
   "scripts": {
-    "postintall": "node scripts/bootstrap.js",
+    "postinstall": "node scripts/bootstrap.js",
     "check": "node scripts/check.js",
     "publish": "node scripts/publish.js",
     "test": "npm run test:cli && npm run test:client",
@@ -12,6 +12,7 @@
     "@types/jest": "^26.0.4",
     "@types/node": "^14.0.23",
     "@types/node-fetch": "^2.5.7",
+    "dotenv-cli": "^3.2.0",
     "inquirer": "^7.3.2",
     "jest": "^26.1.0",
     "node-fetch": "^2.6.0",

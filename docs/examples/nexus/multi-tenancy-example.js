@@ -2,7 +2,7 @@
 const { MultiTenant } = require('@prisma-multi-tenant/client')
 
 // This is the name of your first tenant, try with another one
-const name = "dev"
+const name = 'dev'
 
 // If you are using TypeScript, you can do "new MultiTenant<PrismaClient>()" for autocompletion
 const multiTenant = new MultiTenant()
@@ -18,7 +18,7 @@ async function main() {
 }
 
 main()
-  .catch(e => console.error(e))
+  .catch((e) => console.error(e))
   .finally(async () => {
     await multiTenant.disconnect()
   })
