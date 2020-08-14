@@ -394,7 +394,7 @@ Disconnects all PrismaClient instances (management & tenants)
 **Usage**
 
 ```js
-await multiTenant.$disconnect()
+await multiTenant.disconnect()
 ```
 
 ## Nexus plugin

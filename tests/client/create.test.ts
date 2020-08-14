@@ -20,7 +20,7 @@ describe('create', () => {
     expect(multiTenant.tenants['test-create-1']).toBe(tenant)
     await expect(fileExists('test-client/prisma/test-create-1.db'))
       .resolves.toBe(true)
-      .then(() => multiTenant.$disconnect())
+      .then(() => multiTenant.disconnect())
   })
 
   test('useManagement:false', async () => {
@@ -33,7 +33,7 @@ describe('create', () => {
       })
     )
       .rejects.toThrow()
-      .then(() => multiTenant.$disconnect())
+      .then(() => multiTenant.disconnect())
   })
 
   test('tenant already exists', async () => {
@@ -46,7 +46,7 @@ describe('create', () => {
       })
     )
       .rejects.toThrow()
-      .then(() => multiTenant.$disconnect())
+      .then(() => multiTenant.disconnect())
   })
 
   test('reserved name', async () => {
@@ -59,6 +59,6 @@ describe('create', () => {
       })
     )
       .rejects.toThrow()
-      .then(() => multiTenant.$disconnect())
+      .then(() => multiTenant.disconnect())
   })
 })

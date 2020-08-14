@@ -29,5 +29,5 @@ const main = async () => {
 main()
   .catch((e) => console.error(e))
   .finally(async () => {
-    await multiTenant.$disconnect()
+    await multiTenant.disconnect()
   })

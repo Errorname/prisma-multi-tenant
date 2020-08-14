@@ -75,13 +75,13 @@ const run = async (): Promise<void> => {
 run()
   .then(async () => {
     if (management) {
-      await management.$disconnect()
+      await management.disconnect()
     }
   })
   .catch(async (err) => {
     printError(err, args)
     if (management) {
-      await management.$disconnect()
+      await management.disconnect()
     }
     process.exit(1)
   })

@@ -232,7 +232,7 @@ class Init implements Command {
       main()
         .catch(e => console.error(e))
         .finally(async () => {
-          await multiTenant.$disconnect()
+          await multiTenant.disconnect()
         })
     `
       .split('\n')

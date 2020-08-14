@@ -169,9 +169,9 @@ class MultiTenant<PrismaClient extends { $disconnect: () => Promise<void> }> {
     return this.management.exists(name)
   }
 
-  $disconnect(): Promise<void[]> {
+  disconnect(): Promise<void[]> {
     return Promise.all([
-      ...(this.management ? [this.management.$disconnect()] : []),
+      ...(this.management ? [this.management.disconnect()] : []),
       ...Object.values(this.tenants).map((t) => t.$disconnect()),
     ])
   }
