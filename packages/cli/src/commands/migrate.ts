@@ -28,6 +28,12 @@ class Migrate implements Command {
       description: 'Migrate "up", "down" or "save" the tenant',
     },
   ]
+  options = [
+    {
+      name: 'schema',
+      description: 'Specify path of schema',
+    },
+  ]
   description = 'Migrate tenants (up, down, save)'
 
   async execute(args: CommandArguments, management: Management) {
@@ -38,7 +44,7 @@ class Migrate implements Command {
       if (!name) {
         console.log(`\n  Saving migration with default tenant...\n`)
 
-        await this.migrateSave(management, undefined, migrateArgs, prismaArgs)
+        await this.migrateSave(management, undefined, args.options.schema, migrateArgs, prismaArgs)
 
         console.log(chalk`\n✅  {green Successfuly saved the migration}\n`)
         return
@@ -52,7 +58,7 @@ class Migrate implements Command {
       // C. Save on specific tenant
       console.log(`\n  Saving migration with tenant "${name}"...\n`)
 
-      await this.migrateSave(management, name, migrateArgs, prismaArgs)
+      await this.migrateSave(management, name, args.options.schema, migrateArgs, prismaArgs)
 
       console.log(chalk`\n✅  {green Successfuly saved the migration}\n`)
       return
@@ -61,7 +67,13 @@ class Migrate implements Command {
       if (!name) {
         console.log(`\n  Migrating ${action} all tenants...\n`)
 
-        await this.migrateAllTenants(management, action, migrateArgs, prismaArgs)
+        await this.migrateAllTenants(
+          management,
+          action,
+          args.options.schema,
+          migrateArgs,
+          prismaArgs
+        )
 
         console.log(chalk`\n✅  {green Successfuly migrated ${action} all tenants}\n`)
         return
@@ -80,7 +92,14 @@ class Migrate implements Command {
       // F. Migrate up or down a specific tenant
       console.log(`\n  Migrating "${name}" ${action}...`)
 
-      await this.migrateOneTenant(management, action, name, migrateArgs, prismaArgs)
+      await this.migrateOneTenant(
+        management,
+        action,
+        name,
+        args.options.schema,
+        migrateArgs,
+        prismaArgs
+      )
 
       console.log(chalk`\n✅  {green Successfuly migrated ${action} "${name}"}\n`)
     }
@@ -111,17 +130,19 @@ class Migrate implements Command {
     management: Management,
     action: string,
     name: string,
+    schemaPath?: string,
     migrateArgs = '',
     prismaArgs = ''
   ) {
     const tenant = await management.read(name)
 
-    return this.migrateTenant(action, tenant, migrateArgs, prismaArgs)
+    return this.migrateTenant(action, tenant, schemaPath, migrateArgs, prismaArgs)
   }
 
   async migrateAllTenants(
     management: Management,
     action: string,
+    schemaPath?: string,
     migrateArgs = '',
     prismaArgs = ''
   ) {
@@ -129,14 +150,20 @@ class Migrate implements Command {
 
     for (const tenant of tenants) {
       console.log(`    > Migrating "${tenant.name}" ${action}`)
-      await this.migrateTenant(action, tenant, migrateArgs, prismaArgs)
+      await this.migrateTenant(action, tenant, schemaPath, migrateArgs, prismaArgs)
     }
   }
 
-  async migrateTenant(action: string, tenant?: Datasource, migrateArgs = '', prismaArgs = '') {
-    const schemaPath = await getSchemaPath()
+  async migrateTenant(
+    action: string,
+    tenant?: Datasource,
+    schemaPath?: string,
+    migrateArgs = '',
+    prismaArgs = ''
+  ) {
+    schemaPath = schemaPath || (await getSchemaPath())
     return runDistantPrisma(
-      `migrate ${action} ${migrateArgs} ${prismaArgs} --experimental --schema ${schemaPath}`,
+      `migrate ${action} ${migrateArgs} --schema ${schemaPath} ${prismaArgs} --experimental`,
       tenant
     )
   }
@@ -145,13 +172,22 @@ class Migrate implements Command {
     return runLocalPrisma(`migrate ${action} ${migrateArgs} ${prismaArgs} --experimental`)
   }
 
-  async migrateSave(management: Management, name?: string, migrateArgs = '', prismaArgs = '') {
+  async migrateSave(
+    management: Management,
+    name?: string,
+    schemaPath?: string,
+    migrateArgs = '',
+    prismaArgs = ''
+  ) {
     if (name) {
       const tenant = await management.read(name)
       process.env.DATABASE_URL = tenant.url
     }
 
-    return spawnShell(`npx @prisma/cli migrate save ${migrateArgs} ${prismaArgs} --experimental`)
+    schemaPath = schemaPath || (await getSchemaPath())
+    return spawnShell(
+      `npx @prisma/cli migrate save ${migrateArgs} --schema ${schemaPath} ${prismaArgs} --experimental`
+    )
   }
 }
 

@@ -4,15 +4,9 @@ import fs from 'fs'
 import { PmtError } from './errors'
 import { fileExists } from './shell'
 
-export const translateDatasourceUrl = async (url: string): Promise<string> => {
+export const translateDatasourceUrl = (url: string, cwd?: string): string => {
   if (url.startsWith('file:') && !url.startsWith('file:/')) {
-    const schemaPath = await getSchemaPath()
-    return (
-      'file:' +
-      path
-        .join(process.cwd(), path.dirname(schemaPath), url.replace('file:', ''))
-        .replace(/\\/g, '/')
-    )
+    return 'file:' + path.join(cwd || process.cwd(), url.replace('file:', '')).replace(/\\/g, '/')
   }
 
   return url
@@ -23,7 +17,7 @@ export const getManagementEnv = async (): Promise<{ [name: string]: string }> =>
     throw new PmtError('missing-env', { name: 'MANAGEMENT_URL' })
   }
 
-  const managementUrl = await translateDatasourceUrl(process.env.MANAGEMENT_URL)
+  const managementUrl = translateDatasourceUrl(process.env.MANAGEMENT_URL)
 
   return {
     PMT_MANAGEMENT_URL: managementUrl,
@@ -44,7 +38,14 @@ export const envPaths = [
   '.env',
 ]
 
-export const getEnvPath = async (): Promise<string> => {
+export const getEnvPath = async (schemaPath?: string): Promise<string> => {
+  if (schemaPath) {
+    const envPath = path.join(path.dirname(schemaPath), '.env')
+    if (await fileExists(envPath)) {
+      return envPath
+    }
+  }
+
   for (const envPath of envPaths) {
     if (await fileExists(envPath)) {
       return envPath
@@ -54,15 +55,15 @@ export const getEnvPath = async (): Promise<string> => {
   throw new Error("Couldn't find the prisma/.env file")
 }
 
-export const readEnvFile = async (): Promise<string> => {
-  const path = await getEnvPath()
+export const readEnvFile = async (schemaPath?: string): Promise<string> => {
+  const path = await getEnvPath(schemaPath)
   return fs.promises.readFile(path, 'utf-8')
 }
 
-export const writeEnvFile = async (content: string): Promise<void> => {
+export const writeEnvFile = async (content: string, schemaPath?: string): Promise<void> => {
   let path
   try {
-    path = await getEnvPath()
+    path = await getEnvPath(schemaPath)
   } catch {
     // Can't get path? Then we force write it to prisma/.env
     path = 'prisma/.env'
@@ -84,15 +85,15 @@ export const getSchemaPath = async (): Promise<string> => {
     }
   }
 
-  throw new Error("Couldn't find the prisma/.env file")
+  throw new Error("Couldn't find the schema file")
 }
 
-export const readSchemaFile = async (): Promise<string> => {
-  const path = await getSchemaPath()
+export const readSchemaFile = async (schemaPath?: string): Promise<string> => {
+  const path = schemaPath || (await getSchemaPath())
   return fs.promises.readFile(path, 'utf-8')
 }
 
-export const writeSchemaFile = async (content: string): Promise<void> => {
-  const path = await getSchemaPath()
-  return fs.promises.writeFile(path, content)
+export const writeSchemaFile = async (content: string, schemaPath?: string): Promise<void> => {
+  const path = schemaPath || (await getSchemaPath())
+  return fs.promises.writeFile(path, content, 'utf-8')
 }

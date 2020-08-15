@@ -18,6 +18,10 @@ class Delete implements Command {
   ]
   options = [
     {
+      name: 'schema',
+      description: 'Specify path of schema',
+    },
+    {
       name: 'force',
       description: 'Delete the tenant without asking for confirmation',
       boolean: true,
@@ -37,7 +41,13 @@ class Delete implements Command {
       return
     }
 
-    await migrate.migrateOneTenant(management, 'down', name)
+    await migrate.migrateOneTenant(management, 'down', name, args.options.schema).catch((e) => {
+      if (args.options.force) {
+        console.error(e)
+      } else {
+        throw e
+      }
+    })
     await management.delete(name)
 
     console.log(chalk`\n✅  {green Migrated down "${name}" and deleted it from management!}\n`)

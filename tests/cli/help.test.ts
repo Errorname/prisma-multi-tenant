@@ -1,10 +1,19 @@
-import * as allCommands from '../../packages/cli/src/commands'
-import { Command } from '../../packages/cli/src/types'
 import { runShell } from './helpers/shell'
 
 const packageJson = require('../../package.json')
 
-const commands = Object.values(allCommands) as Command[]
+const commands = {
+  init: 'Init multi-tenancy for your application',
+  list: 'List all tenants',
+  new: 'Create a new tenant or management',
+  studio: 'Use Studio to access a tenant',
+  migrate: 'Migrate tenants (up, down, save)',
+  delete: 'Delete one tenant',
+  generate: 'Generate Prisma Clients for the tenants and management',
+  env: 'Set env variables for a specific tenant',
+  eject: 'Eject prisma-multi-tenant from your application',
+  help: 'Display this help',
+}
 
 describe('help', () => {
   // Test "help" command
@@ -15,32 +24,20 @@ describe('help', () => {
     expect(ret).toEqual(expect.stringContaining(`v${packageJson.version}`))
 
     // Test that it contains the name & description of all commands
-    for (let command of commands) {
-      expect(ret).toEqual(expect.stringContaining(command.name))
-      expect(ret).toEqual(expect.stringContaining(command.description))
+    for (let [name, description] of Object.entries(commands)) {
+      expect(ret).toEqual(expect.stringContaining(name))
+      expect(ret).toEqual(expect.stringContaining(description))
     }
   })
 
   // Test help option on all commands
-  for (let command of commands) {
-    if (command.name != 'help') {
-      test(`command "${command.name}"`, async () => {
-        const ret = await runShell(`prisma-multi-tenant ${command.name} --help`)
+  for (let [name, description] of Object.entries(commands)) {
+    if (name != 'help') {
+      test(`command "${name}"`, async () => {
+        const ret = await runShell(`prisma-multi-tenant ${name} --help`)
 
-        expect(ret).toEqual(expect.stringContaining(command.name))
-        expect(ret).toEqual(expect.stringContaining(command.description))
-
-        // Test that it shows all args
-        for (let argument of command.args || []) {
-          expect(ret).toEqual(expect.stringContaining(argument.name))
-          expect(ret).toEqual(expect.stringContaining(argument.description))
-        }
-
-        // Test that it shows all options
-        for (let option of command.options || []) {
-          expect(ret).toEqual(expect.stringContaining(option.name))
-          expect(ret).toEqual(expect.stringContaining(option.description))
-        }
+        expect(ret).toEqual(expect.stringContaining(name))
+        expect(ret).toEqual(expect.stringContaining(description))
       })
     }
   }

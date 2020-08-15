@@ -1,6 +1,12 @@
+import path from 'path'
 import chalk from 'chalk'
 
-import { Management, PmtError } from '@prisma-multi-tenant/shared'
+import {
+  Management,
+  PmtError,
+  getSchemaPath,
+  translateDatasourceUrl,
+} from '@prisma-multi-tenant/shared'
 
 import { Command, CommandArguments } from '../types'
 import prompt from '../helpers/prompt'
@@ -27,6 +33,10 @@ class New implements Command {
       description: 'URL of the database',
     },
     {
+      name: 'schema',
+      description: 'Specify path of schema',
+    },
+    {
       name: 'no-management',
       description: 'The new tenant will not be registered in the management database',
       boolean: true,
@@ -46,7 +56,9 @@ class New implements Command {
     console.log()
     const { url: databaseUrl } = await prompt.managementConf(args)
 
-    process.env.MANAGEMENT_URL = databaseUrl
+    const schemaPath = args.options.schema || (await getSchemaPath())
+
+    process.env.MANAGEMENT_URL = translateDatasourceUrl(databaseUrl, path.dirname(schemaPath))
 
     await migrate.migrateManagement('up', '--create-db')
 
@@ -61,7 +73,7 @@ class New implements Command {
       throw new PmtError('reserved-tenant-name', 'management')
     }
 
-    await migrate.migrateTenant('up', tenant, '--create-db')
+    await migrate.migrateTenant('up', tenant, args.options.schema, '--create-db')
 
     if (args.options['no-management']) {
       console.log(

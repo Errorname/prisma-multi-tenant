@@ -1,4 +1,5 @@
 import fs from 'fs'
+import path from 'path'
 import chalk from 'chalk'
 
 import {
@@ -11,6 +12,8 @@ import {
   readSchemaFile,
   writeSchemaFile,
   isPrismaCliLocallyInstalled,
+  translateDatasourceUrl,
+  getSchemaPath,
 } from '@prisma-multi-tenant/shared'
 
 import { Command, CommandArguments } from '../types'
@@ -31,6 +34,10 @@ class Init implements Command {
       description: 'URL of the management database',
     },
     {
+      name: 'schema',
+      description: 'Specify path of schema',
+    },
+    {
       name: 'no-example',
       description: 'Disable creation of example file',
       boolean: true,
@@ -46,10 +53,10 @@ class Init implements Command {
     const managementUrl = await this.getManagementDatasource(args)
 
     // 3. Update .env file
-    const firstTenant = await this.updateEnvAndSchemaFiles(managementUrl)
+    const firstTenant = await this.updateEnvAndSchemaFiles(managementUrl, args.options.schema)
 
     // 4. Generate clients
-    await this.generateClients()
+    await this.generateClients(args.options.schema)
 
     // 5. Set up management
     await this.setUpManagement()
@@ -94,21 +101,28 @@ class Init implements Command {
   async getManagementDatasource(args: CommandArguments) {
     console.log(chalk`\n  {yellow We will now configure the management database:}\n`)
 
-    const { url: managementUrl } = await prompt.managementConf(args)
+    let { url: managementUrl } = await prompt.managementConf(args)
+
+    const schemaPath = args.options.schema || (await getSchemaPath())
+
+    managementUrl = translateDatasourceUrl(managementUrl, path.dirname(schemaPath))
 
     process.env.MANAGEMENT_URL = managementUrl
 
     return managementUrl
   }
 
-  async updateEnvAndSchemaFiles(managementUrl: string): Promise<Datasource | null> {
+  async updateEnvAndSchemaFiles(
+    managementUrl: string,
+    schemaPath?: string
+  ): Promise<Datasource | null> {
     console.log('\n  Updating .env and schema.prisma files...')
     let firstTenantUrl
     let mustAddDatabaseUrlEnv = false
 
     // Read/write schema file and try to get first tenant's url
     try {
-      let schemaFile = await readSchemaFile()
+      let schemaFile = await readSchemaFile(schemaPath)
 
       const datasourceConfig = schemaFile.match(/datasource\s*\w*\s*\{\s([^}]*)\}/)?.[1]
       if (!datasourceConfig) {
@@ -147,7 +161,7 @@ class Init implements Command {
 
       if (mustAddDatabaseUrlEnv) {
         schemaFile = schemaFile.replace(datasourceConfigUrl, 'env("DATABASE_URL")')
-        await writeSchemaFile(schemaFile)
+        await writeSchemaFile(schemaFile, schemaPath)
       }
     } catch {}
 
@@ -155,7 +169,7 @@ class Init implements Command {
     let envFile = ''
 
     try {
-      envFile = await readEnvFile()
+      envFile = await readEnvFile(schemaPath)
     } catch {}
 
     if (mustAddDatabaseUrlEnv) {
@@ -173,7 +187,7 @@ class Init implements Command {
       .map((x) => x.substr(6))
       .join('\n')
 
-    await writeEnvFile(envFile)
+    await writeEnvFile(envFile, schemaPath)
 
     if (!firstTenantUrl) {
       console.error(chalk`\n  {red Couldn't find initial datasource url}`)
@@ -186,10 +200,10 @@ class Init implements Command {
     }
   }
 
-  async generateClients() {
+  async generateClients(schemaPath?: string) {
     console.log('\n  Generating prisma clients for both management and tenants...')
 
-    await generate.generateTenants()
+    await generate.generateTenants(schemaPath)
     await generate.generateManagement()
   }
 

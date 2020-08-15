@@ -53,6 +53,7 @@ Init multi-tenancy for your application
 | Name       | Type    | Description                      |
 | ---------- | ------- | -------------------------------- |
 | url        | String  | URL of the management database   |
+| schema     | String  | Specify path of schema           |
 | no-example | Boolean | Disable creation of example file |
 
 **Examples**
@@ -60,6 +61,7 @@ Init multi-tenancy for your application
 ```sh
 prisma-multi-tenant init
 prisma-multi-tenant init --url=file:management.db
+prisma-multi-tenant init --schema db/schema.prisma
 ```
 
 **Explanations**
@@ -113,6 +115,7 @@ Create a new tenant or management
 | ------------- | ------- | ---------------------------------------------------------------- |
 | name          | String  | Name of the tenant                                               |
 | url           | String  | URL of the database                                              |
+| schema        | String  | Specify path of schema                                           |
 | no-management | Boolean | The new tenant will not be registered in the management database |
 
 **Examples**
@@ -144,9 +147,10 @@ Use Studio to access a tenant
 
 **Options**
 
-| Name | Type   | Description             |
-| ---- | ------ | ----------------------- |
-| port | Number | Port to start Studio on |
+| Name   | Type   | Description             |
+| ------ | ------ | ----------------------- |
+| port   | Number | Port to start Studio on |
+| schema | String | Specify path of schema  |
 
 **Examples**
 
@@ -171,6 +175,12 @@ Migrate up, down, or save tenants.
 | ------ | -------- | ------------------------------------------ |
 | name   | Yes      | Name of the tenant you want to migrate     |
 | action | **No**   | Migrate `up`, `down`, or `save` the tenant |
+
+**Options**
+
+| Name   | Type   | Description            |
+| ------ | ------ | ---------------------- |
+| schema | String | Specify path of schema |
 
 **Examples**
 
@@ -202,9 +212,10 @@ Delete one tenant
 
 **Options**
 
-| Name  | Type    | Description                            |
-| ----- | ------- | -------------------------------------- |
-| force | Boolean | If true, will not ask for confirmation |
+| Name   | Type    | Description                            |
+| ------ | ------- | -------------------------------------- |
+| schema | String  | Specify path of schema                 |
+| force  | Boolean | If true, will not ask for confirmation |
 
 **Examples**
 
@@ -223,9 +234,10 @@ Generate Prisma Clients for the tenants and management
 
 **Options**
 
-| Name  | Type    | Description                     |
-| ----- | ------- | ------------------------------- |
-| watch | Boolean | Watches the Prisma project file |
+| Name   | Type    | Description                     |
+| ------ | ------- | ------------------------------- |
+| schema | String  | Specify path of schema          |
+| watch  | Boolean | Watches the Prisma project file |
 
 **Examples**
 

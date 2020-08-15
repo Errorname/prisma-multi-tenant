@@ -7,6 +7,7 @@ export {
   readSchemaFile,
   writeSchemaFile,
   getSchemaPath,
+  translateDatasourceUrl,
 } from './env'
 export { default as Management } from './management'
 export {
