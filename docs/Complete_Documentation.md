@@ -13,6 +13,7 @@ There are also plugins for Prisma-powered frameworks:
 
 - The [Nexus plugin](#nexus-plugin) (`@prisma-multi-tenant/nexus`) which is a wrapper of the `nexus-plugin-prisma` package, and adds multi-tenancy to your Nexus application.
 - The [Blitz plugin](#blitz-plugin) (`@prisma-multi-tenant/blitz`) which adds multi-tenancy to your Blitz application.
+- The [Redwood plugin](#redwood-plugin) (`@prisma-multi-tenant/redwood`) which adds multi-tenancy to your Redwood application.
 
 **Table of content:**
 
@@ -39,6 +40,8 @@ There are also plugins for Prisma-powered frameworks:
   - [`prismaMultiTenant`](#prismamultitenantsettings-multitenantsettings-runtimeplugin)
 - [Blitz plugin](#blitz-plugin)
   - [`multiTenantMiddleware`](#multiTenantMiddlewaretenantRouter-function-prismaoptions-prismaclientoptions-middleware)
+- [Redwood plugin](#redwood-plugin)
+  - [`fromContext`](#fromcontext-prismaclient)
 
 ## CLI
 
@@ -468,4 +471,31 @@ module.exports = {
     }),
   ],
 }
+```
+
+## Redwood plugin
+
+### `fromContext(): PrismaClient`
+
+Dynamically return the Prisma Client instance from the context. This replaces the generated code from Redwood.
+
+**Usage**
+
+In the `api/src/lib/db.js` file:
+
+```js
+import { MultiTenant, fromContext } from '@prisma-multi-tenant/redwood'
+
+export const multiTenant = new MultiTenant()
+export const db = fromContext()
+```
+
+Everywhere else:
+
+```js
+import { db } from 'src/lib/db'
+
+//
+
+db.post.findMany()
 ```

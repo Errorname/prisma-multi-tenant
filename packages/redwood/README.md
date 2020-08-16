@@ -1,7 +1,7 @@
-<h1 align="center">Nexus plugin for Prisma-multi-tenant 🧭</h1>
+<h1 align="center">Redwood plugin for Prisma-multi-tenant 🧭</h1>
 <p align="center">
-  <a href="https://www.npmjs.com/package/@prisma-multi-tenant/nexus">
-    <img alt="Version" src="https://img.shields.io/npm/v/@prisma-multi-tenant/nexus.svg">
+  <a href="https://www.npmjs.com/package/@prisma-multi-tenant/redwood">
+    <img alt="Version" src="https://img.shields.io/npm/v/@prisma-multi-tenant/redwood.svg">
   </a>
   <a href="https://github.com/Errorname/prisma-multi-tenant#readme">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" target="_blank" />
@@ -17,47 +17,51 @@
   </a>
 </p>
 
-> 🧭 Add multi-tenancy to your [Nexus](https://nexusjs.org/) application
+> 🧭 Add multi-tenancy to your [Redwood](https://redwoodjs.com/) application
 
 ## Installation
 
 ```sh
 npm i -g prisma-multi-tenant # CLI for tenant management
-npm i @prisma-multi-tenant/nexus # Nexus plugin
+npm i @prisma-multi-tenant/redwood # Redwood plugin
 
-prisma-multi-tenant init # Init multi-tenancy in your Nexus project
+cp api/
+prisma-multi-tenant init # Init multi-tenancy in your Redwood project
 ```
 
 ## Usage
 
 ⚠️ **First, make sure you followed the Prisma-multi-tenant [Getting Started](https://github.com/Errorname/prisma-multi-tenant/blob/master/docs/Getting_Started.md) Guide.** ⚠️
 
+First, replace the code in `api/src/lib/db.js` with the following:
+
 ```js
-import { use } from 'nexus'
-import { prismaMultiTenant } from '@prisma-multi-tenant/nexus'
+import { MultiTenant, fromContext } from '@prisma-multi-tenant/redwood'
 
-const tenantRouter = (req) => {
-  // The name can come from anywhere (headers, token, ...)
-  return 'my_tenant_A'
-}
-
-use(prismaMultiTenant({ tenantRouter }))
+export const multiTenant = new MultiTenant()
+export const db = fromContext()
 ```
 
-Since `@prisma-multi-tenant/nexus` is a wrapper of `nexus-plugin-prisma`, you can also pass along any settings accepted by `nexus-plugin-prisma`. (See [documentation](https://nexusjs.org/pluginss/prisma#plugin-settings))
+Then, update the code in `api/src/functions/graphql.js`:
 
 ```js
-use(
-  prismaMultiTenant({
-    tenantRouter,
-    features: { crud: true },
-  })
-)
+import { multiTenant } from 'src/lib/db'
+
+export const handler = createGraphQLHandler({
+  schema: makeMergedSchema({
+    schemas,
+    services: makeServices({ services }),
+  }),
+  context: async ({ event }) => ({
+    // The name can come from anywhere (headers, token, ...)
+    db: await multiTenant.get('my_tenant_A').catch(console.error),
+  }),
+})
 ```
 
 ## Example
 
-Check out an example application using Nexus and the multi-tenant plugin [here](https://github.com/Errorname/prisma-multi-tenant/tree/master/docs/examples/nexus).
+Check out an example application using Redwood and the multi-tenant plugin [here](https://github.com/Errorname/prisma-multi-tenant/tree/master/docs/examples/redwood).
 
 ## Documentation
 

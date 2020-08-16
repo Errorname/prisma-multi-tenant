@@ -1,6 +1,6 @@
 # Adding multi-tenancy to your Express app
 
-This document is a **tutorial** giving steps by steps instructions on how to add multi-tenancy to your [Express](https://expressjs.com/) application, using [Prisma-multi-tenant](https://github.com/Errorname/prisma-multi-tenant).
+This document is a **tutorial** giving step by step instructions on how to add multi-tenancy to your [Express](https://expressjs.com/) application, using [Prisma-multi-tenant](https://github.com/Errorname/prisma-multi-tenant).
 
 👉 Before starting, we assume you already have an Express application, as well as an initialized instance of [Prisma](https://www.prisma.io/).
 

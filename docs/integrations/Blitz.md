@@ -1,6 +1,6 @@
 # Adding multi-tenancy to your Blitz app
 
-This document is a **tutorial** giving steps by steps instructions on how to add multi-tenancy to your [Blitz](https://blitzjs.com/) application, using [Prisma-multi-tenant](https://github.com/Errorname/prisma-multi-tenant).
+This document is a **tutorial** giving step by step instructions on how to add multi-tenancy to your [Blitz](https://blitzjs.com/) application, using [Prisma-multi-tenant](https://github.com/Errorname/prisma-multi-tenant).
 
 ## Step 1: Initialize Prisma-multi-tenant
 

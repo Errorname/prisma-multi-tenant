@@ -6,7 +6,7 @@ Here are the steps to contribute:
 
 1. [Finding an issue to work on](#1-finding-an-issue-to-work-on)
 2. [Cloning and installing Prisma-multi-tenant](#2-cloning-and-installing-prisma-multi-tenant)
-3. [Linking Prisma-multi-tenant](#3-linking-prisma-multi-tenant)
+3. [Running and linking Prisma-multi-tenant](#3-running-and-linking-prisma-multi-tenant)
 4. [Creating the Pull Request](#4-creating-the-pull-request)
 
 ## 1. Finding an issue to work on

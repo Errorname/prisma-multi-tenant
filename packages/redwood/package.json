@@ -1,7 +1,7 @@
 {
-  "name": "@prisma-multi-tenant/shared",
+  "name": "@prisma-multi-tenant/redwood",
   "version": "2.3.0",
-  "description": "Shared methods and constants for prisma-multi-tenant",
+  "description": "Redwood plugin for prisma-multi-tenant",
   "author": {
     "name": "Thibaud Courtoison",
     "email": "do.not.press.enter@gmail.com",
@@ -14,22 +14,22 @@
     "build"
   ],
   "scripts": {
-    "prepare": "rm -rf build && npm run build && cp -R src/prisma/ build/prisma/",
+    "prepare": "rm -rf build && npm run build",
     "build": "tsc",
     "lint": "eslint src/**/*.ts",
     "prettier": "prettier \"src/**/*.ts\" --check"
   },
   "dependencies": {
-    "@prisma/client": "^2.4.1"
+    "@prisma-multi-tenant/client": "^2.3.0"
   },
   "peerDependencies": {
-    "@prisma/cli": "^2.4.1"
+    "@redwoodjs/api": "^0.15.3"
   },
   "devDependencies": {
     "@prisma/cli": "^2.4.1",
-    "@types/node": "^14.0.23",
     "@typescript-eslint/eslint-plugin": "^3.6.1",
     "@typescript-eslint/parser": "^3.6.1",
+    "@redwoodjs/api": "^0.15.3",
     "eslint": "^7.4.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
@@ -42,12 +42,14 @@
   },
   "keywords": [
     "prisma",
-    "multi-tenant"
+    "multi-tenant",
+    "redwood",
+    "graphql"
   ],
   "bugs": {
     "url": "https://github.com/Errorname/prisma-multi-tenant/issues"
   },
-  "homepage": "https://github.com/Errorname/prisma-multi-tenant#readme",
+  "homepage": "https://github.com/Errorname/prisma-multi-tenant/tree/master/packages/redwood",
   "prettier": {
     "printWidth": 100,
     "semi": false,

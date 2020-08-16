@@ -34,7 +34,7 @@ export const setManagementEnv = async (): Promise<void> => {
 export const envPaths = [
   'prisma/.env',
   'db/.env', // Blitz
-  'api/prisma/.env', // Redwood
+  '../.env.defaults', // Redwood
   '.env',
 ]
 

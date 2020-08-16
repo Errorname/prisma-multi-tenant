@@ -1,6 +1,6 @@
 # Adding multi-tenancy to your Nexus app
 
-This document is a **tutorial** giving steps by steps instructions on how to add multi-tenancy to your [Nexus](https://nexusjs.org/) application, using [Prisma-multi-tenant](https://github.com/Errorname/prisma-multi-tenant).
+This document is a **tutorial** giving step by step instructions on how to add multi-tenancy to your [Nexus](https://nexusjs.org/) application, using [Prisma-multi-tenant](https://github.com/Errorname/prisma-multi-tenant).
 
 👉 Before starting, we assume you already have a Nexus application with the [Prisma plugin](https://nexusjs.org/pluginss/prisma).
 
