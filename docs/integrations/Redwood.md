@@ -47,7 +47,9 @@ export const handler = createGraphQLHandler({
   }),
   context: async ({ event }) => ({
     // The name can come from anywhere (headers, token, ...)
-    db: await multiTenant.get('my_tenant_A').catch(console.error),
+    db: await multiTenant
+      .get('dev') // or 'my_tenant_A' or anything
+      .catch(console.error),
   }),
 })
 ```

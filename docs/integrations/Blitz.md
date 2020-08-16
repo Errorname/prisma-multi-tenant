@@ -32,7 +32,7 @@ module.exports = {
   middleware: [
     multiTenantMiddleware((req, res) => {
       // The name can come from anywhere (headers, token, ...)
-      return 'my_tenant_A'
+      return 'dev' // or 'my_tenant_A' or anything
     }),
   ],
 }

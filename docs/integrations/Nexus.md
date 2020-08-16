@@ -32,7 +32,7 @@ import { prismaMultiTenant } from '@prisma-multi-tenant/nexus'
 
 const tenantRouter = (req) => {
   // The name can come from anywhere (headers, token, ...)
-  return 'my_tenant_A'
+  return 'dev' // or 'my_tenant_A' or anything
 }
 
 use(prismaMultiTenant({ tenantRouter }))
