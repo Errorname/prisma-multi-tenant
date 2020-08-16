@@ -61,6 +61,12 @@ export const handler = createGraphQLHandler({
 })
 ```
 
+Finally, restart the server:
+
+```
+yarn redwood dev
+```
+
 ## Example
 
 Check out an example application using Redwood and the multi-tenant plugin [here](https://github.com/Errorname/prisma-multi-tenant/tree/master/docs/examples/redwood).

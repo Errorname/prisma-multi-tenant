@@ -48,6 +48,8 @@ module.exports = {
 }
 ```
 
+> Note: Restart the server after modifying `blitz.config.js`
+
 Then, in your queries and mutations, access the tenant from the context:
 
 ```js

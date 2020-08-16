@@ -52,6 +52,12 @@ export const handler = createGraphQLHandler({
 })
 ```
 
+Finally, restart the server:
+
+```
+yarn redwood dev
+```
+
 ---
 
 And that's done! 🎉
