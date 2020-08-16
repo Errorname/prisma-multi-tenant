@@ -1,3 +1,4 @@
+import findUp from 'find-up'
 import { exec, spawn } from 'child_process'
 import path from 'path'
 import fs from 'fs'
@@ -70,6 +71,7 @@ export const getNodeModules = async (cwd?: string): Promise<string> => {
 // Run in this directory
 export const runLocal = async (cmd: string): Promise<string | Buffer> => {
   const nodeModules = await getNodeModules()
+  const sharedPath = await findUp('node_modules/@prisma-multi-tenant/shared/build')
 
   const managementEnv = await getManagementEnv()
 
@@ -77,7 +79,7 @@ export const runLocal = async (cmd: string): Promise<string | Buffer> => {
   delete process.env.INIT_CWD
 
   return runShell(cmd, {
-    cwd: path.join(nodeModules, '@prisma-multi-tenant/shared/build'),
+    cwd: sharedPath || '',
     env: {
       ...process.env,
       ...managementEnv,
@@ -98,12 +100,19 @@ export const runDistant = (cmd: string, tenant?: Datasource): Promise<string | B
 }
 
 export const getPrismaCliPath = async (): Promise<string> => {
-  const nodeModules = await getNodeModules()
-  return path.join(nodeModules, '@prisma/cli/build/index.js')
+  //const nodeModules = await getNodeModules()
+  //return path.join(nodeModules, '@prisma/cli/build/index.js')
+  const path = await findUp('node_modules/@prisma/cli/build/index.js')
+  if (!path) {
+    throw new Error('Cannot find @prisma/cli')
+  }
+  return path
 }
 
 export const isPrismaCliLocallyInstalled = async (): Promise<boolean> => {
-  return fileExists(await getPrismaCliPath())
+  return getPrismaCliPath()
+    .then(() => true)
+    .catch(() => false)
 }
 
 export const runLocalPrisma = async (cmd: string): Promise<string | Buffer> => {

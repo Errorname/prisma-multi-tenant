@@ -1,3 +1,3 @@
-# Blitz Example for Prisma-multi-tenant
+# Blitz example for Prisma-multi-tenant
 
 TODO

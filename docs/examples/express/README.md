@@ -1,4 +1,4 @@
-# Express Example for Prisma-multi-tenant
+# Express example for Prisma-multi-tenant
 
 This is an example project to run Express with multi-tenancy using Prisma-multi-tenant. (See also the tutorial "[Adding multi-tenancy to your Express app](/docs/integrations/Express.md)")
 

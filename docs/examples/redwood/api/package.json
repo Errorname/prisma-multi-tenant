@@ -1,0 +1,10 @@
+{
+  "name": "api",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@prisma-multi-tenant/client": "2.3.1",
+    "@prisma-multi-tenant/redwood": "2.3.1",
+    "@redwoodjs/api": "^0.15.3"
+  }
+}

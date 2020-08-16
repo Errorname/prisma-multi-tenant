@@ -1,0 +1,17 @@
+[build]
+  command = "yarn rw build && yarn rw db up --no-db-client --auto-approve && yarn rw dataMigrate up"
+  publish = "web/dist"
+  functions = "api/dist/functions"
+
+[dev]
+  command = "yarn rw dev"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[plugins]]
+package = 'netlify-plugin-prisma-provider'
+  [plugins.inputs]
+  path = 'api/prisma/schema.prisma'

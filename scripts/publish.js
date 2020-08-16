@@ -69,8 +69,13 @@ const publish = async () => {
   console.log('\n  Updating documentation')
 
   for (let name of docs) {
-    await updatePackageJson(name, versionNumber, dryRun)
-    await run(name, 'npm -s install')
+    if (name === 'doc-redwood') {
+      await updatePackageJson(name, versionNumber, dryRun, 'api')
+      await run(name, 'yarn install --silent')
+    } else {
+      await updatePackageJson(name, versionNumber, dryRun)
+      await run(name, 'npm -s install')
+    }
   }
 
   console.log(`\n  ✅ Done! ${versionNumber} has been published! 👏\n`)

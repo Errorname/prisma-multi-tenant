@@ -1,4 +1,4 @@
-# Basic Example (JS) for Prisma-multi-tenant
+# Basic example (JS) for Prisma-multi-tenant
 
 This is an example project written in JavaScript to run Prisma and Prisma-multi-tenant.
 

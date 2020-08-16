@@ -4,7 +4,14 @@ const { exec } = require('child_process')
 
 const packages = ['shared', 'client', 'cli', 'nexus', 'blitz', 'redwood']
 
-const docs = ['doc-basic-js', 'doc-basic-ts', 'doc-express', 'doc-apollo', 'doc-nexus']
+const docs = [
+  'doc-basic-js',
+  'doc-basic-ts',
+  'doc-express',
+  'doc-apollo',
+  'doc-nexus',
+  'doc-redwood',
+]
 
 const cwd = {
   root: path.join(__dirname, '../'),
@@ -19,12 +26,13 @@ const cwd = {
   'doc-express': path.join(__dirname, '../docs/examples/express'),
   'doc-apollo': path.join(__dirname, '../docs/examples/apollo'),
   'doc-nexus': path.join(__dirname, '../docs/examples/nexus'),
+  'doc-redwood': path.join(__dirname, '../docs/examples/redwood'),
 }
 
-const updatePackageJson = async (name, versionNumber, dryRun) => {
+const updatePackageJson = async (name, versionNumber, dryRun, subFolder = '') => {
   console.log(`\n€ ${name} > update package.json`)
 
-  const packageJsonPath = path.join(cwd[name], `package.json`)
+  const packageJsonPath = path.join(cwd[name], subFolder, `package.json`)
 
   const packageJson = JSON.parse(await fs.promises.readFile(packageJsonPath))
 

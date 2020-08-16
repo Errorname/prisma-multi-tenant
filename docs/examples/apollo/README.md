@@ -1,4 +1,4 @@
-# Apollo Example for Prisma-multi-tenant
+# Apollo example for Prisma-multi-tenant
 
 This is an example project to run Apollo with multi-tenancy using Prisma-multi-tenant. (See also the tutorial "[Adding multi-tenancy to your Apollo app](/docs/integrations/Apollo.md)")
 

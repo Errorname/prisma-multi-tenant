@@ -1,4 +1,4 @@
-# Nexus Example for Prisma-multi-tenant
+# Nexus example for Prisma-multi-tenant
 
 This is an example project to run Nexus with the Prisma-multi-tenant plugin. (See also the tutorial "[Adding multi-tenancy to your Nexus app](/docs/integrations/Nexus.md)")
 

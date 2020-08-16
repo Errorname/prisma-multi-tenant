@@ -1,4 +1,4 @@
-# Basic Example (TS) for Prisma-multi-tenant
+# Basic example (TS) for Prisma-multi-tenant
 
 This is an example project written in TypeScript to run Prisma and Prisma-multi-tenant.
 
