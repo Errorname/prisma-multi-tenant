@@ -30,8 +30,8 @@
   "dependencies": {
     "@prisma-multi-tenant/blitz": "2.3.1",
     "@prisma-multi-tenant/client": "2.3.1",
-    "@prisma/cli": "2.4.1",
-    "@prisma/client": "2.4.1",
+    "@prisma/cli": "2.6.0",
+    "@prisma/client": "2.6.0",
     "blitz": "0.17.0",
     "react": "0.0.0-experimental-33c3af284",
     "react-dom": "0.0.0-experimental-33c3af284"
