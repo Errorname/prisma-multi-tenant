@@ -15,7 +15,7 @@
     "dotenv-cli": "^3.2.0",
     "inquirer": "^7.3.2",
     "jest": "^26.1.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "ts-jest": "^26.1.2",
     "typescript": "^3.9.6"
   }
