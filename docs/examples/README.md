@@ -4,7 +4,6 @@
 - [Basic (TS)](/docs/examples/basic-ts)
 - [Express](/docs/examples/express)
 - [Apollo](/docs/examples/apollo)
-- [Nexus](/docs/examples/nexus)
 - [Blitz](/docs/examples/blitz)
 - [Redwood](/docs/examples/redwood)
 - Bison (TODO)

@@ -2,14 +2,13 @@ const fs = require('fs')
 const path = require('path')
 const { exec } = require('child_process')
 
-const packages = ['shared', 'client', 'cli', 'nexus', 'blitz', 'redwood']
+const packages = ['shared', 'client', 'cli', 'blitz', 'redwood']
 
 const docs = [
   'doc-basic-js',
   'doc-basic-ts',
   'doc-express',
   'doc-apollo',
-  'doc-nexus',
   'doc-redwood',
 ]
 
@@ -18,18 +17,21 @@ const cwd = {
   shared: path.join(__dirname, '../packages/shared'),
   client: path.join(__dirname, '../packages/client'),
   cli: path.join(__dirname, '../packages/cli'),
-  nexus: path.join(__dirname, '../packages/nexus'),
   blitz: path.join(__dirname, '../packages/blitz'),
   redwood: path.join(__dirname, '../packages/redwood'),
   'doc-basic-js': path.join(__dirname, '../docs/examples/basic-js'),
   'doc-basic-ts': path.join(__dirname, '../docs/examples/basic-ts'),
   'doc-express': path.join(__dirname, '../docs/examples/express'),
   'doc-apollo': path.join(__dirname, '../docs/examples/apollo'),
-  'doc-nexus': path.join(__dirname, '../docs/examples/nexus'),
   'doc-redwood': path.join(__dirname, '../docs/examples/redwood'),
 }
 
-const updatePackageJson = async (name, versionNumber, dryRun, subFolder = '') => {
+const updatePackageJson = async (
+  name,
+  versionNumber,
+  dryRun,
+  subFolder = ''
+) => {
   console.log(`\n€ ${name} > update package.json`)
 
   const packageJsonPath = path.join(cwd[name], subFolder, `package.json`)
@@ -44,12 +46,18 @@ const updatePackageJson = async (name, versionNumber, dryRun, subFolder = '') =>
         packageJson.dependencies &&
         packageJson.dependencies[`@prisma-multi-tenant/${packName}`]
       ) {
-        packageJson.dependencies[`@prisma-multi-tenant/${packName}`] = `^${versionNumber}`
+        packageJson.dependencies[
+          `@prisma-multi-tenant/${packName}`
+        ] = `^${versionNumber}`
       }
     }
   }
 
-  await fs.promises.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf-8')
+  await fs.promises.writeFile(
+    packageJsonPath,
+    JSON.stringify(packageJson, null, 2),
+    'utf-8'
+  )
 }
 
 const run = (name, cmd) => {
