@@ -69,21 +69,17 @@ export const getNodeModules = async (cwd?: string): Promise<string> => {
 }
 
 // Run in this directory
-export const runLocal = async (cmd: string): Promise<string | Buffer> => {
-  const nodeModules = await getNodeModules()
+export const runLocal = async (
+  cmd: string,
+  env?: { [name: string]: string }
+): Promise<string | Buffer> => {
   const sharedPath = await findUp('node_modules/@prisma-multi-tenant/shared/build')
-
-  const managementEnv = await getManagementEnv()
-
-  // Fixes a weird bug that would not use the provided PMT_OUTPUT env
-  delete process.env.INIT_CWD
 
   return runShell(cmd, {
     cwd: sharedPath || '',
     env: {
       ...process.env,
-      ...managementEnv,
-      PMT_OUTPUT: path.join(nodeModules, clientManagementPath),
+      ...env,
     },
   })
 }
@@ -117,7 +113,17 @@ export const isPrismaCliLocallyInstalled = async (): Promise<boolean> => {
 
 export const runLocalPrisma = async (cmd: string): Promise<string | Buffer> => {
   const prismaCliPath = await getPrismaCliPath()
-  return runLocal(`node "${prismaCliPath}" ${cmd}`)
+  const managementEnv = await getManagementEnv()
+
+  const nodeModules = await getNodeModules()
+
+  const PMT_OUTPUT = path.join(nodeModules, clientManagementPath)
+  const schemaPath = path.join(__dirname, 'prisma/schema.prisma')
+
+  return runLocal(`node "${prismaCliPath}" ${cmd} --schema ${schemaPath}`, {
+    ...managementEnv,
+    PMT_OUTPUT,
+  })
 }
 
 export const runDistantPrisma = async (

@@ -1,12 +1,15 @@
 {
   "version": "2.3.1",
+  "private": "true",
   "scripts": {
-    "postinstall": "node scripts/bootstrap.js",
+    "bootstrap": "npm run _tmp_preinstall && npm i; npm i && npm run link:cli",
+    "link:cli": "cd packages/cli && npm uninstall -g prisma-multi-tenant && npm link",
     "check": "node scripts/check.js",
     "publish": "node scripts/publish.js",
     "test": "npm run test:cli && npm run test:client",
     "test:cli": "jest tests/cli/",
-    "test:client": "bash tests/playground/test-client.sh"
+    "test:client": "bash tests/playground/test-client.sh",
+    "_tmp_preinstall": "mkdir -p packages/cli/build && touch packages/cli/build/index.js"
   },
   "devDependencies": {
     "@types/jest": "^26.0.4",
@@ -18,5 +21,8 @@
     "node-fetch": "^2.6.0",
     "ts-jest": "^26.1.2",
     "typescript": "^3.9.6"
-  }
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }

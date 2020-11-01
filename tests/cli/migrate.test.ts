@@ -10,13 +10,17 @@ describe('migrate', () => {
   beforeAll(async () => {
     project = await initProject('cli-migrate')
 
-    await project.run('init --url=file:management.db')
-    await project.run('delete dev --force')
-    await project.run('new --name=test1 --url=file:test1.db')
-    await project.run('new --name=test2 --url=file:test2.db')
-    await project.run('env test1 -- npx @prisma/cli migrate save --name=test --experimental')
-    await runShell(`cp helpers/seed.js ../playground/${project.path}/seed.js`, '../cli')
-    await runShell(`cp helpers/seed2.js ../playground/${project.path}/seed2.js`, '../cli')
+    try {
+      await project.run('init --url=file:management.db')
+      await project.run('delete dev --force')
+      await project.run('new --name=test1 --url=file:test1.db')
+      await project.run('new --name=test2 --url=file:test2.db')
+      await project.run('env test1 -- prisma migrate save --name=test --experimental') // Note: use `npx @prisma/cli` instead of `prisma` once npm7 bug is resolved
+      await runShell(`cp helpers/seed.js ../playground/${project.path}/seed.js`, '../cli')
+      await runShell(`cp helpers/seed2.js ../playground/${project.path}/seed2.js`, '../cli')
+    } catch (e) {
+      console.log(e)
+    }
   })
 
   test('migrate up one tenant', async () => {

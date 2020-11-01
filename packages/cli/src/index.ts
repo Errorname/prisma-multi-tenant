@@ -38,6 +38,7 @@ const run = async (): Promise<void> => {
   // Setting verbosity
   if (shouldSetVerbose(args)) {
     process.env.verbose = 'true'
+    process.env.VERBOSE = 'true'
   }
 
   // Loading env file

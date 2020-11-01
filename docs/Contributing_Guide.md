@@ -19,22 +19,30 @@ If you want to work on something else, please **create an issue explaining what 
 
 > Note: Want to contribute but don't know where to start? Send me a message on [Prisma's Slack](https://slack.prisma.io/) (@Errorname)!
 
-## 2. Cloning and installing Prisma-multi-tenant
+## 2. Cloning and bootstrapping Prisma-multi-tenant
 
-Once you have an issue, you can clone and install Prisma-multi-tenant:
+Once you have an issue, you can clone and bootstrap Prisma-multi-tenant:
 
 ```sh
 git clone https://github.com/Errorname/prisma-multi-tenant.git
-npm install
+npm run bootstrap # There may be a few warnings/errors
 ```
 
-## 3. Running and linking Prisma-multi-tenant
+## 3. Running Prisma-multi-tenant
 
-Prisma-multi-tenant is a mono-repository hosting 3 packages:
+Prisma-multi-tenant is a mono-repository hosting multiple packages:
+
+Main packages:
 
 - `prisma-multi-tenant` found in `/packages/cli`
 - `@prisma-multi-tenant/client` found in `/packages/client`
 - `@prisma-multi-tenant/shared` found in `/packages/shared`
+
+Integrations packages:
+
+- `@prisma-multi-tenant/nexus` found in `/packages/nexus`
+- `@prisma-multi-tenant/blitz` found in `/packages/blitz`
+- `@prisma-multi-tenant/redwood` found in `/packages/redwood`
 
 Those packages are written in Typescript. For each one of those package, you will need to build it with the following command:
 
@@ -47,31 +55,13 @@ npm run build -- -w
 
 cd packages/client
 npm run build -- -w
-```
 
-Since NPM installs dependencies from its own repositories, we need to locally link our packages between them:
-
-```sh
-cd packages/shared
-npm link
-
-cd packages/cli
-npm link
-npm link @prisma-multi-tenant/shared
-
-cd packages/client
-npm link
-npm link @prisma-multi-tenant/shared
+# etc...
 ```
 
 Now, whenever you use the command `prisma-multi-tenant` or `pmt`, it will use your local version.
 
-When using `@prisma-multi-tenant/client` in a project, you will also want to execute your own builded version of `@prisma-multi-tenant/client`. To do that, go into your project's directory and "link" it:
-
-```sh
-# In your project's directory
-npm link @prisma-multi-tenant/client
-```
+> Note: PMT uses npm workspaces, available from npm@7+. Make sure your npm version is up-to-date
 
 You can now work on your issue! 🥳
 
@@ -82,7 +72,7 @@ Your contribution is working beyond expectation? Great, let's add it to the proj
 But first, let's make sure your code is correctly formatted, and doesn't introduce regressions:
 
 ```sh
-# In the root of prisma-multi-tenant
+# At the root of prisma-multi-tenant
 npm run check
 ```
 

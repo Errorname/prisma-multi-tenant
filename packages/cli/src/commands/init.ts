@@ -78,13 +78,6 @@ class Init implements Command {
   async installPMT() {
     console.log('\n  Installing `@prisma-multi-tenant/client` as a dependency in your app...')
 
-    // This is used for testing purposes
-    if (process.env.PMT_TEST) {
-      return runShell('npm link @prisma-multi-tenant/client').then(() =>
-        runShell('npm link @prisma-multi-tenant/shared')
-      )
-    }
-
     const isUsingYarn = await useYarn()
     const command = isUsingYarn ? 'yarn add --ignore-workspace-root-check' : 'npm install'
     const devOption = isUsingYarn ? '--dev' : '-D'

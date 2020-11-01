@@ -185,9 +185,22 @@ class Migrate implements Command {
     }
 
     schemaPath = schemaPath || (await getSchemaPath())
-    return spawnShell(
+
+    const retCode = await spawnShell(
       `npx @prisma/cli migrate save ${migrateArgs} --schema ${schemaPath} ${prismaArgs} --experimental`
     )
+
+    if (retCode === 1) {
+      if (process.env.VERBOSE === 'true') {
+        // Bug with npm@7 and npx
+        console.log('This is probably a bug with npm. Retrying...')
+      }
+      return spawnShell(
+        `prisma migrate save ${migrateArgs} --schema ${schemaPath} ${prismaArgs} --experimental`
+      )
+    }
+
+    return retCode
   }
 }
 
