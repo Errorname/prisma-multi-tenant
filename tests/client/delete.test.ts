@@ -1,7 +1,8 @@
-import path from 'path'
-
 // @ts-ignore
 const { MultiTenant } = require('@prisma-multi-tenant/client')
+
+// If timeout error, increase the number
+jest.setTimeout(300000)
 
 describe('delete', () => {
   test('delete existing tenant', async () => {

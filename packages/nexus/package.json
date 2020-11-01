@@ -27,7 +27,7 @@
     "nexus": "^0.25.0"
   },
   "devDependencies": {
-    "@prisma/cli": "^2.4.1",
+    "@prisma/cli": "^2.10.1",
     "@typescript-eslint/eslint-plugin": "^3.6.1",
     "@typescript-eslint/parser": "^3.6.1",
     "eslint": "^7.4.0",

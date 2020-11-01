@@ -217,9 +217,8 @@ class Init implements Command {
 
     const { dmmf } = requireDistant('@prisma/client')
 
-    const firstModelMapping = dmmf.mappings[0]
+    const firstModelMapping = dmmf.mappings.modelOperations[0]
 
-    // We should use singular name (See prisma/prisma-client-js#509)
     const modelNamePlural = firstModelMapping.plural
     const modelNameSingular = firstModelMapping.model.toLowerCase()
 

@@ -1,5 +1,3 @@
-import path from 'path'
-
 // @ts-ignore
 const { MultiTenant } = require('@prisma-multi-tenant/client')
 
