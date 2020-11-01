@@ -40,7 +40,6 @@ Main packages:
 
 Integrations packages:
 
-- `@prisma-multi-tenant/nexus` found in `/packages/nexus`
 - `@prisma-multi-tenant/blitz` found in `/packages/blitz`
 - `@prisma-multi-tenant/redwood` found in `/packages/redwood`
 
