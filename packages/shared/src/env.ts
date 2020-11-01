@@ -5,6 +5,10 @@ import { PmtError } from './errors'
 import { fileExists } from './shell'
 
 export const translateDatasourceUrl = (url: string, cwd?: string): string => {
+  if (url.startsWith('"') && url.endsWith('"')) {
+    url = url.slice(1, -1)
+  }
+
   if (url.startsWith('file:') && !url.startsWith('file:/')) {
     return 'file:' + path.join(cwd || process.cwd(), url.replace('file:', '')).replace(/\\/g, '/')
   }
