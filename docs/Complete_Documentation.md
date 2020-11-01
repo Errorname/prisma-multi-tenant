@@ -11,7 +11,6 @@ Prisma-multi-tenant is a two-part project:
 
 There are also plugins for Prisma-powered frameworks:
 
-- The [Nexus plugin](#nexus-plugin) (`@prisma-multi-tenant/nexus`) which is a wrapper of the `nexus-plugin-prisma` package, and adds multi-tenancy to your Nexus application.
 - The [Blitz plugin](#blitz-plugin) (`@prisma-multi-tenant/blitz`) which adds multi-tenancy to your Blitz application.
 - The [Redwood plugin](#redwood-plugin) (`@prisma-multi-tenant/redwood`) which adds multi-tenancy to your Redwood application.
 
@@ -36,8 +35,6 @@ There are also plugins for Prisma-powered frameworks:
   - [`deleteTenant`](#deletetenantname-string-promisevoid)
   - [`existsTenant`](#existstenantname-string-promiseboolean)
   - [`disconnect`](#disconnect-promisevoid)
-- [Nexus plugin](#nexus-plugin)
-  - [`prismaMultiTenant`](#prismamultitenantsettings-multitenantsettings-runtimeplugin)
 - [Blitz plugin](#blitz-plugin)
   - [`multiTenantMiddleware`](#multiTenantMiddlewaretenantRouter-function-prismaoptions-prismaclientoptions-middleware)
 - [Redwood plugin](#redwood-plugin)
@@ -414,39 +411,6 @@ Disconnects all PrismaClient instances (management & tenants)
 
 ```js
 await multiTenant.disconnect()
-```
-
-## Nexus plugin
-
-### `prismaMultiTenant(settings: MultiTenantSettings): RuntimePlugin`
-
-Registers the plugin into Nexus. You must give a `tenantRouter` attribute in the settings that will return the name of the tenant that should be used during this Request.
-
-**Usage:**
-
-```ts
-import { use } from 'nexus'
-import { prismaMultiTenant } from '@prisma-multi-tenant/nexus'
-
-const tenantRouter = (req: Express.Request) => {
-  // The name can come from anywhere (headers, token, ...)
-  return 'my_tenant_A'
-}
-
-use(prismaMultiTenant({ tenantRouter }))
-```
-
-**Settings:**
-
-Since `@prisma-multi-tenant/nexus` is a wrapper of `nexus-plugin-prisma`, any settings given will be passed through:
-
-```js
-use(
-  prismaMultiTenant({
-    tenantRouter,
-    features: { crud: true },
-  })
-)
 ```
 
 ## Blitz plugin

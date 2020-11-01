@@ -2,7 +2,6 @@
 
 - [Express](/docs/integrations/Express.md)
 - [Apollo](/docs/integrations/Apollo.md)
-- [Nexus](/docs/integrations/Nexus.md)
 - [Blitz](/docs/integrations/Blitz.md)
 - [Redwood](/docs/integrations/Redwood.md)
 - Bison (TODO)
