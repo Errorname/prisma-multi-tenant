@@ -1,6 +1,6 @@
 {
   "name": "@prisma-multi-tenant/redwood",
-  "version": "2.3.1",
+  "version": "2.4.1",
   "description": "Redwood plugin for prisma-multi-tenant",
   "author": {
     "name": "Thibaud Courtoison",
@@ -20,7 +20,7 @@
     "prettier": "prettier \"src/**/*.ts\" --check"
   },
   "dependencies": {
-    "@prisma-multi-tenant/client": "^2.3.1"
+    "@prisma-multi-tenant/client": "^2.4.1"
   },
   "peerDependencies": {
     "@redwoodjs/api": "^0.15.3"

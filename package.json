@@ -1,5 +1,5 @@
 {
-  "version": "2.3.1",
+  "version": "2.4.1",
   "private": "true",
   "scripts": {
     "bootstrap": "npm run _tmp_preinstall && npm i; npm i && npm run link:cli",
