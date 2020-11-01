@@ -120,7 +120,7 @@ export const runLocalPrisma = async (cmd: string): Promise<string | Buffer> => {
   const PMT_OUTPUT = path.join(nodeModules, clientManagementPath)
   const schemaPath = path.join(__dirname, 'prisma/schema.prisma')
 
-  return runLocal(`node "${prismaCliPath}" ${cmd} --schema ${schemaPath}`, {
+  return runLocal(`node "${prismaCliPath}" ${cmd} --schema="${schemaPath}"`, {
     ...managementEnv,
     PMT_OUTPUT,
   })
