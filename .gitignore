@@ -4,3 +4,4 @@ tests/playground/*
 !tests/playground/example
 !tests/playground/test-client.sh
 packages/cli/README.md
+.idea
