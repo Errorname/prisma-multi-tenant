@@ -1,4 +1,5 @@
 {
+  "name": "prisma-multi-tenant",
   "version": "2.4.2",
   "private": "true",
   "scripts": {
