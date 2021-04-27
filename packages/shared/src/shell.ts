@@ -97,7 +97,7 @@ export const runDistant = (cmd: string, tenant?: Datasource): Promise<string | B
 
 export const getPrismaCliPath = async (): Promise<string> => {
   //const nodeModules = await getNodeModules()
-  //return path.join(nodeModules, '@prisma/cli/build/index.js')
+  //return path.join(nodeModules, 'prisma/build/index.js')
   const path = await findUp('node_modules/prisma/build/index.js')
   if (!path) {
     throw new Error('Cannot find prisma')
