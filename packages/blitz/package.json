@@ -1,6 +1,6 @@
 {
   "name": "@prisma-multi-tenant/blitz",
-  "version": "2.4.2",
+  "version": "2.5.0",
   "description": "Blitz plugin for prisma-multi-tenant",
   "author": {
     "name": "Thibaud Courtoison",
@@ -20,13 +20,14 @@
     "prettier": "prettier \"src/**/*.ts\" --check"
   },
   "dependencies": {
-    "@prisma-multi-tenant/client": "^2.4.2"
+    "@prisma-multi-tenant/client": "^2.5.0",
+    "@prisma/client": "^2.21.2"
   },
   "peerDependencies": {
     "blitz": "^0.16.4"
   },
   "devDependencies": {
-    "@prisma/cli": "^2.10.1",
+    "prisma": "^2.21.2",
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
     "@types/webpack": "^4.41.21",

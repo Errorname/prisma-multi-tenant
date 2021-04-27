@@ -1,6 +1,6 @@
 {
   "name": "@prisma-multi-tenant/redwood",
-  "version": "2.4.2",
+  "version": "2.5.0",
   "description": "Redwood plugin for prisma-multi-tenant",
   "author": {
     "name": "Thibaud Courtoison",
@@ -20,13 +20,13 @@
     "prettier": "prettier \"src/**/*.ts\" --check"
   },
   "dependencies": {
-    "@prisma-multi-tenant/client": "^2.4.2"
+    "@prisma-multi-tenant/client": "^2.5.0"
   },
   "peerDependencies": {
     "@redwoodjs/api": "^0.15.3"
   },
   "devDependencies": {
-    "@prisma/cli": "^2.10.1",
+    "prisma": "^2.21.2",
     "@typescript-eslint/eslint-plugin": "^3.6.1",
     "@typescript-eslint/parser": "^3.6.1",
     "@redwoodjs/api": "^0.15.3",

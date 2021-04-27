@@ -85,9 +85,9 @@ class Init implements Command {
     await runShell(`${command} @prisma-multi-tenant/client@${packageJson.version}`)
 
     if (!(await isPrismaCliLocallyInstalled())) {
-      console.log('\n  Also installing `@prisma/cli` as a dev dependency in your app...')
+      console.log('\n  Also installing `prisma` as a dev dependency in your app...')
 
-      await runShell(`${command} ${devOption} @prisma/cli`)
+      await runShell(`${command} ${devOption} prisma`)
     }
   }
 
@@ -223,7 +223,7 @@ class Init implements Command {
     const modelNameSingular = firstModelMapping.model.toLowerCase()
 
     const script = `
-      // const { PrismaClient } = require('@prisma/client') // Uncomment for TypeScript support
+      const { PrismaClient } = require('@prisma/client') 
       const { MultiTenant } = require('@prisma-multi-tenant/client')
 
       // This is the name of your first tenant, try with another one
