@@ -22,7 +22,7 @@ export default async (): Promise<void> => {
     let prismaVersion
 
     try {
-      prismaVersion = require('@prisma/cli/package.json').version
+      prismaVersion = require('prisma/package.json').version
     } catch {
       console.warn(
         chalk.yellow`Warning: Couldn't find @prisma/cli in node_modules. Did you forget to install it locally?`
@@ -31,12 +31,12 @@ export default async (): Promise<void> => {
     }
 
     const { dependencies } = require(path.join(__dirname, '../../package.json'))
-    const prismaVersionRequired = dependencies['@prisma/cli'].replace('^', '')
+    const prismaVersionRequired = dependencies['prisma'].replace('^', '')
 
     if (compareVersions(prismaVersion, prismaVersionRequired) == -1) {
       console[process.env.PMT_TEST ? 'log' : 'warn'](
         chalk.yellow(
-          `Warning: This version of prisma-multi-tenant is compatible with @prisma/cli@${prismaVersionRequired}, but you have @prisma/cli@${prismaVersion} installed. This may break in unexpected ways.`
+          `Warning: This version of prisma-multi-tenant is compatible with prisma@${prismaVersionRequired}, but you have prisma@${prismaVersion} installed. This may break in unexpected ways.`
         )
       )
       return

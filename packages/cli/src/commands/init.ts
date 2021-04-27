@@ -87,7 +87,7 @@ class Init implements Command {
     if (!(await isPrismaCliLocallyInstalled())) {
       console.log('\n  Also installing `@prisma/cli` as a dev dependency in your app...')
 
-      await runShell(`${command} ${devOption} @prisma/cli`)
+      await runShell(`${command} ${devOption} prisma`)
     }
   }
 
