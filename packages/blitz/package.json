@@ -23,7 +23,7 @@
     "@prisma-multi-tenant/client": "^2.4.2"
   },
   "peerDependencies": {
-    "blitz": "^0.16.4"
+    "blitz": "^0.45.3"
   },
   "devDependencies": {
     "@prisma/cli": "^2.10.1",
@@ -32,7 +32,7 @@
     "@types/webpack": "^4.41.21",
     "@typescript-eslint/eslint-plugin": "^3.6.1",
     "@typescript-eslint/parser": "^3.6.1",
-    "blitz": "^0.16.4",
+    "blitz": "^0.45.3",
     "eslint": "^7.4.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
