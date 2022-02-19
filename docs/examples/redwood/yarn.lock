@@ -1532,14 +1532,14 @@
   resolved "https://registry.yarnpkg.com/@open-draft/until/-/until-1.0.3.tgz#db9cc719191a62e7d9200f6e7bab21c5b848adca"
   integrity sha512-Aq58f5HiWdyDlFffbbSjAlv596h/cOnt2DO1w3DOC7OJ5EHs0hd/nycJfiu9RJbT6Yk6F1knnRRXNSpxoIVZ9Q==
 
-"@prisma-multi-tenant/client@^2.3.1":
+"@prisma-multi-tenant/client@2.3.1", "@prisma-multi-tenant/client@^2.3.1":
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/@prisma-multi-tenant/client/-/client-2.3.1.tgz#16616fa921a8a4a4b4899391eab2f4a2a7635f83"
   integrity sha512-NYXz/dBlK1M9czIvGSGyhomoMOuzMJ5AApL+Hpg73h+vJmzbhNYJKXIYL4Ir3KEm5RJjAVhaLTTafISho6IFNQ==
   dependencies:
     "@prisma-multi-tenant/shared" "^2.3.1"
 
-"@prisma-multi-tenant/redwood@^2.3.1":
+"@prisma-multi-tenant/redwood@2.3.1":
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/@prisma-multi-tenant/redwood/-/redwood-2.3.1.tgz#f7d209fce15f1836c9e141972f6b097ab35a31ec"
   integrity sha512-irwot8tEj+DddIXhZPj1wAh34Ts5/TNlCdjm2FMwQDWsOzH7RGPp06YDUCAF7K8eT4HGSDNCPMBZjn2ip0a4EA==
@@ -11481,9 +11481,9 @@ querystring@0.2.0, querystring@^0.2.0:
   integrity sha1-sgmEkgO7Jd+CDadW50cAWHhSFiA=
 
 querystringify@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.1.1.tgz#60e5a5fd64a7f8bfa4d2ab2ed6fdf4c85bad154e"
-  integrity sha512-w7fLxIRCRT7U8Qu53jQnJyPkYZIaR4n5151KMfcJlO/A9397Wxb1amJvROTK6TOnp7PfoAmg/qXiNHI+08jRfA==
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.2.0.tgz#3345941b4153cb9d082d8eee4cda2016a9aef7f6"
+  integrity sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==
 
 ramda@0.21.0, ramda@^0.21.0:
   version "0.21.0"
@@ -13699,9 +13699,9 @@ url-loader@^2.0.1:
     schema-utils "^2.5.0"
 
 url-parse@^1.4.3, url-parse@^1.4.7:
-  version "1.4.7"
-  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.4.7.tgz#a8a83535e8c00a316e403a5db4ac1b9b853ae278"
-  integrity sha512-d3uaVyzDB9tQoSXFvuSUNFibTd9zxd2bkVrDRvF5TmvWWQwqE4lgYJ5m+x1DbecWkw+LK4RNl2CU1hHuOKPVlg==
+  version "1.5.7"
+  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.5.7.tgz#00780f60dbdae90181f51ed85fb24109422c932a"
+  integrity sha512-HxWkieX+STA38EDk7CE9MEryFeHCKzgagxlGvsdS7WBImq9Mk+PGwiT56w82WI3aicwJA8REp42Cxo98c8FZMA==
   dependencies:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
