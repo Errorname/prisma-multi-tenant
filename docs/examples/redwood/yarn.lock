@@ -1532,14 +1532,14 @@
   resolved "https://registry.yarnpkg.com/@open-draft/until/-/until-1.0.3.tgz#db9cc719191a62e7d9200f6e7bab21c5b848adca"
   integrity sha512-Aq58f5HiWdyDlFffbbSjAlv596h/cOnt2DO1w3DOC7OJ5EHs0hd/nycJfiu9RJbT6Yk6F1knnRRXNSpxoIVZ9Q==
 
-"@prisma-multi-tenant/client@^2.3.1":
+"@prisma-multi-tenant/client@2.3.1", "@prisma-multi-tenant/client@^2.3.1":
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/@prisma-multi-tenant/client/-/client-2.3.1.tgz#16616fa921a8a4a4b4899391eab2f4a2a7635f83"
   integrity sha512-NYXz/dBlK1M9czIvGSGyhomoMOuzMJ5AApL+Hpg73h+vJmzbhNYJKXIYL4Ir3KEm5RJjAVhaLTTafISho6IFNQ==
   dependencies:
     "@prisma-multi-tenant/shared" "^2.3.1"
 
-"@prisma-multi-tenant/redwood@^2.3.1":
+"@prisma-multi-tenant/redwood@2.3.1":
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/@prisma-multi-tenant/redwood/-/redwood-2.3.1.tgz#f7d209fce15f1836c9e141972f6b097ab35a31ec"
   integrity sha512-irwot8tEj+DddIXhZPj1wAh34Ts5/TNlCdjm2FMwQDWsOzH7RGPp06YDUCAF7K8eT4HGSDNCPMBZjn2ip0a4EA==
@@ -11458,9 +11458,9 @@ qs@^6.6.0, qs@^6.9.3:
   integrity sha512-A1kFqHekCTM7cz0udomYUoYNWjBebHm/5wzU/XqrBRBNWectVH0QIiN+NEcZ0Dte5hvzHwbr8+XQmguPhJ6WdQ==
 
 qs@~6.5.2:
-  version "6.5.2"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
-  integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
+  version "6.5.3"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.3.tgz#3aeeffc91967ef6e35c0e488ef46fb296ab76aad"
+  integrity sha512-qxXIEh4pCGfHICj1mAJQ2/2XVZkjCDTcEgfoSQxc/fYivUZxTkk7L3bDBJSoNrEzXI17oUO5Dp07ktqE5KzczA==
 
 query-string@^4.1.0:
   version "4.3.4"
